@@ -1,0 +1,679 @@
+%---------------------------------------------------
+% Metodologia
+%---------------------------------------------------
+
+\section*{Introdução}
+
+
+Neste capítulo serão abordados procedimentos utilizados durante a pesquisa no atendimento aos objetivos propostos. 
+
+%Para o alcance do objetivo desse trabalho foi indispensável o entendimento dos desafios enfrentados pela colaboração ATLAS e estudo dos trabalho e das técnicas já desenvolvidas e em operação no detector. Como exemplo pode-se citar os trabalho de \citeonline{thesis:simas2010}, \citeonline{werner2011}, \citeonline{ciodaro2012}, \citeonline{me:candida2014} e \citeonline{me:edmar2015}.
+
+
+
+\section{Técnicas de Reamostragem}
+A técnica de reamostragem~\cite[p. 41]{thesis:giovani2006} baseia-se em subdividir o conjunto de dados em subconjuntos menores, nos quais haja representação das características do conjunto total de dados. No processo de divisão dos subconjuntos, sorteios aleatórios são realizados com o intuito de evitar possíveis tendências na seleção das amostras a serem utilizadas para treinamento e teste. Todas as redes foram treinadas, na nuvem, em máquinas virtuais, com processadores de arquitetura Intel$^{\textcopyright}$ Xeon E5 v4 2,2 GHz com 8 núcleos e 24 GB de RAM.
+%garantir a boa representação e uniformidade das características contidas no conjunto de dados
+
+\subsection{\textit{k-fold}}
+
+No treinamento da redes utilizadas como classificadores, foi realizado o método de validação cruzada \textit{k-fold}~\cite{book:kattifaceli2011, Xu2018}, ver \autoref{fig:validacao}. Neste trabalho, a base de dados foi subdividida em 10 subconjuntos de tamanhos idênticos, em seguida, foi realizado o sorteio de 6 subconjuntos (60\%) para o treino e 4 (40\%) para teste e validação, então, essa configuração de rede foi treinada e testada 100 vezes.
+
+Com o auxílio da \autoref{eq:percentuais} é possível verificar que existem 210 combinações distintas para realizar o sorteio, tanto para treino, quanto para o teste ($n=10,\, p=6$). Com o primeiro ciclo realizado o sorteio repete-se até que sejam feitos 50 sorteios, e cada um treinado 100 vezes. Essa é uma das metodologias para treino das RNA utilizada pela Colaboração ATLAS, e será aplicada neste trabalho permitindo realizar comparações com os resultados da colaboração como referência de desempenho.
+
+\begin{equation}
+   C_{n,p} = \frac{n!}{p!(n-p)!}. \label{eq:percentuais}
+\end{equation}
+
+\subsection{\textit{Jackknife}}
+
+É um método de validação cruzada não paramétrico utilizado para estimar o enviesamento de uma amostra, ou um parâmetro de interesse de uma amostra aleatória de uma população. Esse método também é conhecido como \textit{leave-one-out}\footnote{Deixe um fora - em tradução livre.}, por dividir a base de dados em \textbf{n} subconjuntos de igual tamanho ($\vec{x} = [x_1,x_2,x_3,\dots , x_n$]), em seguida processar a análise em \textit{n-1} subconjuntos até completar o processamento de toda a base de dados, \textit{n} vezes. Dessa forma cada um das \textit{n} etapas de processamento, chamadas amostras  \textit{jackknife}, só diferem entre si por um dos \textit{n} subconjuntos da base, mantendo a caraterística de interesse \cite{thesis:giovani2006,abdi2010}.
+
+Cada amostra \textit{jackknife} tem o seguinte formato:
+
+\begin{eqnarray}
+	\vec{x}^1 &=& [x_2,x_3,x_4,\ldots , x_{n-1},x_n] \label{eq:jack1}	\\
+	\vec{x}^2 &=& [x_3,x_4,x_5,\ldots , x_{n-1},x_n] \label{eq:jack2} \\
+	\vdots  \nonumber \\
+	\vec{x}^n &=& [x_1,x_2,x_3,\ldots , x_{n-2},x_{n-1}]\label{eq:jackn} 
+\end{eqnarray}
+
+Cada uma das amostras, \autoref{eq:jack1}, \autoref{eq:jack2} e \autoref{eq:jackn}, é utilizada para determinação do parâmetro $\hat{\theta}=s(\vec{x})$, na qual $s(\vec{x})$ é uma estatística de interesse para a população em estudo \cite{me:edmar2013}.
+
+\begin{figure}[H]
+%   \begin{center}      % 
+   \centering  
+   \caption{Representação do processo de agrupamento e sorteio dos subgrupos de treinamento.}
+   \includegraphics[scale=0.75]{./Figuras/validacaocruzada.jpg}
+   \label{fig:validacao}
+   %\legend{Fonte: o autor}
+  %  \end{center}
+\end{figure}
+
+\section{Determinação do número de neurônios}\label{met:nNeu}
+
+Para cada uma das três técnicas utilizadas nesse trabalho foi adotado o seguinte procedimento de determinação:
+
+\begin{itemize}
+	\item MLP
+	\begin{itemize}
+		\item Base Experimental: Número de neurônios utilizados no trabalho de \citeonline{me:edmar2015};
+		\item Dados Simulados: Número de neurônios utilizados pela Colaboração ATLAS.
+	\end{itemize}
+	\item ELM: Rede que obteve o melhor índice SP, nos testes com número de neurônios na camada oculta avaliados de 5 até 100;
+	\item ESN:Rede que obteve o melhor índice SP, nos testes com número de neurônios no reservatório de dinâmicas avaliados de 5 até 60.
+\end{itemize}
+
+%% ============================================================
+%% ============================================
+\section{Métodos de avaliação dos resultados}
+%% ============================================
+%% ============================================================
+
+Neste trabalho serão utilizadas três bases de dados. Uma com dados experimentais obtidos no ano de 2011 e uma com dados obtidos pela técnica de Monte Carlo~\cite{yoriyaz2009} no ano de 2015. O classificador utilizado pela colaboração ATLAS, baseado em \textit{perceptron multilayer} (MLP) será a referência utilizada para validação das técnicas ELM e ESN, propostas para uso como classificadores alternativos ao MLP. Para isso os parâmetros de ajuste do MLP serão os utilizados pela Colaboração.
+
+%% -----------------------
+\subsection{Curva ROC}
+%% -----------------------
+
+Para avaliação de desempenho do discriminador binário (elétron/jato) será utilizada a curva ROC\footnote{\textit{Receiver Operating Characteristic Curve}.} \cite{TomFawcett2006}. A curva ROC auxilia na análise dos resultados provenientes de classificadores distintos, em problemas de classificação binária\footnote{Existe uma classe de interesse, que deseja-se obter a separação numa base dados contaminada por outra classe, tomada como ruído de fundo.} quando se deseja avaliar a qualidade da separação efetuada pelos classificadores em análise.
+
+Na~\autoref{tab:roc}, é apresentado o resumo das respostas possíveis de um classificador. O significado para cada termo da tabela é:
+
+\begin{itemize}
+	\item Verdadeiros Positivos \textbf{VP}: Valores da classe positiva classificados corretamente.
+	\item Falsos Negativos \textbf{FN}: Valores da classe positiva classificados como negativos.
+	\item Falsos Positivos \textbf{FP}: Valores da classe negativa classificados como positivos.
+	\item Verdadeiros Negativos \textbf{VN}: Valores da classe negativa classificados corretamente
+\end{itemize}
+
+\begin{table}[H]
+	\centering
+	\setlength{\extrarowheight}{4pt} 
+	\caption{Resultados possíveis de classificação.}\label{tab:roc}
+	\begin{tabular}{*{4}{c}}\toprule
+	            &	&\multicolumn{2}{c}{Valor Observado} \\\cmidrule(lr){3-4}
+		        &   & Positivos & Negativos  \\ \cmidrule(lr){3-3}\cmidrule(lr){4-4}
+\multirow{2}{1.5cm}{Valor Predito}& Positivos	&    VP     &     FP    \\ \cmidrule(lr){2-2}%\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+               	             	& Negativos	&    FN     &     VN    \\ \bottomrule
+	\end{tabular}
+\end{table}
+
+Neste trabalho, as classes em análise são: elétrons e jatos hadrônicos. Os elétrons são a classe de interesse, dessa forma, serão associados aos valores VP, que neste trabalho foram chamados de probabilidade de detecção (PD), enquanto que os jatos, foram chamados de taxa de falso alarme (FR). A curva ROC consiste de um gráfico ($x,\ y$), no qual o eixo das abscissas correspondente à taxa de falsos alarmes (FR), e o eixo das ordenadas à probabilidade de detecção (PD). Na \autoref{fig:exROC} é exibido um exemplo de curvas ROC para dois classificadores.
+
+\begin{figure}[H]
+	%   \begin{center}      % 
+	\centering  
+	\caption{Exemplos de curvas ROC de dois classificadores.}
+	\includegraphics[scale=2]{./Figuras/ExROC.eps}
+	\label{fig:exROC}
+	\legend{Fonte: \citeonline{me:edmar2015}}
+	%  \end{center}
+\end{figure}
+
+Na~\autoref{fig:exROC}~observa-se que o classificador A possui um melhor desempenho de classificação em relação ao classificador B, pois sua curva alcança valores de PD elevados com menores FR, em comparação com o classificador B. Um classificador ideal, seria aquele no qual a sua curva ROC atinge o máximo valor de PD (100\%) para FR igual a zero, e se mantém no máximo ao longo de toda a faixa de FR.
+
+
+%% -----------------------
+\subsection{Índice SP}
+%% -----------------------
+
+É um parâmetro utilizado para auxiliar na definição do ponto de operação ótimo de um determinado classificador~\cite{torres2009}. É definido conforme \autoref{eq:sp}.
+\begin{equation}
+   SP = \sqrt{\frac{(Ef_e + Ef_j)}{2} \times \sqrt{Ef_e \times Ef_j}}. \label{eq:sp}
+\end{equation}
+onde $Ef_e = PD$ e $Ef_j = 1 - FR$ são as eficiências obtidas, respectivamente, para elétrons e jatos (sendo PD a probabilidade de detecção de elétrons e FR probabilidade de classificar um jato hadrônico incorretamente). A eficiência de um classificador está associada ao maior valor para o índice SP. Um índice SP = 1 (classificador ideal), indica máxima taxa de probabilidade de detecção (PD) para erro (FR) zero.
+
+
+%% -----------------------
+\subsection{\textit{Boxplot}}
+%% -----------------------
+
+A apresentação dos resultados obtidos nos ensaios realizados será feita em gráficos utilizando a \textit{boxplot} (gráfico de caixa). Esse tipo de gráfico é utilizado para representar a distribuição empírica dos dados \cite{portalaction2016} de uma série de eventos \cite{ferreira2016}. Na \autoref{fig:boxplot}, $Q_1$ e $Q_3$, referem-se ao 1º e 3º quartis respectivamente, IQR, é a faixa entre quartis e indica o grau de dispersão dos dados. Os limites superior e inferior são definidos por segmentos chamados \textit{Whisker}, ou ``fio de bigode''. Os quais são calculados por $Q_1 - 1,5\times{IQR}$ para o inferior e $Q_3 - 1,5\times{IQR}$ para o superior. Os pontos que por ventura fiquem fora destes limites são chamados \textit{outliers} e representam valores discrepantes.
+
+
+
+\begin{figure}[H]
+%   \begin{center}      % 
+   \centering  
+   \caption{Exemplos de \textit{boxplot} para quatro possíveis distribuições.}
+   \includegraphics[scale=1.3]{./Figuras/boxplot.jpg}
+   \label{fig:boxplot}
+   \legend{Fonte: \citeonline{ferreira2016}}
+  %  \end{center}
+\end{figure}
+
+Os Quartis, $\mathrm{Q_1, Q_2\, e\, Q_3}$, respectivamente, são os valores que marcam os limites onde estão situados os 25\%, 50\%, e 75\% das observações obtidas numa amostra, sendo essas organizadas de maneira crescente.
+
+A definição de cada quartil \textit{j} segue a expressão da \autoref{eq:quartis}, sendo \textit{n} o número de elementos da amostra.
+
+\begin{equation}
+Q_j = X_k + \Bigg( \frac{j(n+1)}{4} - k \Bigg)(X_{k+1}-X_k), \label{eq:quartis}
+\end{equation}
+calcula-se \textit{k} como a parte inteira de $\frac{j(n+1)}{4}$, para $j=\{1,2,3\}$ e $X_k$ é a posição da observação \textit{k} da amostra organizada de maneira crescente.
+
+%Os resultados obtidos em cada uma das técnicas avaliadas, ELM, ESN serão comparados com os resultados obtidos com o  MLP de duas maneiras, afim de mensurar o grau de equivalência de desempenho, quanto a separação de classes. Desta forma, na primeira, será realizado o treino das redes de maneira independente, ou seja, serão realizados três sorteios, um para cada classificador, ver \autoref{fig:meto1} e os resultados serão comparados por meio do teste de Student\footnote{pseudônimo de  William Sealy Gosset (1876-1937), químico e estatístico inglês que desenvolveu o teste de hipóteses conhecido como t-student.}. Em seguida, será realizado somente um sorteio, o qual será apresentado às três redes, obtendo um resultado com os mesmos conjuntos de amostras que serão comparados com o teste estatístico de McNemar, \autoref{fig:meto2} \cite{book:kuncheva2004}.
+
+%Além da avaliação por meio do índice SP, um teste estatístico será utilizado, o teste de Student. Desta forma, será realizado o treino das redes de maneira independente, ou seja, serão realizados três sorteios, um para cada classificador, ver \autoref{fig:meto1} e os resultados serão comparados por meio do teste de Student\footnote{pseudônimo de  William Sealy Gosset (1876-1937), químico e estatístico inglês que desenvolveu o teste de hipóteses conhecido como t-student.}~\autoref{fig:meto2} \cite{book:kuncheva2004}.. %Em seguida, será realizado somente um sorteio, o qual será apresentado às três redes, obtendo um resultado com os mesmos conjuntos de amostras que serão comparados com o teste estatístico de McNemar, \autoref{fig:meto2} \cite{book:kuncheva2004}.
+%
+%%\begin{figure}[H]
+%%	\caption{Representação da metodologia para avaliação dos resultados dos classificadores avaliados, ELM, ESN e MLP.}\label{fig:meto1}
+%%	\centering
+%%	\includegraphics[scale=1.5]{./Figuras/Metodologia.png}
+%%\end{figure}
+%
+%\begin{figure}[H]
+%	\caption{Representação da metodologia para avaliação dos resultados dos classificadores avaliados, ELM, ESN e MLP.}
+%	\begin{subfigure}[t]{.45\linewidth}
+%		\centering
+%		\subcaption{Metodologia de treino para os classficadores.}\label{fig:meto1}
+%		\includegraphics[scale=1.15]{./Figuras/Metodologia.png}
+%	\end{subfigure}
+%	\begin{subfigure}[t]{.55\linewidth}
+%		\centering
+%		\subcaption{Testes de similaridade entre os classificadores}\label{fig:meto2}
+%		\includegraphics[scale=1.5]{./Figuras/Metodo_t_test.png}
+%	\end{subfigure}
+%%	\legend{Fonte: Adaptado de \citeonline{ibm2017}}
+%\end{figure}
+
+%---------------------------------------------------
+\subsection{Teste de Student}
+%---------------------------------------------------
+%No teste de Student, dois classificadores A e B são avaliados quanto a diferença de desempenho de classificação no treino por validação cruzada, em conjuntos de treino independentes, com \textit{k} treinos em cada sorteio, ver \autoref{fig:validacao}, e seus resultados organizados em P$_A$ e P$_B$. Em seguida, um conjunto de diferenças entre os resultados dos classificadores para cada um dos \textit{k} sorteios é obtido, \autoref{eq:tstudentDif} . Na \autoref{eq:Eqstudent} esse conjunto de diferenças determina um valor na tabela de distribuição de Student, com \textit{k}-1 graus de liberdade. A hipótese nula nesse teste, H$_0$, é de que os classificadores possuem mesmo desempenho se $t_{calculado} < t_{tabelado}$ para um nível de significância de 0,05 \cite[p. 18,19]{book:kuncheva2004}.
+
+Além da avaliação por meio do índice SP, um teste estatístico será utilizado, o teste de Student. Para isso, o treinamento das redes será realizado, ou seja, serão realizados três sorteios, um para cada classificador, ver \autoref{fig:meto1}, e os resultados serão comparados por meio do teste de Student\footnote{pseudônimo de  William Sealy Gosset (1876-1937), químico e estatístico inglês que desenvolveu o teste de hipóteses conhecido como t-student.} conforme~\autoref{fig:meto2} \cite{book:kuncheva2004}.
+
+\begin{figure}[H]
+	\caption{Representação da metodologia para avaliação dos resultados dos classificadores avaliados, ELM, ESN e MLP.}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\subcaption{Metodologia de treino para os classficadores.}\label{fig:meto1}
+		\includegraphics[scale=1.2]{./Figuras/Metodologia.png}
+	\end{subfigure}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\subcaption{Testes de similaridade entre os classificadores}\label{fig:meto2}
+		\includegraphics[scale=1.45]{./Figuras/Metodo_t_test.png}
+	\end{subfigure}
+	%	\legend{Fonte: Adaptado de \citeonline{ibm2017}}
+\end{figure}
+
+Este teste é utilizado como parâmetro estatístico de análise de desempenho conforme descrito em \citeonline{kim2015} e em \citeonline[p. 18,19]{book:kuncheva2004}. Nele, dois classificadores A e B são avaliados (comparados) quanto a diferença de desempenho de classificação no treino por validação cruzada, em conjuntos de treino independentes, com \textit{k} treinos em cada sorteio, ver \autoref{fig:validacao}, e seus resultados organizados em $\vec{P}_A$ e $\vec{P}_B$. Em seguida, um conjunto de diferenças entre os resultados dos classificadores para cada um dos \textit{k} sorteios é obtido, \autoref{eq:tstudentDif}. Na \autoref{eq:Disttudent} esse conjunto de diferenças determina um valor na tabela de distribuição de Student, com \textit{k}-1 graus de liberdade. A hipótese nula nesse teste, H$_0$, é de que os classificadores possuem mesmo desempenho se $t_{calculado} < t_{tabelado}$ para um nível de significância de 0,05 bilateral\footnote{Os valores de referência são de uma tabela de probabilidade bicaudal.}.
+
+Neste trabalho os vetores $\vec{P}_A$ e $\vec{P}_B$, referem-se aos índices SP apresentados nos dados das melhores \textit{boxplot} em cada uma das três técnicas: MLP, ELM e ESN. Três comparações foram realizadas: $\vec{P}_{MLP} \times \vec{P}_{ELM}$, $\vec{P}_{MLP} \times \vec{P}_{ESN}$ e $\vec{P}_{ESN} \times \vec{P}_{ELM}$.
+
+
+\begin{eqnarray}
+\vec{P}^{(k)} &=& \vec{P}_A^{(k)}-P_B^{(k)}\label{eq:tstudentDif}. \\ 
+t &=& \frac{\overline{\vec{P}}\sqrt{k}}{\sqrt{\sum\limits_{i=1}^{k}\frac{(\vec{P}^{(i)}-\overline{\vec{P}})^2}{k-1}}}, \label{eq:Disttudent} 
+\end{eqnarray}
+sendo que
+
+\begin{equation}
+\overline{\vec{P}} = \frac{1}{k}\cdot\sum\limits_{i=1}^{k} \vec{P}^{(i)}. \label{eq:Eqstudent} 
+\end{equation}
+
+%%---------------------------------------------------
+%\subsection{Teste de McNemar}
+%%---------------------------------------------------
+%
+%Este teste é aplicado em situações onde deseja-se avaliar o desempenho de dois classificadores aplicados num mesmo conjunto de dados, dessa forma, é possível identificar se o classificador em análise apresenta resultados equivalentes ao classificador de referência \cite[p. 13--15]{book:kuncheva2004}.
+%
+%Para esse teste a hipótese nula, H$_0$, é de que os classificadores não possuem diferenças significativas de desempenho, e espera-se que N$_{01}$ seja igual a N$_{10}$. Na \autoref{tab:Tabmcnemar} é exibida a forma como os resultados dos dois classificadores são organizados para a análise de desempenho.
+%
+%\begin{table}[H]
+%	%\rowcolors{2}{gray!25}{white}
+%	\centering
+%	\caption{Relação entre precisão de classificadores para o teste de McNemar.}
+%	\label{tab:Tabmcnemar}
+%	%  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%	\setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+%	\begin{tabular}{ccc} \toprule
+%		%\multicolumn{2}{c}{\bfseries Intervalos} \\ \midrule
+%		                  & D$_2$ correto (1)    & D$_2$ errado (0)    \\ \midrule
+%		D$_1$ correto (1) & N$_{11}$  & N$_{10}$ \\ %\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}
+%		D$_1$ errado (0)  & N$_{01}$  & N$_{00}$ \\ \bottomrule
+%	\end{tabular}
+%\end{table}
+%Nesse teste o número total de amostras do conjunto de teste fica subdividido da seguinte forma: N$_{ts}$ = N$_{00}$+N$_{01}$+N$_{10}$+N$_{11}$ e cada uma das parcelas significa:
+%\begin{itemize}
+%	\item N$_{00}$ - Número de erros dos classificadores D$_1$ e D$_2$;
+%	\item N$_{01}$ - Número de erros do classificador D$_1$ e acertos de D$_2$;
+%	\item N$_{10}$ - Número de erros do classificador D$_2$ e acertos de D$_1$;
+%	\item N$_{11}$ - Número de acertos dos classificadores D$_1$ e D$_2$.
+%\end{itemize}
+%
+%Essa distribuição calculada, \autoref{eq:Eqmcnemar}, é aproximadamente equivalente à uma distribuição $\chi^2$ com um grau de liberdade, e a hipótese nula será correta, será aceita, se $x^2<3,841859$ com nível de significância de 0,05, ou seja, os classificadores não possuem diferenças significativas quanto à eficiência na separação de classes.
+%
+%\begin{equation}
+%x^2 = \frac{(|N_{01}-N_{10}|-1)^2}{N_{01}+N_{10}} \label{eq:Eqmcnemar}
+%\end{equation}
+		
+%Em cada ensaio a bases de dados escolhida, \autoref{tab:amostras}, foi dividida em 20 subconjuntos idênticos; desses, sorteados 10 subconjuntos distintos e em cada um dos sorteios realizados 15 treinamentos.
+
+%\section{Infraestrutura Necessária}
+%
+%Como infraestrutura necessária ao desenvolvimento deste trabalho temos:
+%
+%\begin{itemize}
+%   \item Computadores com plataforma de modelagem e simulação matemática e com capacidade de processamento para treinamento de redes neurais;
+%   \item Conexão com a internet para acesso às bases de dados da colaboração ATLAS, assim como para acesso e pesquisa em periódicos;
+%   \item Plataforma de desenvolvimento dos algoritmos em linguagens como C, C++, Python.
+%\end{itemize}
+
+%% ============================================================
+%% ============================================
+\section{Bases de Dados}
+%% ============================================
+%% ============================================================
+
+
+Nesta dissertação as bases de dados utilizadas foram fornecidas pela Colaboração ATLAS. Estão disponíveis bases de dados simulados, obtidos através de técnicas de Monte Carlo e dados experimentais de colisões do LHC. Todas as bases, simuladas e experimentais, são validadas pelo ambiente \textit{offline}, o qual possui três níveis de aceitação selecionáveis \cite{me:costa2016}:
+
+\begin{itemize}
+	\item \textit{Loose} - Critério de aceitação de sinal elevado, porém baixa rejeição ao ruído de fundo; 
+	\item \textit{Medium} - Nível de aceitação intermediário entre o \textit{loose} e o \textit{tight};
+	\item \textit{Tight} - Neste ajuste a redução do ruído de fundo é elevada, entretanto, o critério de aceitação para sinal é mais criterioso, resultando na menor eficiência entre os três níveis.
+\end{itemize}
+
+O ambiente \textit{offline} é composto por um conjunto de algoritmos com elevado poder computacional, o qual possui menos restrições temporais de processamento. Sua resposta é utilizada como referência pelos físicos para análise e é utilizada para o desenvolvimento de classificadores neurais para separação elétron/jato \cite{me:edmar2015}.
+
+
+Os sinais simulados por técnicas de Monte Carlo \cite{yoriyaz2009} são utilizados no desenvolvimento dos experimentos físicas de altas energias na tentativa de representar as condições de operação do detector (sejam com os parâmetros atuais, sejam em condições futuras).
+
+Para os dados simulados a energia do centro de massa foi ajustada para 14 TeV, com luminosidade máxima de $10^{34}$ \cite{me:edmar2015}. Com esses níveis de energia e luminosidade é possível que ocorra empilhamento de eventos, ou seja, o sistema de instrumentação ainda está sensibilizado por um evento anterior quando o evento atual se desenvolve. Tais condições, são interessantes no que diz respeito à robustez do algoritmo proposto, uma vez que deve ser capaz de separar as classes, elétron/jato, mesmo com a ocorrência do empilhamento (\textit{pile-up}). Em cada base de dados simulados, a Colaboração ATLAS busca representar as características físicas do detector, assim como as condições de operação do mesmo no momento das colisões.
+
+%Em cada base de dados simulados, a Colaboração ATLAS busca representar as características físicas do detector, assim como as condições de operação do mesmo no momento das colisões. O detector conta com um sistema \textit{offline} que também é utilizado como etapa de validação antes de aplicar os algoritmos no sistema \textit{online} \cite{candida2014}.
+
+%%%% -------------------------------------
+%\subsection{Monte Carlo 2011}
+%%%% -------------------------------------
+%
+%No conjunto de dados simulados MC2011 a classe de elétrons possui aproximadamente 30.000 assinaturas provenientes do decaimento do bóson Z em um elétron e um pósitron ($Z \rightarrow e^+e^-$). Nesta base dois cortes de energia foram feitos, com energia transversa $E_T > 10 GeV$ e com $E_T > 22 GeV$. A classe de jatos possui aproximadamente 80.000 assinaturas com base nas mesmas configurações utilizados no detector para a classe de elétrons, logo as assinaturas foram tomadas sob as mesmas condições de operação do detector. Os jatos foram simulados com energia transversa concentrada em 17 GeV, caracterizando o ruído de fundo do decaimento do bóson Z. Na \autoref{fig:DistrZEE} são exibidas a distribuição de energia transversa $E_T$, gráfico à esquerda, e a distribuição para elétrons e jatos em função da posição no interior do detector $|\eta|$, á gráfico direita, neste é possível observar a queda na contagem de eventos na região do \textit{crack} na qual $|\eta|=1,5$. 
+%
+%\begin{figure}[t]%[H]
+%   \begin{center}
+%      \caption{Distribuição de sinais de elétrons e jatos para a base de dados ZEEMC2011. À esquerda Energia Transversa, à direita distribuição em função de $|\eta|$.}
+%      \includegraphics[scale=.44]{./Figuras/EtaEt_ZEE.eps}
+%      \label{fig:DistrZEE}
+%%      \legend{Fonte: }
+%    \end{center}
+%\end{figure}
+
+%%% -------------------------------------
+\subsection{Dados Experimentais}
+%%% -------------------------------------
+
+%Os dados disponíveis nesta base (NN\_{ele190236}\_{jets191920}) foram obtidos de dois eventos de colisões, os quais estavam gravadas no ambiente \textit{offline} do \textit{neural ringer}. O primeiro, de número 190236 para elétrons com 337.658 assinaturas, onde grande parte das assinaturas foi registrada como de características eletromagnética pelo \textit{offline}. Para o conjunto de jatos com 78.353 assinaturas, com colisão referenciada por 191920. Ambas ocorridas em 2011 com as mesmas condições de operação do detector. As condições simuladas estão representadas na \autoref{fig:DistrNN}, com as distribuições para a energia transversa e para a pseudo-rapidez.
+
+Os dados disponíveis nesta base foram obtidos de dois eventos de colisões registradas pelo detector ATLAS e validados pelo ambiente \textit{offline}, no projeto referenciado como data11\_7TeV com as seguintes características:
+
+%\begin{multicols}{2}
+	\begin{itemize}
+		\item Assinaturas de elétrons:
+		\begin{itemize}
+%			\item Evento nº 190236
+			\item Energia por feixe de 3,48 TeV;
+			\item Luminosidade de $1,34.10^{30} \ {cm^{-2}s^{-1}}$;
+			\item Número de assinaturas: 337.658;
+		\end{itemize}
+		\item Assinaturas de jatos:
+		\begin{itemize}
+%			\item Evento nº 191920
+			\item Energia por feixe de 3,48 TeV;
+			\item Luminosidade de $1,45.10^{30} \ {cm^{-2}s^{-1}}$;
+			\item Número de assinaturas: 78.353.
+		\end{itemize}
+	\end{itemize}
+%\end{multicols}
+
+
+
+%Informaçoes da base:
+%
+%evento 191920
+%Sun Oct 30, 02:20 UTC - Sun Oct 30, 08:54 UTC
+%Luminosidade 1,34 x 10^30
+%Energia: 7 TeV
+%
+%evento 190236
+%Sat Oct 01, 13:29 UTC - Sun Oct 02, 11:03 UTC
+%Minor Period: L7
+%no changes w.r.t. L6
+%Major Period: L
+%new Physics_pp_v3 menu is deployed, which includes variable eta cuts for electrons at L1 with hadronic veto (L1_EMxxVH), new L1_MU11 road and L1_MU0->L1_MU4 change
+%
+%Project Tag: data11_7TeV
+
+%\begin{figure}[H]
+%   \begin{center}
+%      \caption{Distribuição de sinais de elétrons e jatos para a base de dados NN\_{ele190236}\_{jets191920}. À esquerda Energia Transversa, à direita distribuição em função de $|\eta|$.}
+%      \includegraphics[scale=.34]{./Figuras/EtaEt_NN.eps}
+%      \label{fig:DistrNN}
+%%      \legend{Fonte: }
+%    \end{center}
+%\end{figure}
+
+Na~\autoref{fig:Hist_eta_NN} é apresentado o número de assinaturas para elétrons e jatos em função da posição $\eta$ de interação com o detector, enquanto que na~\autoref{fig:Hist_et_NN} é exibido o número de assinaturas em função da energia transversa. É possível observar que o número de assinaturas de elétrons é da ordem de 3 vezes o número de assinaturas para os jatos, também nota-se a separação entre os níveis de energia para elétrons e jatos, da ordem de $10^2$ aproximadamente.
+
+\begin{figure}[H]
+	\caption{Distribuição de assinaturas de elétrons e jatos para a base de dados experimentais. }\label{fig:Hist_NN}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\subcaption{Número de assinaturas em função de $\eta$.}\label{fig:Hist_eta_NN}
+		\includegraphics[scale=.42]{./Figuras/Hist_eta_NN.eps}
+	\end{subfigure}%
+	%	\legend{Fonte: \citeonline{thesis:simas2010}}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\caption{Assinaturas em função da energia transversa.}
+		\includegraphics[scale=.42]{./Figuras/Hist_et_NN.eps}
+		\label{fig:Hist_et_NN}
+	\end{subfigure}
+\end{figure}
+
+
+
+
+%%%% -------------------------------------
+%\subsection{Monte Carlo 2012}
+%%%% -------------------------------------
+%
+%O conjunto de dados gerados no Monte Carlo 2012, foi obtido no final de 2012. São 54.674 assinaturas para elétrons e 433 assinaturas para jatos, ambas com $E_T > 24 GeV$. Nessa base de dados as condições de detecção são de empilhamento de eventos, o que exige mais do classificador projetado, porém, são condições simuladas de operação futura do detector no momento em que esse opere em níveis de energia superiores. Na \autoref{fig:Distr12MC} as distribuições para a energia transversa e pseudo-rapidez para elétrons e jatos.
+%
+%\begin{figure}[t]%[H]
+%   \begin{center}
+%      \caption{Distribuição de sinais de elétrons e jatos para a base de dados 12MC150315. À esquerda Energia Transversa, à direita distribuição em função de $|\eta|$.}
+%      \includegraphics[scale=.44]{./Figuras/EtaEt_12MC.eps}
+%      \label{fig:Distr12MC}
+%%      \legend{Fonte: }
+%    \end{center}
+%\end{figure}
+
+%%%% -------------------------------------
+%\subsection{Monte Carlo 2014}
+%%%% -------------------------------------
+%
+%Nesta base dados a energia das colisões foi ajustada para 13 TeV, e realizada uma segmentação, sendo separada em quatro níveis de energia transversa  e quatro posições no detector ($|\eta|$). Nas bases de dados anteriores a metodologia aplicada não era segmentada, todo o volume de informação a ser processado pelas RNA era aplicado às entradas sem separação/corte em níveis de energia ou referência de posição do detector ATLAS. Esta base é referenciada por: mc14\_13TeV.147406.129160.sgn.offLikelihood.bkg.truth.trig.e24\_lhme-dium$\_$nod0\_l1etcut20\_l2etcut19\_efetcut24\_binned.pic.
+%
+%
+%A seguir, \autoref{tab:segmentacaoMC2014}, os quatro intervalos nos níveis de energia transversa ($E_T$) e os quatro intervalos de posições dentro do detector ($|\eta|$).
+%
+%%\begin{table}[H]
+%%%\rowcolors{2}{gray!25}{white}
+%%\centering
+%%   \caption{Segmentação base de dados simulados MC2014.}
+%%   \label{tab:segmentacaoMC2014}
+%% %  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%%   \setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+%%\begin{tabular}{ccc} \toprule
+%%\multicolumn{2}{c}{\bfseries Intervalos} \\ \midrule
+%%   $E_T$ [GeV] &    $|\eta|$        \\ \cmidrule(lr){1-1}\cmidrule(lr){2-2}
+%%$[20;30]$ & $[0,00;0,80]$      \\
+%%$[30;40]$ & $[0,80;1,37]$     \\
+%%$[40;50]$ & $[1,37;1,54]$    \\
+%%$[50;20.000]$ & $[1,54;2,5]$ \\ \bottomrule
+%%\end{tabular}
+%%\end{table}
+%
+%
+%\begin{table}[H]
+%	%\rowcolors{2}{gray!25}{white}
+%	\centering
+%	\caption{Segmentação base de dados simulados MC2014.}
+%	\label{tab:segmentacaoMC2014}
+%	%  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%	\setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+%	\begin{tabular}{c*{4}c} \toprule
+%		\multicolumn{5}{c}{\bfseries Intervalos} \\ \midrule
+%		%\backslashbox{x}{y} &       0    &      1         &       2     &         3 \\
+%		 $E_T$ [GeV]         &  $[20;30]$ &     $[30;40]$  &   $[40;50]$ &   $[50;20.000]$ \\  \cmidrule(lr){1-1}\cmidrule(lr){2-5}
+%		$|\eta|$              & $[0,00;0,80]$  & $[0,80;1,37]$ & $[1,37;1,54]$ & $[1,54;2,5]$  \\ \bottomrule
+%	\end{tabular}
+%\end{table}
+%
+%Na \autoref{fig:MC14_amostras} pode-se visualizar a distribuição de assinaturas de elétrons e jatos para cada uma das 16 regiões da base. Nessa base o número de assinaturas produzidas para elétrons é uma ordem de grandeza superior ao número de assinaturas produzidas para os jatos. Algumas regões possuem próximo de 40.000 assinaturas para elétrons, (1,0), (1,3), (2,0) e (2,3), enquanto que para jatos, o maior número de assinaturas é de pouco mais de 2.000 assinaturas na região (0,3).
+%
+%\begin{figure}[H]
+%	\caption{Número de assinaturas por região na base MC14.}
+%	\centerline{\includegraphics[scale=.6]{./Figuras/MC14_amostras.eps}}
+%	\label{fig:MC14_amostras}
+%\end{figure}
+%
+%Na \autoref{tab:amostras2014} são exibidos o número de assinaturas para elétrons e jatos presentes na base de dados MC2014. As assinaturas estão agrupados por região, as quais serão representadas por pares ordenados, (x, y), afim de simplificar a identificação de cada região do detector. Cada par ordenado refere-se as combinações para os valores da energia transversa e da psuedo-rapidez, (E$_{\mathrm{T}}$ , $|\eta|$), apresentadas na \autoref{tab:segmentacaoMC2014}, num total de 16 pares para essa base.
+%
+%\begin{table}[H]
+%	%\rowcolors{2}{gray!25}{white}
+%	\centering
+%	%\begin{footnotesize}
+%	\caption{Número de assinaturas para cada região no conjunto de dados MC2014.}
+%	\label{tab:amostras2014}
+%%	\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%		\setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+%		\begin{tabular}{c*{8}c} \toprule
+%        \multicolumn{9}{c}{Número de assinaturas por região - Base MC14} \\ \toprule
+%         & \multicolumn{8}{c}{Regiões} \\ \cmidrule(lr){2-9}
+%         &  (0,0)  &  (0,1)  &  (0,2)  &  (0,3)  &  (1,0)  &  (1,1)  &  (1,2)  &  (1,3)  \\ \cmidrule(lr){2-9}%\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){8-8}\cmidrule(lr){9-9}
+%Elétrons &  15.508 &  10.193 &   1.986 &  15.695 &  38.741 &  25.177 &   5.937 &  39.246 \\ \cmidrule(lr){1-1}
+%Jatos    &   1.271 &   1.363 &     151 &   2.122 &     592 &     496 &      94 &     788 \\ \cmidrule(lr){1-1}
+%Total    &  16.979 &  11.556 &   2.137 &  17.817 &  39.333 &  25.673 &  6.031  &  40.034 \\ \cmidrule(lr){1-1} \cmidrule(lr){2-9}
+%         &  (2,0)  &  (2,1)  &  (2,2)  &  (2,3)  &  (3,0)  &  (3,1)  &  (3,2)  &  (3,3)  \\ \cmidrule(lr){2-9}%\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){8-8}\cmidrule(lr){9-9}
+%Elétrons &  38.408 &  24.504 &   4.408 &  38.298 &  22.047 &  14.934 &   2.902 &  20.202 \\ \cmidrule(lr){1-1}
+%Jatos    &     309 &     186 &      43 &     270 &   1.168 &     759 &      98 &     964 \\ \cmidrule(lr){1-1}
+%Total    &  38.717 &  24.690 &   4.451 &  38.568 &  23.215 &  15.693 &   3.000 &  21.166 \\ \bottomrule[1.5pt]
+%	\end{tabular}%}
+%	\legend{Fonte: Colaboraçao ATLAS.}
+%\end{table}
+
+
+%%% -------------------------------------
+\subsection{Dados Simulados}
+%%% -------------------------------------
+
+
+%As assinaturas disponíveis nesta base foram obtidas por meio da técnica de Monte-Carlo, a qual utiliza as informações da estrutura e materiais que constituem o detector para produzir as assinaturas para jatos e elétrons que são validados pelo ambiente \textit{offline}. Nesta os dados foram segmentados em intervalos de $\Delta_{|\eta|}$ e $\Delta_{E_T}$. Na \autoref{tab:segmentacaoMC2015}, são apresentados os cinco intervalos nos níveis de energia transversa ($E_T$) e os quatro intervalos de posições dentro do detector ($\Delta_{|\eta|}$), totalizando 20 regiões. Nesta base de dados a energia das colisões foi ajustada para 13 TeV, contendo número médio de colisões ($\langle\mu\rangle$) entre 0 e 60. 
+
+As assinaturas disponíveis nesta base foram obtidas por meio da técnica de Monte-Carlo. Nesta, os dados foram segmentados em intervalos de $\Delta_{|\eta|}$ e $\Delta_{E_T}$. Na \autoref{tab:segmentacaoMC2015}, são apresentados os cinco intervalos nos níveis de energia transversa ($\Delta_{E_T}$) e os quatro intervalos de posições dentro do detector ($\Delta_{|\eta|}$), totalizando 20 regiões. Nesta base de dados a energia das colisões foi ajustada para 13 TeV, contendo número médio de colisões ($\langle\mu\rangle$) entre 0 e 60. 
+
+
+\begin{table}[H]
+%\rowcolors{2}{gray!25}{white}
+\centering
+   \caption{Segmentação base de dados simulados MC2015.}
+   \label{tab:segmentacaoMC2015}
+ %  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+   \setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+	\begin{tabular}{ccc} \toprule
+	\multicolumn{2}{c}{\bfseries Intervalos} \\ \midrule
+	  $\Delta_{E_T}$ [GeV] &   $\Delta_{|\eta|}$        \\ \cmidrule(lr){1-1}\cmidrule(lr){2-2}
+		$[15;\ 20]$ & $[0,0;\ 0,8]$      \\
+		$[20;\ 30]$ & $[0,8;\ 1,37]$     \\
+		$[30;\ 40]$ & $[1,37;\ 1,54]$    \\
+		$[40;\ 50]$ & $[1,54;\ 2,5]$ \\
+		$[50;\ \infty[$ & -- \\ \bottomrule
+	\end{tabular}
+\end{table}
+
+Para simplificação da representação de cada uma das regiões da base de dados simulados, será adotada a representação em par ordenado (x, y). Nesta representação os valores de $\Delta_{E_T}$ referem-se à coordenada $x=[0, 1, 2, 3, 4]$, e os intervalos de $|\eta|$, referem-se à coordenada $y = [0, 1, 2, 3]$. Dessa forma, a representação da região com energia na faixa [15; 20] GeV, no intervalo de $\Delta_{|\eta|}= [0,0;\ 0,8]$, será representada como a região (0,0). Procedendo dessa maneira, obtém-se 20 regiões, provenientes da combinação dos cinco intervalos para a energia transversa ($\Delta_{E_T}$) e os quatro intervalos para pseudo-rapidez ($\Delta_{|\eta|}$), indo de (0,0) até (4,3).
+
+%\begin{table}[H]
+%	%\rowcolors{2}{gray!25}{white}
+%	\centering
+%	\caption{Segmentação base de dados simulados.}
+%	\label{tab:segmentacaoMC2015}
+%	%  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%	\setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+%	\begin{tabular}{c*{5}c} \toprule
+%		\multicolumn{6}{c}{\bfseries Intervalos} \\ \midrule
+%		$E_T$ [GeV] &   $[15;20]$ &   $[20;30]$ &   $[30;40]$ &   $[40;50]$ &  $[50;50.000]$ \\ \cmidrule(lr){1-1}\cmidrule(lr){2-6}
+%		$|\eta|$& $[0,0;0,8]$ & $[0,8;1,37]$ & $[1,37;1,54]$ & $[1,54;2,5]$ & -- \\ \bottomrule
+%	\end{tabular}
+%\end{table}
+
+Na~\autoref{fig:Hist_eta_MC15} é apresentado o número de assinaturas para elétrons e jatos em função da posição $\eta$ de interação com o detector, enquanto que na~\autoref{fig:Hist_et_MC15} o número de assinaturas em função da energia transversa. Observa-se que para essa base, a região de $1,4<\Delta_{|\eta|}< 1,5$, região de \textit{crack}, o registro de assinaturas de elétrons é quase zero (17 para $-1,5< \Delta_{\eta} < -1,4$ e 11, para $1,4< \Delta_{\eta} < 1,5$) em comparação com as demais regiões.
+
+
+\begin{figure}[H]
+	\caption{Distribuição de assinaturas de elétrons e jatos para a base de dados simulados. }\label{fig:Hist_MC15}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\subcaption{Número de assinaturas em função de $\eta$.}\label{fig:Hist_eta_MC15}
+		\includegraphics[scale=.42]{./Figuras/Hist_eta_MC15.eps}
+	\end{subfigure}%
+	%	\legend{Fonte: \citeonline{thesis:simas2010}}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\caption{Assinaturas em função da energia transversa.}
+		\includegraphics[scale=.42]{./Figuras/Hist_et_MC15.eps}
+		\label{fig:Hist_et_MC15}
+	\end{subfigure}
+\end{figure}
+
+%Na base de dados simulados ta
+%\begin{figure}[H]
+%	\caption{\textit{Pileup} de assinaturas de elétrons e jatos.}
+%	\centerline{\includegraphics[scale=.6]{./Figuras/Hist_pileup_MC15.eps}}
+%	\label{fig:MC15_pileup}
+%\end{figure}
+
+Na \autoref{fig:MC15_amostras} o número de assinaturas de elétrons e jatos para cada um das 20 regiões da base de dados simulados, proveniente da combinação dos intervalos para $\Delta_{E_T}$ e $\Delta_{|\eta|}$. Nessa base, novos parâmetros de operação para o detector fazem com que o número de assinaturas geradas para elétrons e jatos estejam na mesma ordem de grandeza. %Diferente do que ocorrido na base MC2014, onde as assinaturas produzidas estavam distribuídas sem haver concentração em regiões específicas, o maior número de assinaturas para jatos se concentrou entre as regiões (0,0) e (1,3). Já para as assinaturas de elétrons a concentração ocorreu entre as regiões (2,0) e (3,3).
+
+\begin{figure}[H]
+	\caption{Número de assinaturas para elétron e jato por região na base simulada.}
+	\centerline{\includegraphics[scale=.5]{./Figuras/MC15_AssinSigBack.eps}}
+	\label{fig:MC15_amostras}
+\end{figure}
+
+%Na \autoref{tab:amostras2015} são exibidos o número de assinaturas para elétrons e jatos presentes na base de dados, agrupados por região. Da mesma forma como foi adotado na base MC14, a representação em pares ordenados, (x, y), será utilizada para a base, energia transversa e da pseudo-rapidez, (E$_{\mathrm{T}}$ , $|\eta|$), no total de 20 pares para essa base, as quais se referem aos pares energia transversa e pseudo-rapidez apresentados na \autoref{tab:segmentacaoMC2015}.
+
+Na \autoref{tab:amostras2015} são exibidos o número de assinaturas para elétrons e jatos presentes na base de dados, agrupados por região. O número de assinaturas está representado em pares ordenados, ($\Delta_{E_T}$,$\Delta_{|\eta|}$), no total de 20 pares para essa base, referentes aos intervalos de variação da energia transversa e intervalos de variação pseudo-rapidez apresentados na \autoref{tab:segmentacaoMC2015}.
+
+
+\begin{table}[H]
+	%\rowcolors{2}{gray!25}{white}
+	\centering
+	%\begin{footnotesize}
+	\caption{Número de assinaturas para cada corte de energia no conjunto de dados.}
+	\label{tab:amostras2015}
+	  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+	\setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+	\begin{tabular}{c*{10}c} \toprule
+         \multicolumn{11}{c}{Número de assinaturas por região} \\ \toprule
+         & \multicolumn{10}{c}{Regiões} \\ \cmidrule(lr){2-11}
+         &  (0,0)  &  (0,1)  &  (0,2)  &  (0,3)  &  (1,0)  &  (1,1)  &  (1,2)  &  (1,3)  &  (2,0)  &  (2,1)  \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4} \cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11} 
+Elétrons &  21.490 &  12.362 &     618 &  18.154 & 121.811 &  65.684 &   2.854 &  81.125 & 277.833 & 167.207 \\ \cmidrule(lr){1-1}
+Jatos    & 523.981 & 372.257 &  97.614 & 600.198 & 346.143 & 246.076 &  61.155 & 396.224 &  88.659 &  63.230 \\ \cmidrule(lr){1-1} 
+Total    & 526.130 & 384.619 &  98.232 & 618.352 & 155.954 & 311.760 &  64.009 & 477.349 & 366.492 & 230.437 \\ \cmidrule(lr){1-1}\cmidrule(lr){2-11}    
+         &  (2,2)  &  (2,3)  &  (3,0)  &  (3,1)  &  (3,2)  &  (3,3)  &  (4,0)  &  (4,1)  &  (4,2)  &  (4,3)  \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4} \cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
+Elétrons &   6.159 & 172.515 & 286.840 & 186.662 &   4.618 & 202.108 & 105.114 &  68.736 &   1.597 &  71.013 \\ \cmidrule(lr){1-1} 
+Jatos    &  16.062 &  97.835 &  31.857 &  22.087 &   5.607 &  33.642 &  29.068 &  20.689 &   5.224 &  29.627 \\ \cmidrule(lr){1-1}
+Total    &  22.581 & 270.350 & 318.697 & 208.749 &  10.225 & 235.750 & 134.182 &  89.425 &   6.931 & 100.640 \\ \bottomrule[1.5pt]
+		%%\multirow{2}{*}{Base}&X\\ \cline{2-5} &X\\
+	\end{tabular}}
+	\legend{Fonte: Colaboraçao ATLAS.}
+	%\end{footnotesize}
+\end{table}
+
+%             16979    11556     2137     17817    39333    25673       6031      40034           
+%Total    & 16.979 & 11.556 &  2.137 & 17.817 & 39.333 & 25.673  &  6031  & 40.034 \\ \cmidrule(lr){1-1}
+%              38717    24690   4451   38568      23215     15693      3000     21166
+%Total    &  38.717 & 24.690 & 4.451 & 38.568 &  23.215 & 15.693 &  3.000 &  21.166 \\ \cmidrule(lr){1-1} \cmidrule(lr){2-9}
+%
+%           526130    384619    98232     618352     155954    311760     64009     477349    366492   230437
+%           22.581     270350    318697    208749     10225     235750     134182    89425      6931    100640
+
+%\begin{table}[H]
+%%\rowcolors{2}{gray!25}{white}
+%\centering
+%%\begin{footnotesize}
+%   \caption{Número de amostras para cada corte de energia no conjunto de dados MC2015.}
+%   \label{tab:amostras2015}
+% %  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%   \setlength{\extrarowheight}{4pt}       %%Aumentar a altura das linhas
+%\begin{tabular}{crcr} \toprule
+%\multicolumn{4}{c}{\bfseries Assinaturas} \\ \midrule
+%Elétrons & Quant. & Jatos & Quant. \\ \cmidrule(lr){1-2}\cmidrule(lr){3-4}
+%Signal\_{00}  &  21.490   &  Background\_{00}  & 523.981  \\ 
+%Signal\_{01}  &  12.362   &  Background\_{01}  & 372.257  \\ 
+%Signal\_{02}  &     618   &  Background\_{02}  &  97.614  \\ 
+%Signal\_{03}  &  18.154   &  Background\_{03}  & 600.198  \\ \cmidrule(lr){1-2}\cmidrule(lr){3-4}
+%Signal\_{10}  & 121.811   &  Background\_{10}  & 346.143  \\ 
+%Signal\_{11}  &  65.684   &  Background\_{11}  & 246.076  \\ 
+%Signal\_{12}  &   2.854   &  Background\_{12}  &  61.155  \\ 
+%Signal\_{13}  &  81.125   &  Background\_{12}  & 396.224  \\ 
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}
+%Signal\_{20}  & 277.833   &  Background\_{13}  &  88.659  \\
+%Signal\_{21}  & 167.207   &  Background\_{20}  &  63.230  \\ 
+%Signal\_{22}  &   6.519   &  Background\_{21}  &  16.062  \\ 
+%Signal\_{23}  & 172.515   &  Background\_{22}  &  97.835  \\ 
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}
+%Signal\_{30}  & 286.840   &  Background\_{23}  &  31.857  \\
+%Signal\_{31}  & 186.662   &  Background\_{30}  &  22.087  \\ 
+%Signal\_{32}  &   4.618   &  Background\_{31}  &   5.607  \\ 
+%Signal\_{33}  & 202.108   &  Background\_{32}  &  33.642  \\ 
+% \cmidrule(lr){1-2}\cmidrule(lr){3-4}
+%Signal\_{40}  & 105.114   &  Background\_{40}  &  29.068  \\ 
+%Signal\_{41}  &  68.736   &  Background\_{41}  &  20.689  \\ 
+%Signal\_{42}  &   1.597   &  Background\_{42}  &   5.224  \\ 
+%Signal\_{43}  &  71.013   &  Background\_{43}  &  29.627  \\ 
+%\bottomrule
+%%%\multirow{2}{*}{Base}&X\\ \cline{2-5} &X\\
+%\end{tabular}%}
+%\legend{Fonte: Colaboraçao ATLAS.}
+%%\end{footnotesize}
+%\end{table}
+
+%clearvars nAmostrasMC15_Jato nAmostrasMC15_Eletro
+%
+%fonte = '/home/aluno/Atlas/Datasets/';
+%load(cat(2,fonte,'mc15_13TeV.361106.423300.sgn.probes.bkg.vetotruth.trig.l2calo.patterns.mat'))
+%clearvars -except -regexp ^*erns_etB ^end fonte 
+%load(cat(2,fonte,'mc14_13TeV.147406.129160.sgn.offLikelihood.bkg.truth.trig.e24_lhmedium_nod0_l1etcut20_l2etcut19_efetcut24_binned.pic.mat'))
+%
+%
+%ind = [0 1 2 3 4];
+%
+%for et=1:5
+%    for eta=1:4
+%        eletr = eval(['signalPatterns_etBin_',num2str(ind(et)),'_etaBin_',num2str(ind(eta))]);
+%        jato  = eval(['backgroundPatterns_etBin_',num2str(ind(et)),'_etaBin_',num2str(ind(eta))]);
+%        nAmostrasMC15_Eletro(1,4*(et-1)+eta) = size(eletr,1);
+%        nAmostrasMC15_Jato(1,4*(et-1)+eta) = size(jato,1);
+%        [et eta]
+%        if et < 5
+%        eletr = eval(['signal_rings_etBin_',num2str(ind(et)),'_etaBin_',num2str(ind(eta))]);
+%        jato  = eval(['background_rings_etBin_',num2str(ind(et)),'_etaBin_',num2str(ind(eta))]);
+%        nAmostrasMC14_Eletro(1,4*(et-1)+eta) = size(eletr,1);
+%        nAmostrasMC14_Jato(1,4*(et-1)+eta) = size(jato,1);
+%        end
+%    end
+%end
+%close all
+%nAmostras(1:2:40) = nAmostrasMC15_Eletro;
+%nAmostras(2:2:40) = nAmostrasMC15_Jato;
+%figure(1)
+%hold on
+%for i = 1:length(nAmostras)
+%    h=bar(i,nAmostras(i));
+%    if rem(i,2) == 1
+%        set(h,'FaceColor','b');
+%       
+%    else
+%        set(h,'FaceColor','r');
+%       
+%    end
+%end
+%legenda = {'Eletro', 'Jato'};
+%legend(legenda)
+%hold off        
+%grid on
+%axis([0 41 0 max(max(nAmostras))+.5e5])
+%
+%clear nAmostras
+%figure
+%nAmostras(:,1) = nAmostrasMC15_Eletro;
+%nAmostras(:,2) = nAmostrasMC15_Jato;
+%bar(nAmostras(1:20,:))
+%legend(legenda)
+%axis([0 21 0 max(max(nAmostras))+.3e5])

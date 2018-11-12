@@ -1,0 +1,58 @@
+% ----------------------------------------------------------
+% Resultados Obtidos - CAPITULO 5
+% ----------------------------------------------------------
+
+%As pesquisas na área de físicas de partículas ou física de altas energias (HEP - \textit{High Energy Physics}) desenvolvidas no CERN, tem como objetivo a compreensão da natureza constituinte da matéria, descobertas na área de físicas de partículas e validação de modelos físicos teóricos. Para o alcance desse objetivos foi necessário o desenvolvimento de uma infraestrutura sem precedentes. Construir o maior acelerador de partículas conhecido, o LHC (\textit{Large Hadron Colider}). Tanto no que se refere ao número de pesquisadores de mais de 100 países envolvidos, quanto nos equipamentos necessários e no complexo conjunto de experimentos e detectores especialistas.
+
+As pesquisas na área de físicas de partículas ou física de altas energias (HEP - \textit{High Energy Physics}) desenvolvidas no CERN, tem como objetivo a compreensão da natureza constituinte da matéria, descobertas na área de físicas de partículas e validação de modelos físicos teóricos. Para o alcance desse objetivos foi necessário o desenvolvimento do maior acelerador de partículas em operação, o LHC (\textit{Large Hadron Collider}).
+
+%Neste trabalho foi proposto a utilização de Máquinas de Aprendizado Extremo (ELM) e de Redes com Estados de Eco (ESN) como classificadores em alternativa ao classificador neural utilizado no detector ATLAS. Atualmente o detector utiliza como classificador o \textit{Neural Ringer} (NR), algoritmo proposto por \citeonline{anjos2006} para realizar a separação da informação de interesse e o ruído de fundo produzido durante as colisões no interior do detector.
+
+Neste trabalho foi proposto a utilização de Máquinas de Aprendizado Extremo (ELM) e de Redes com Estados de Eco (ESN) como alternativa ao classificador neural utilizado no detector ATLAS. Atualmente o detector utiliza como classificador o \textit{Neural Ringer} (NR), algoritmo proposto por \citeonline{anjos2006} para realizar a separação da informação de interesse e o ruído de fundo produzido durante as colisões no interior do detector.
+
+%O LHC segue uma agenda de atualizações definida desde o início de seu funcionamento em 2009. Nessa agenda, todos os seus detectores sofrem atualizações, as quais elevam a energia envolvida nas colisões, até o atingir o valor de projeto de 14 TeV, número de partículas por feixe de prótons, luminosidade e frequência de colisões. 
+
+%Desde o início do funcionamento o níveis de energia do LHC passaram de 450 GeV por feixe para 7 TeV. A implicação desse fato está relacionada com o incremento no volume de dados produzido em cada colisão. E como consequência, produz desafios à operação dos algoritmos de seleção \textit{online} de eventos, pois o NR precisa estar atualizado e ponto de tratar os sinais provenientes das colisões. Entretanto, o tempo disponível para o processamento vem sendo reduzido, à medida que as atualizações ocorrerem, demandando capacidade de rápido treinamento e ensaio de estruturas ótimas para a seleção dos eventos.
+
+Desde o início do funcionamento o níveis de energia do LHC passaram de 450 GeV por feixe para 7 TeV. Isso implica no incremento no volume de informação, e como consequência, produz desafios à operação dos algoritmos de seleção \textit{online} de eventos. Neste contexto o NR precisa estar atualizado para operar em diferentes condições. Entretanto, o tempo disponível para o processamento vem sendo reduzido, à medida que as atualizações ocorrerem, demandando capacidade de rápido treinamento dos algoritmos de seleção dos eventos.
+
+Nos testes realizados em duas bases de dados, uma experimental e uma com dados simulados, os classificadores baseados em ELM e ESN, produziram resultado de classificação equivalente aos resultados das redes com MLP utilizado como referência. %Os parâmetros para treino das redes MLP foram os mesmos utilizados pela Colaboração ATLAS.
+
+Os resultados demonstraram que os classificadores propostos produzem resultado equivalente ao resultado alcançado pelo classificador com redes MLP. Os resultados obtidos com as redes ELM foram muito próximos aos resultados para as redes MLP, havendo similaridade tanto para os máximos valores de índice SP alcançados quanto na incerteza.
+
+Os resultados obtidos com as redes ESN indicaram superioridade de desempenho de classificação, alcançando índices SP superiores, tanto ao MLP quanto à ELM. Entretanto, as incertezas associadas foram superiores ao valores de incerteza tanto do MLP quanto da ELM.
+
+%No que se refere ao tempo de processamento necessário ao treino das redes propostas, os resultados foram satisfatórios. Em todas as redes (ELM e ESN) ótimas, o tempo de treinamento foi inferior ao tempo gasto pelas redes MLP, em pelo menos 4,12 vezes para o pior caso e 16,53 no melhor caso. Na comparação entre ELM e ESN, as redes ELM foram treinadas em menos tempo, sendo no pior caso 3,4 vezes mais rápida e no melhor caso 6,7 vezes mais rápida.
+
+No que se refere ao tempo de processamento necessário para o treinamento dos classificadores propostos, os resultados foram satisfatórios. Em todas as redes ELM e ESN de melhor desempenho, o tempo de treinamento foi inferior ao tempo gasto pelas redes MLP em pelo menos 3,78 vezes para o pior caso, e 16,53 no melhor caso. Considerando o tempo de treinamento para a ELM, no melhor caso, o tempo foi  16,53 vezes menor e no pior caso foi 5,58 menor do que o tempo gasto para o treino da melhor rede MLP na mesma região. Na ESN, o tempo de trenamento foi 15,01 vezes menor no melhor caso, e no pior caso foi 3,78 vezes menor do que o tempo para treino da rede MLP na mesma região.
+
+No teste estatístico, os resultados obtidos foram semelhantes, no que se refere à comparação ELM$\times$MLP. Na base experimental, o teste rejeitou a hipótese nula de semelhança entre os classificadores, com o valor calculado sendo mais que o dobro do valor tabulado de referência. Já na base de dados simulados, houve semelhanças de desempenho entre os classificadores, de forma parcial. A comparação ELM$\times$MLP, indicou que os classificadores ELM não apresentam mesmo desempenho de classificação para a faixa de E$_T$ até 30 GeV. Nas regiões de maior energia, o desempenho é semelhante.
+
+Nos testes estatístico ESN$\times$MLP e ESN$\times$ELM, para os resultados obtidos com a base experimental, houve semelhança de desempenho. Na base de dados simulados, somente três regiões apresentaram diferenças significativas entre os classificadores, nos dois testes: (0,1), (0,2) e (1,2). Nas demais regiões os classificadores possuem desempenho semelhante.
+
+
+%os classificadores não possuem diferenças significativas de desempenho, ou seja, possuem desempenho de classificação equivalente. 
+
+%A avaliação estatística de semelhança foi verificada por meio de teste estatístico de Student, utilizando nível de significância de 5\%. A comparação dos resultados calculados foi feita com os resultados da tabela de distribuição de Student. Além da indicação de similaridade com a técnica de referência (MLP), os classificadores propostos, ELM e ESN, também apresentaram semelhança entre si.
+
+Com base nos testes e treinos realizados é possível utilizar as redes ELM e ESN como alternativas para o classificador utilizado no NR, mantendo o desempenho de classificação, e essencialmente, num tempo de treino significativamente menor. Tal vantagem pode permitir o projeto de um número maior de estruturas a ser utilizada, ou ainda, pode permitir obter resultados em tempo reduzido ao tempo necessário com a técnica em uso atualmente.
+
+
+%Dentre os detectores presentes no CERN, o de maiores dimensões é o ATLAS. Esse detector, de propósito geral, fica localizado num dos pontos de colisão dos feixes de prótons. É composto por um conjunto de subdetectores que totalizam mais de 180.000 sensores dispostos ao longo de sua estrutura. Porém, apesar de seu elevado número de sensores estes sensores não são distribuídos uniformemente ao longo da estrutura. Por estar localizado num dos pontos de colisão, deve registrar os sinais provenientes das colisões que contenham informação relevante para as pesquisas desenvolvidas no CERN. Entretanto, parte significativa dos sinais registrados no seu interior são de natureza hadrônica, ou seja, ruído de fundo que não é relevante para as pesquisas.
+%
+%O detector ATLAS deve trabalhar sobre grandes restrições temporais de processamento, devido ao elevado volume de dados produzido durante as colisões, aproximadamente 60 TB/s numa taxa de 40 MHz. Esse volume deve ser pré-processado para que somente a informação de interesse seja armazenada para posterior análise. Nesse sentido possui um sistema de filtragem \textit{online} que realiza a seleção dos eventos candidatos rejeitando o ruído de fundo produzido conhecido como \textit{Neural Ringer}.
+%
+%O \textit{Neural Ringer} é um algoritmo responsável por registrar a informação contida em uma colisão organizando-a num vetor de 100 posições. Cada variável contida nesse vetor é advinda das camadas no interior do detector ATLAS, as quais possuem granularidade diferentes umas das outras. Após a construção desse vetor, um classificador neural baseado em MLP é utilizado para realizar a classificação dos eventos de interesse e reduzir o ruído de fundo otimizando a informação que será armazenada em mídia permanente para posterior análise.
+
+
+\section{Trabalhos Futuros}
+
+A pesquisa desenvolvida apontou que técnicas de treinamento rápido, com estrutura diferente da utilizada pelo MLP podem alcançar níveis satisfatórios de classificação. Nesse sentido, há espaço para aprofundar a pesquisa otimizando os parâmetros das redes especialistas, com o objetivo de obter melhoria nos desempenhos alcançados, especialmente no que se refere à incerteza.
+
+Trabalhos utilizando técnicas de estimadores M associados à redes ELM  sugerem melhorias para a técnica elevando sua robustez a \textit{outliers}, o que melhora seu desempenho de classificação \cite{barreto2016}. Levando esse fato em consideração e os resultados alcançados, existem pontos de melhoria a serem trabalhados e otimizados.
+
+%Uma perspectiva futura, é a aplicação das técnicas no ambiente ensaios do detector ATLAS. O objetivo é  validá-las com alternativas ao classificador neural em uso. Para tanto, é necessário aprimorar os resultados alcançados, otimizar os pontos que ficaram evidentes nos resultados alcançados.
+Uma perspectiva futura, é a aplicação das técnicas no ambiente \textit{online} do detector ATLAS. O objetivo é  validá-las com alternativas ao classificador neural em uso. Para tanto, é necessário aprimorar os resultados alcançados.
+
+
+Por se tratar de um problema de classificação com elevado volume de informação, e uma elevada taxa de eventos, problemas com características semelhantes podem ser tratados por meio das técnicas propostas. %Pois as restrições temporais associadas ao problema enfrentado pela Colaboração ATLAS são rigorosas, logo, é possível que os resultados apontados neste trabalho contribuam para pesquisas em problemas com volume de dados elevado e rigorosas restrições para o tempo de treinamento de redes especialistas.

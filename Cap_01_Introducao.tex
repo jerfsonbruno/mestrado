@@ -1,0 +1,205 @@
+%% ===========================
+%%         Introdução
+%% ===========================
+
+%\section{Apresentação}
+%
+
+A compreensão à respeito da constituição fundamental da matéria obteve evolução significativa nos últimos anos devido à comprovações resultantes de experimentos de física de altas energias. O Grande Colisor de Hadrons (\emph{Large Hadron Collider } - LHC)~\cite{evans2008} é o maior acelerador de partículas em operação atualmente e está situado no Centro Europeu para Pesquisa Nuclear (CERN)\cite{cern2016}. O LHC (ver \autoref{fig:lhc}) foi construído com o objetivo de analisar a estrutura fundamental da matéria, investigar as propriedades das partículas fundamentais propostas pelo Modelo Padrão (\emph{Standard Model})\cite{moreira2009, pimenta2013} e também buscar por fenômenos desconhecidos.
+
+\begin{figure}[H]
+   \begin{center}         
+      \caption{Ilustração da localização do LHC e seus detectores.}
+      \includegraphics[scale=.4]{./Figuras/LHC_1.jpg}
+      \label{fig:lhc}
+      \legend{Fonte: \cite{cern1999}}
+    \end{center}
+\end{figure}
+
+
+
+Para tanto, o LHC, conta com alguns experimentos: ATLAS (\emph{A Toroidal LHC ApparatuS}), ALICE (\emph{A Large Ion Collider Experiment }), CMS (\emph{Compact Muon Solenoid}) e LHCb (\emph{Large Hadron Collider beauty}), conforme mostrado na \autoref{fig:lhc}. O túnel do acelerador tem  cerca de 27 km de comprimento e as colisões podem ocorrer numa taxa de até 40$\times 10^6$ vezes por segundo~\cite{evans2008}.
+
+O ATLAS é um detector de propósito geral, ou seja, possui capacidade de detectar diversos tipos de partículas. Para isso, foi projetado no formato cilíndrico e conta com os seguintes subdetectores: detector de traços (identifica a trajetória das partículas carregadas eletricamente); calorímetro (medidor de energia altamente segmentado); e a câmara de múons (projetado especificamente para a detecção de múons). Como resultado dessa estrutura altamente segmentada e da alta taxa de colisões, é produzido um volume de dados da ordem de 68 TB\footnote{TeraByte - Múltiplo da unidade do \textit{Byte} no Sistema Internacional, equivalente a $10^{12}$ \textit{bytes}.}/s, o que requer a detecção (ou \emph{trigger}) \emph{online} das assinaturas de interesse, reduzindo o ruído de fundo produzido durante cada colisão. Essa taxa de colisões resultou somente em 2010 um total de 1 PB\footnote{PetaByte - Múltiplo da unidade do \textit{Byte} no Sistema Internacional, equivalente a $10^{15}$ \textit{bytes}.} somente no ATLAS \cite{tcc:werner2011}.
+
+Devido ao elevado volume de informação produzido pelas colisões, o ATLAS utiliza um sistema de seleção \textit{online} (\textit{Trigger}), responsável por selecionar os eventos que contenham informações da física de interesse, reduzindo o volume de informação a ser armazenado em memória, para posterior análise. Este sistema possui um nível desenvolvido em \textit{hardware} dedicado que realiza a primeira etapa de seleção dos eventos, que segue para o \textit{Neural Ringer} (NR). Formado por um conjunto de redes neurais artificiais especialistas, baseadas em \textit{perceptron} multicamadas, responsáveis por realizar a classificação dos eventos registrados pelo detector.
+
+%---------------------------------------------------
+% Objetivo Geral
+%---------------------------------------------------
+\section{Objetivo Geral}
+
+%Avaliar a utilização de técnicas de estatísticas de processamento de sinais para classificadores e extração de características no discriminador \textit{Neural Ringer} considerando aspectos como o tempo de processamento e a eficiência de detecção 
+
+%Aplicar técnicas de pré-processamento de sinais no classificador \textit{Neural Ringer} e avaliar o desempenho do classificador quanto a eficiência de detecção/separação elétron/jato e redução do tempo de processamento.
+%
+
+Avaliar a utilização de técnicas de treinamento e aprendizado rápido de redes neurais artificiais, como alternativa ao classificador  utilizado no \textit{Neural Ringer} (NR), considerando aspectos como o tempo de processamento e a eficiência de detecção.
+
+%---------------------------------------------------
+% Objetivos Específicos
+%---------------------------------------------------
+\section{Objetivos Específicos}
+
+\begin{itemize}
+%   \item Aprofundar os conhecimentos em Redes Neurais Artificiais (RNA);
+   \item Estudar a técnica Máquina de Aprendizado Extremo (\textit{Extreme Learning Machine - ELM}) para avaliá-la como uma alternativa às técnicas utilizadas até o momento no detector;
+   \item Desenvolver algoritmo para ELM com base na metodologia da Colaboração ATLAS-Brasil;
+   \item Estudar a Técnica de Redes com Estados de Eco (\textit{Echo State Network - ESN}) para avaliá-la como alternativa às técnicas utilizadas até o momento no detector.
+   \item Desenvolver algoritmo para utilizar a ESN seguindo as especificações da Colaboração ATLAS Brasil;
+   \item Avaliar o desempenho dos métodos propostos em comparação à versão tradicional do Neural Ringer considerando aspectos como o tempo de processamento para treinamento e a eficiência de detecção.
+
+
+%   \item Aprofundar os conhecimentos em Redes Neurais Artificiais (RNA)% \cite{book:simonhaykin2008};
+%   \item Estudar a técnica Máquina de Aprendizado Extremo(\textit{Extreme Learning Machine - ELM}) \cite{huang2006, huang2011, huang2015} para avaliá-la como uma alternativa às técnicas utilizadas até o momento;
+%   \item Desenvolver algoritmo para ELM com base na metodologia da colaboração ATLAS-Brasil;
+%   \item Estudar a técnica Análise de Componentes Independentes Não Linear (\textit{Non Linear Independent Component Analysis}) \cite{book:hyvarinen2001, thesis:simas2010} para utilizá-la como etapa de pré-processamento, para reduzir a dimensão dos dados de entrada do classificador o que pode contribuir para elevação da eficiência e redução do tempo de processamento do classificador.
+
+\end{itemize}
+
+%---------------------------------------------------
+% Justificativa
+%---------------------------------------------------
+
+\section{Justificativa}
+
+Os experimentos realizados no LHC seguem uma agenda pré-definida de estudos considerando o nível de energia a ser utilizada em suas colisões. Nesta agenda, toda a estrutura do LHC será gradativamente submetida a níveis de energia mais elevados, partindo de 450 GeV\footnote{GeV - Giga Elétron-volt. Elétron-volt energia ganha por um elétron acelerado por uma ddp de 1 volt.}, em cada um dos feixes, até a faixa entre 7 TeV e 8 TeV por feixe, que é a energia máxima de projeto, prevista para as colisões. Desta forma, paradas para ajustes e atualizações de \textit{hardware} e \textit{sofware} são parte do calendário, como pode ser visualizado na \autoref{fig:agendaLHC}, onde os eventos marcados em LS (\textit{long shutdown}) referem-se às longas paradas para atualização e ajustes.
+
+%Com o passar do tempo, desde seu início de funcionamento e primeira colisão próton-próton, os detectores do LHC sofreram atualizações periódicas, as quais elevaram a energia, a frequência e a quantidade de partículas nos feixes de cada colisão \cite{timelines2016} e luminosidade\footnote{medida do número de colisões por centímetro quadrado produzida a cada segundo [$cm^{-2}s^{-1}$].}. Em menos de seis anos de funcionamento (11/2009\footnote{Primeira colisão a 450 GeV por feixe.} - 06/2015\footnote{Experimentos são retomados com energia a 6,5 TeV por feixe.}), o LHC elevou seus níveis de energia de colisão em cerca de 14 vezes, ou seja, a complexidade do tratamento dos dados obtidos desde a primeira colisão tem aumentado gradativamente. Esse cenário cria um desafio à seleção dos eventos de interesse pelos algoritmos de filtragem \textit{online}.
+
+Desde seu início de funcionamento e primeira colisão, próton-próton, os detectores do LHC vem passando por atualizações periódicas, as quais elevam a energia, a frequência, a quantidade de partículas nos feixes de cada colisão \cite{timelines2016} e luminosidade\footnote{medida do número de colisões por centímetro quadrado produzida a cada segundo [$cm^{-2}s^{-1}$].}. A título de curiosidade, em menos de seis anos de funcionamento (11/2009\footnote{Primeira colisão a 450 GeV por feixe.} - 06/2015\footnote{Experimentos são retomados com energia a 6,5 TeV por feixe.}), o LHC elevou os níveis de energia de colisão em cerca de 14 vezes, ou seja, a complexidade do tratamento dos dados obtidos desde a primeira colisão tem aumentado gradativamente. E esse cenário cria um desafio à seleção dos eventos de interesse pelos algoritmos de filtragem \textit{online}.
+
+\begin{figure}[H]
+	\begin{center}         
+		\caption{Agenda de atividades para o LHC em termos de nível de energia e luminosidade utilizada nas colisões.}
+		\includegraphics[scale=.54]{./Figuras/LHC_Timeline.jpg}
+		\label{fig:agendaLHC}
+		\legend{Fonte: \cite{heuer2013}}
+	\end{center}
+\end{figure}
+
+
+%Devido à sua estrutura altamente segmentada, com mais de 100.000 sensores \cite{ATLAS2008}, à complexidade e raridade dos eventos estudados  (Ex. bóson de Higgs \cite{pimenta2013}), o detector ATLAS produz um volume de dados da ordem de 60 TB/s. Tal fato, torna proibitivo utilizar um sistema para o armazenamento de toda a informação produzida. Como solução, o detector ATLAS realiza a detecção \emph{online} dos eventos que possuam prováveis assinaturas de interesse antes de armazená-las em mídia permanente, para análise futura. Esse processo de detecção \textit{online}, visa reduzir o ruído de fundo produzido nas colisões.
+%
+%%Devido à sua estrutura altamente segmentada (mais de 100.000 sensores), ver \autoref{fig:segmentacaoATLAS} , \cite{ATLAS2008} à complexidade e raridade dos eventos estudados  (Ex. bóson de Higgs \cite{pimenta2013}), o detector ATLAS produz um volume de dados da ordem de $60 \, TB/s$. Tal fato, torna proibitivo utilizar um sistema para o armazenamento de toda a informação produzida. Como solução, o detector ATLAS realiza a detecção \emph{online} das prováveis assinaturas de interesse antes de armazená-las em mídia permanente, reduzindo o ruído de fundo produzido nas colisões.
+%
+%%\begin{figure}[H]
+%%   \begin{center}         
+%%      \caption{Ilustração de um segmento do calorímetro eletromagnético do detector
+%%ATLAS, mostrando a diferente segmentação e granularidade de cada camada.}
+%%      \includegraphics[scale=.7]{./Figuras/segmentacaoATLAS.jpg}
+%%      \label{fig:segmentacaoATLAS}
+%%      \legend{Fonte: ATLAS \textit{Colaboration}}
+%%    \end{center}
+%%\end{figure}
+%
+%O sistema de seleção ou filtragem \emph{online} (\emph{trigger}) do ATLAS~\cite{anjos2006} é responsável pela seleção dos eventos interessantes para o experimento e, também pela redução do ruído de fundo (assinaturas não relevantes) produzido nas colisões. 
+%
+%%\begin{multicols}{2}
+%
+%Esse sistema, opera sob grandes restrições temporais de processamento, pois deve selecionar sinais\footnote{É definido matematicamente como uma função de uma ou mais variáveis, a qual veicula informação sobre a natureza de um fenômeno físico \cite{book:simon2001}.} que indiquem assinaturas de eventos físicos de interesse em meio a um volume de dados significativo.
+
+%As atualizações periódicas do detector ATLAS têm elevado o número de colisões proton-proton por feixe de maneira significativa. Em 2011 o número de colisões sofreu incremento de 5 para 15, em 2012 de 10 para 35 e era previsto que em 2015 quando voltasse a operar, com níveis maiores de energia chegasse a mais de 50 podendo atingir 80 \cite{marshall2014}.
+
+Em 2011, o número médio esperado de colisões por feixe sofreu incremento de 5 para 15, em 2012, de 10 para quase 35 e era previsto que em 2015, quando voltasse a operar com níveis maiores de energia, chegasse a mais de 50, podendo atingir 80 \cite{marshall2014}.
+
+Essa elevação no número de colisões produz um outro entrave na detecção das partículas, que é o efeito do empilhamento (\textit{pile-up}). Tal efeito é causado pela sobreposição de eventos num mesmo sensor, ou seja, enquanto é feita a leitura do registro de um evento anterior o sensor é sensibilizado por um novo evento. Porém, a leitura ainda não foi finalizada, e como resultado o evento registrado é a composição de dois eventos sequenciais identificados pelo sensor. Na \autoref{fig:pileup} é possível visualizar o efeito do empilhamento de eventos, que resulta num evento composto (em lilás) que mascara a real informação dos eventos originais, as curvas à esquerda (em preto) e à direita (em vermelho) \cite{luz2016}.
+
+
+Devido à sua estrutura altamente segmentada, 100.000.000 de canais \cite{atlas2010}, 187.652 somente nos calorímetros~\cite{ATLAS2008}, o detector ATLAS produz um volume de dados da ordem de 68 TB/s. Tal fato, torna proibitivo utilizar um sistema para o armazenamento de toda a informação produzida. Como solução, o detector ATLAS realiza a detecção \emph{online} dos eventos que possuam prováveis assinaturas de interesse antes de armazená-las em mídia permanente, para análise futura. Esse processo de detecção \textit{(trigger) online}, visa reduzir o ruído de fundo produzido nas colisões.
+
+\begin{figure}[H]
+	\begin{center}         
+		\caption{Ilustração do empilhamento de eventos num sensor do calorímetro do ATLAS. Os eventos em preto (curva com centro em 0) e em vermelho (curva com centro em $\approx$ 60).}
+		\includegraphics[scale=.7]{./Figuras/pileup.png}
+		\label{fig:pileup}
+		\legend{Fonte: \citeonline{peralva2015}}
+	\end{center}
+\end{figure}
+
+
+
+Por apresentar formato cilíndrico, as camadas do calorímetro são sobrepostas, o que naturalmente produz correlação entre os anéis, ou seja, redundância \cite{brumfiel2012}. E além disso, é esperado um comportamento, ligeiramente, não linear dos sensores do calorímetro (há saturação para valores elevados de energia - \textit{pile-up} \cite{werner2016, wigmans2008}).
+%Dentre os eventos de interesse, a detecção de elétrons é muito importante no detector ATLAS, pois estão envolvidos em decaimentos raros (Ex. Bóson de Higgs)~\cite{pimenta2013}. A identificação de elétrons se baseia fortemente na informação dos calorímetros e é dificultada devido à ocorrência de uma elevada taxa de ruído de fundo, basicamente compostos de partículas hadrônicas, conhecidas como jatos. Na \autoref{fig:perfil} são exibidas amostras dos perfis, típicos, de deposição de energia de elétrons e jatos hadrônicos provenientes de dados experimentais.
+
+Dentre os eventos de interesse, a detecção de elétrons é muito importante no detector ATLAS, pois estão envolvidos em decaimentos raros como do bóson \textit{prime} (Z') e o bóson de Higgs \cite{werner2016}. A identificação de elétrons se baseia fortemente na informação dos calorímetros e é dificultada devido à ocorrência de uma elevada taxa de ruído de fundo, basicamente compostos de partículas hadrônicas, conhecidas como jatos. Sua identificação utiliza informações do canal $e/\gamma$, o qual busca identificar assinaturas de elétrons, pósitrons ou fóton \cite[p 76]{tcc:werner2011}.  Na \autoref{fig:perfil} são exibidos possíveis perfis de deposição de energia para o sinal de interesse (linha sólida) e o ruído de fundo (\textit{background}, linha tracejada).
+
+%\begin{figure}[h]
+%   \begin{center}         
+%      \caption{Ilustração do empilhamento de eventos num sensor do calorímetro do ATLAS.}
+%      \includegraphics[scale=.45]{./Figuras/pileup.png}
+%      \label{fig:pileup}
+%      \legend{Fonte: ATLAS \textit{Colaboration}}
+%    \end{center}
+%\end{figure}
+%
+%
+%\begin{figure}[H]
+%	\begin{center}         
+%		\caption{Exemplos típicos de assinaturas para elétrons e jatos de amostras experimentais, obtidas do calorímetro formatado em anéis.}
+%		\includegraphics[scale=.5]{./Figuras/ExEletJato.eps}
+%		\label{fig:perfil}
+%		\legend{Fonte: Dados experimentais NN\_ele190236\_jets191920}
+%	\end{center}
+%\end{figure}
+
+\begin{figure}[H]
+	\begin{center}         
+		\caption{Exemplos de deposição de energia normalizada no canal de \textit{leptons} (a) e em função da pseudorapidez ($\eta$) (b) com $\sqrt{s}=$ 500 GeV.}
+		\includegraphics[scale=.65]{./Figuras/lept_fig3.png}
+		\label{fig:perfil}
+		\legend{Fonte: \citeonline{Han1999}}
+	\end{center}
+\end{figure}
+
+
+O sistema de seleção ou filtragem \emph{online} (\emph{trigger}) do ATLAS~\cite{anjos2006} é responsável pela seleção dos eventos interessantes para o experimento e, também pela redução do ruído de fundo (assinaturas não relevantes) produzido nas colisões. Esse sistema, opera sob grandes restrições temporais de processamento, pois deve selecionar sinais\footnote{É definido matematicamente como uma função de uma ou mais variáveis, a qual veicula informação sobre a natureza de um fenômeno físico \cite{book:simon2001}.} que indiquem assinaturas de eventos físicos de interesse em meio a um volume de informação significativo num tempo reduzido.
+
+A estrutura do sistema de filtragem possui três etapas, em cascata, responsáveis por reduzir o volume de dados proveniente das colisões que produzem informação numa taxa próxima de 1 GHz para uma taxa de 300 Hz, pois, a física de interesse é de rara ocorrência e está envolta num chuveiro de partículas hadrônicas com elevada taxa de produção. 
+
+Na~\autoref{fig:HiggsEx} é possível visualizar o registro do bóson de Higgs, com massa\footnote{A referência à massa utilizando a unidade de energia eV, é comum na literatura de físicas de altas energias, visto que a velocidade na qual as partículas são aceleradas é \textit{c}, velocidade da luz. Explicitamente, $m = E_c/c^2$.} de 126,5 GeV~\cite{atlas2012} conforme previsto no modelo padrão, em meio aos dados de medição no ano de 2012. Tais eventos necessitam de um sistema de \textit{trigger} de alta eficiência e seletividade, dada a rara ocorrência e estreita faixa possível de registro de ocorrência. Para o bóson de Higgs, a faixa esperada para a massa é, $106\ GeV < m_{\gamma \gamma} < 160\ GeV$ tendo o valor da massa  ajustado para 125,09 $\pm$ 0,24 GeV~\cite[p. 5]{Aad2015}.
+
+\begin{figure}[H]
+	\begin{center}         
+		\caption{Distribuição de massa para energia $\sqrt{s}=8\ TeV$, sobreposta aos dados de medição do ano de 2012, e previsão da massa para o Bóson de Higgs segundo o modelo padrão.}
+		\includegraphics[scale=2.5]{./Figuras/HiggsDados2012.eps}
+		\label{fig:HiggsEx}
+		\legend{Fonte: \citeonline{atlas2012}}
+	\end{center}
+\end{figure}
+
+Um outro ponto, relevante, associado ao \emph{Neural Ringer} é o elevado tempo de treinamento do sistema. Pois o processo precisa ser repetido para as diferentes configurações de operação e também para diferentes regiões do detector. Seguindo a metodologia, atual\footnote{Na qual a base de dados é segmentada em regiões ($E_T\,,\eta$), e cada uma treinada 5.000 vezes. Mais detalhes no \autoref{chap:metodologia}.}, adotada pela Colaboração ATLAS, é necessário realizar o número de treinamentos de ordem superior a $10^4$ redes neurais para o projeto de cada discriminador do sistema. 
+
+Logo, a atualização e aprimoramento nas técnicas utilizadas para a seleção e detecção de eventos no detector ATLAS tornam-se de relevância, e um desafio para a colaboração ATLAS frente aos saltos no nível de informação produzidos após cada etapa de atualizações previstas na agenda.
+
+Este trabalho propõe a utilização de duas técnicas como alternativas ao classificador MLP no discriminador \emph{Neural Ringer}. A primeira técnica, uma Máquina de Aprendizado Extremo (do inglês: \emph{Extreme Learning Machine} - ELM) \cite{huang2006, huang2011, gaohuang2015, huang2015}, que é uma rede neural em avanço de camada única que não possui um processo iterativo para treino. A segunda técnica é a Rede com Estado de Eco (do inglês: \emph{Echo State Network} - ESN) \cite{jaeger2003, jaeger2004, jaeger2010}, uma rede neural de estrutura recorrente, na qual a saída saída da rede é obtida por meio de um combinador linear.
+
+%As redes ELM apresentam estrutura semelhante à  de uma rede MLP, porém seu tempo de treinamento é, comparativamente, muito menor mantendo o desempenho de classificação equivalente.
+
+As máquinas de aprendizado extremo (ELM) foram propostas inicialmente em~\citeonline{huang2006} e têm sido aplicadas em problemas nos quais deseja-se obter uma rede otimizada a partir de repetidos ensaios com grande volume de dados em tempo de treinamento reduzido, como em  \citeonline{termenon2016}. 
+
+A ELM possui uma estrutura semelhante à de uma rede neural MLP, com uma única camada oculta (\textit{Single Layer Feedfoward Network} - SLFN). Para o processo de treinamento da ELM assume-se que é possível  gerar aleatoriamente os pesos da camada de entrada, e determinar, analiticamente, os melhores pesos para a camada oculta \cite{huang2015} com base nos pesos da camada de entrada e as entradas e saídas alvo. Deste modo, o tempo de treinamento de uma ELM é consideravelmente reduzido, pois não existe um procedimento iterativo de retropropagação de erro para o ajuste dos pesos do modelo.
+
+%As redes com estado de eco (ESN) são compostas por uma camada de entrada, um reservatório de dinâmicas que é uma Rede Neural Recorrente, totalmente conectada com elementos de processamento não-linear, na camada oculta e uma camada de saída determinada pela combinação linear entre os elementos de saída do reservatório de dinâmicas~\cite{jaeger2005, boccato2013, simeon2015}.
+
+As redes com estado de eco (ESN) são estruturas compostas de três partes: uma camada de entrada, um reservatório de dinâmicas uma camada de saída. O reservatório de dinâmicas, compõe a camada oculta, nele tem-se uma rede neural recorrente, totalmente conectada, com elementos de processamento não-linear. Sua camada de saída é determinada pela combinação linear entre os elementos de saída do reservatório de dinâmicas~\cite{jaeger2005, thesis:boccato2013, thesis:simeon2015} e os valores alvo.
+
+A ESN faz parte dos métodos de Computação com Reservatórios (\textit{Reservoir Computing}), propostos por \citeonline{jaeger2001} e foram chamadas de ESN. As redes ESN além de aproveitar
+as vantagens de uma estrutura recorrente, conseguem simplificar significativamente o
+processo de treinamento.
+%A proposta de classificação elétron/jato via \textit{Neural Ringer} possui um inconveniente de relevância, que é o número de varáveis necessários para a sua aplicação. São necessárias as informações contidas em 100 variáveis para cada amostra obtida. Em comparação com a técnica padrão utilizada, T2Calo que utiliza informação de aproximadamente 16 variáveis e posteriormente as condensa em 4.
+
+
+
+
+%Adicionalmente, propõe-se o estudo da técnica NLICA (\textit{Non Linear Independent Component Analisys} - Análise de Componentes Independentes Não-Linear) \cite{book:hyvarinen2001, thesis:simas2010} para sua aplicação como camada de pré-processamento dos dados aplicados às redes MLP e/ou ELM. Em \citeonline{simas2010} a NLICA foi utilizada para avaliar o desempenho do classificador \textit{Neural Ringer} quando os sinais em anéis são pré-processados por algoritmos de extração de características de modelo não-linear são utilizados na análise de componentes independentes. A NLICA, então, pode ser uma alternativa interessante neste cenário, pois combina redução de redundância, redução de dimensionalidade e abordagem não-linear.
+
+
+\section{Organização do Documento}
+
+%Esta dissertação está estruturada em \ref{chap:Conclusão} capítulos. O \autoref{chap:pesquisa} apresenta uma breve pesquisa bibliográfica sobre o históricos de alguns dos principais fatos das descobertas da física que contribuíram para a estrutura do modelo padrão de interação entre as partículas elementares em uso atualmente, o LHC, detector ATLAS e as técnicas propostas neste trabalho de mestrado. No \autoref{chap:metodologia}, é descrita a metodologia adotada para a execução do trabalho, no que se refere à análise quantitativa e qualitativa dos resultados para cada uma das técnicas alternativas avaliadas levando-se em conta os procedimentos utilizados pela colaboração ATLAS. O \autoref{chap:resultados}, apresenta os resultados dos treinamentos realizados com a ELM e a ESN e os resultados qualitativos da comparação MLP x ELM, MLP x ESN e ELM x ESN. E por fim, o \autoref{chap:Conclusão} apresenta as conclusões e perspectivas de trabalhos futuros.
+%Esta dissertação está estruturada em \ref{chap:Conclusões} capítulos. 
+
+O \autoref{chap:pesquisa} apresenta uma breve pesquisa bibliográfica sobre o históricos de alguns dos principais fatos das descobertas da física que contribuíram para a estrutura do modelo padrão de interação entre as partículas elementares em uso atualmente, o LHC, detector ATLAS. O \autoref{chap:tecnicas} apresenta as técnicas propostas neste trabalho de mestrado. No \autoref{chap:metodologia}, é descrita a metodologia adotada para a execução do trabalho, no que se refere à análise quantitativa e qualitativa dos resultados para cada uma das técnicas propostas. O \autoref{chap:resultados}, apresenta os resultados obtidos com dados simulados e experimentais. O \autoref{chap:Conclusões} apresenta as conclusões e perspectivas de trabalhos futuros.
+
+No \autoref{chap:apendice1} é apresentado o resumo dos trabalhos publicados em anais de congressos e simpósios. No \autoref{chap:apendice2} é apresentada uma breve análise de sensibilidade da técnica ELM quanto ao tipo de distribuição utilizada para a geração dos números pseudo-aleatórios da camada interna, utilizando uma das bases de dados simulados.

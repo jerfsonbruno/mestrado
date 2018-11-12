@@ -1,0 +1,574 @@
+%---------------------------------------------------
+% Fundamentação Teórica
+%---------------------------------------------------
+
+Este capítulo apresenta as técnicas utilizadas como classificadores neurais artificiais neste trabalho. O \textit{perceptron} multicamadas (MLP), as máquinas de extremo (ELM)e as redes com estado de eco (ESN). Serão abordados as definições, suas características e exemplos de aplicação na literatura recente.
+
+
+
+
+%% ============================================================
+%% ============================================
+%\section{Técnicas de Processamento de Sinais Utilizadas}
+%% ============================================
+%% ============================================================
+\section{Redes Neurais Artificiais - RNA}
+
+\subsection{Definições}
+\begin{citacao}
+	São sistemas paralelos, distribuídos, compostos por unidades de processamento simples (neurônios artificiais) que calculam determinadas funções matemáticas (normalmente não-lineares) \cite{book:braga2007}.
+\end{citacao}
+\begin{citacao}
+	Uma rede neural é um processador maciçamente paralelamente distribuído constituído de unidades de processamento simples, que tem a propensão natural para armazenar conhecimento experimental e torná-lo disponível para o uso \cite[p. 2]{book:simonhaykin2008}.
+\end{citacao}
+
+Um neurônio é uma unidade de processamento de informação que é fundamental às operações de uma RNA \cite{book:simonhaykin2008}. Na \autoref{fig:modelNeuro} é apresentada a representação de um neurônio artificial.
+
+\begin{figure}[H]
+	\begin{center}   
+		\caption{Diagrama do modelo matemático de um neurônio artificial, o \textit{Perceptron}.}
+		\label{fig:modelNeuro}
+		\includegraphics[scale=1.1]{./Figuras/ModeloNeuronio.png}
+		%\legend{Fonte: o autor}
+	\end{center}
+\end{figure}
+
+Uma rede neural é constituída de um conjunto de neurônios artificiais que podem ter seu modelo matemático dado pela \autoref{eq:modelNeuro}. O sinal \textit{b} (\textit{bias} - viés) é um parâmetro livre de ajuste da rede; $\Phi$ é a função de ativação; $\vec{w}_i$ é o vetor de pesos e $\vec{x}_i$ é o vetor de sinais de entrada da rede. Um diagrama representativo é apresentado na \autoref{fig:modelNeuro}. Esse modelo busca se aproximar do modelo de um neurônio biológico \autoref{fig:neuronio}, sendo as sinapses representadas pelos pesos atribuídos à cada entrada, informações vindas de outros neurônios ou dos neurotransmissores espalhados pelo corpo. 
+
+
+\begin{eqnarray}
+y[n] = \Phi\Big(\sum_{i=1}^n \mathrm{w}_ix[i] + b\Big).   \label{eq:modelNeuro}
+\end{eqnarray}
+
+Logo, uma RNA nada mais é mais do que o encadeamento de neurônios artificiais, de maneira análoga ao modelo de rede neural utilizado para o cérebro, \autoref{fig:neuronio}, em escala reduzida, mas mantendo o mesmo princípio, de processamento paralelo e distribuído.
+
+\begin{figure}[H]
+	\begin{center}   
+		\caption{Ilustração de um modelo de neurônio biológico.}
+		\label{fig:neuronio}
+		\includegraphics[scale=.8]{./Figuras/Neuronio.png}
+		\legend{Fonte: \cite{barra2013}}
+	\end{center}
+\end{figure}
+
+%%-----------------------------------
+\subsection{Estruturas}
+%%-----------------------------------
+
+Desde os primeiros estudos sobre redes neurais, e o primeiro neurônio artificial desenvolvido, o \textit{perceptron}\footnote{O tipo de classificador neural \textit{feedforward}, linear, mais simples desenvolvido por Frank Rosenblatt (1928-1971) em 1957.} as estruturas de uma rede neural podem ser classificadas em dois tipos \cite{thesis:boccato2013, book:simonhaykin2008}, as redes do tipo em avanço (do inglês: \textit{feedforward}) e as redes recorrentes, cada uma dessas estruturas com suas variantes.
+
+\subsubsection{Redes em Avanço}
+
+Nas redes do tipo em avanço (do inglês: \textit{feedforward}), ver \autoref{fig:avanço}, o sinal proveniente das entradas percorre a estrutura da rede num único sentido. Seguem da entrada para a saída sem nenhuma etapa de realimentação, ou seja, as saídas de uma camada não interferem em suas entradas, ou camadas imediatamente anteriores.
+
+\begin{figure}[H]
+	\begin{center}
+		\caption{Diagrama de uma rede \textit{feedforward} com o sentido de fluxo da informação.}
+		\label{fig:avanço}
+		\includegraphics[scale=1]{./Figuras/nNeuro.png}%
+		%\legend{Fonte: o autor} 
+	\end{center}
+\end{figure}
+
+Algumas variações para as redes em avanço:
+\begin{itemize}
+	\item Uma ou mais camadas ocultas;
+	\item Ser totalmente conectada, ou seja, a saída de cada neurônio da camada imediatamente anterior será entrada de todos os neurônios da camada imediatamente posterior;
+	\item Parcialmente conectada, alguns neurônios não recebem o sinal de saída da camada imediatamente posterior;
+\end{itemize}
+
+Duas das estruturas que serão utilizadas neste trabalho a MLP (do inglês: \textit{MLP - Perceptron Multilayer } - Perceptron Multicamadas) e a ELM, são estruturas de rede em avanço.
+
+\subsubsection{Redes Recorrentes}
+
+As redes recorrentes são estruturas de redes que possuem pelo menos um laço de realimentação em sua topologia \cite{book:simonhaykin2008}. Essa estrutura se assemelha ao modelo das conexões entre os neurônios biológicos, e esse fato possibilita à rede ter uma capacidade de memória. Isso decorre do fato de que, em cada novo sinal fornecido aos neurônios da rede, existe a informação que foi processada no instante imediatamente anterior. O que se deve aos laços de realimentação e capacidade de aproximação universal. Características que as tornam ferramentas eficientes no processamento de sinais e tratamento de problemas dinâmicos \cite{thesis:boccato2013}.
+
+Algumas variações para as redes recorrentes \cite{ibm2017}:
+\begin{itemize}
+	\item Redes de Hopfield, estrutura com laços de realimentação entre todos os neurônios, \autoref{fig:holpfield};
+	\item Redes de Elman, não possui laços de realimentação da saída para o resto da rede, \autoref{fig:ElmJord};
+	\item Redes de Jordan, existem laços de realimentação da camada de saída somente para a camada de oculta, \autoref{fig:ElmJord};
+	\item Redes com Estados de Eco, \autoref{fig:ESN_1}.
+\end{itemize}
+
+%\begin{figure}[H]
+%	\begin{center}
+%		\caption{Exemplos de redes recorrentes, redes Elman e redes Jordan.}
+%		\label{fig:ElmJord}
+%		\includegraphics[scale=.25]{./Figuras/RedesElmanJordan.png}%
+%		\legend{Fonte: \cite{ibm2017}} 
+%	\end{center}
+%\end{figure}
+
+\begin{figure}[H]
+	\caption{Exemplos de redes recorrentes}
+	\begin{subfigure}[t]{1\linewidth}
+		\centering
+		\subcaption{Elman (E) e Jordan (D)}\label{fig:ElmJord}
+		\includegraphics[scale=.45]{./Figuras/RedesElmanJordan.png}
+		\legend{Fonte: Adaptado de \citeonline{ibm2017}}
+	\end{subfigure}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\subcaption{Holpfield}\label{fig:holpfield}
+		\includegraphics[scale=.4]{./Figuras/holpfield.png}
+		\legend{Fonte: Adaptado de \citeonline{ibm2017}}
+	\end{subfigure}
+	\begin{subfigure}[t]{.5\linewidth}
+		\centering
+		\subcaption{rede ESN}\label{fig:ESN_1}
+		\includegraphics[scale=.7]{./Figuras/Estrut_ESN.png}
+	\end{subfigure}%
+\end{figure}
+
+%\begin{figure}[H]
+%	\begin{center}
+%		\caption{Diagrama de uma rede ESN que possui estados de eco.}
+%		\includegraphics[scale=.7]{./Figuras/Estrut_ESN.png}
+%		\label{fig:ESN_1}
+%		%\legend{Fonte: \url{http://pages.iu.edu/~luehring/}}
+%	\end{center}
+%\end{figure}
+
+%%-----------------------------------
+\subsection{Características}
+%%-----------------------------------
+
+As  RNA possuem propriedades úteis, dentre as quais podemos destacar \cite{book:simonhaykin2008}:
+
+%Neste trabalho a terceira técnica utilizada, as redes ESN, possuem seu reservatório de dinâmicas conectado em estrutura recorrente
+
+\begin{itemize}
+	\item Não-linearidade - Podem trabalhar tanto com funções lineares, quanto não-lineares;
+	\item Capacidade de generalização - Produz saídas adequadas para sinais que não estavam presentes no momento do treinamento;
+	\item Capacidade de adaptação - Uma RNA treinada para uma determinada tarefa pode ter seus pesos sinápticos atualizados com esforço reduzido;
+	\item Tolerância a falhas - Devido à sua característica distribuída uma RNA só terá seu desempenho degradado significativamente caso ocorra uma falha relevante, no sinal de entrada ou em seus ramos de conexão entre camadas.
+\end{itemize}
+
+Sua aplicação é de grande valia onde não se conhece o modelo dinâmico do sistema, ou quando não é possível obtê-lo.
+
+As redes neurais têm aplicações em sistemas onde se deseja obter o reconhecimento/identificação de padrões, onde o processamento de sinal torna-se complexo, no que se refere à capacidade de separação das características de interesse.
+
+As principais tarefas que uma RNA pode executar, segundo \citeonline{book:braga2007} são:
+
+\begin{itemize}
+	\item Classificação - separar classes ou atribuir uma classe a um padrão desconhecido (\autoref{fig:sepClasse}). Ex: Reconhecimento de caracteres;
+	\item Categorização (\textit{clustering}) - típico de aprendizado não-supervisionado, visa identificar as classes/categorias dentro do conjunto de dados. Ex: Agrupamento de clientes;
+	\item Previsão - estimativa de funções, tomando por base o estado atual e anteriores. Ex: Previsão do tempo;
+	\item Regressão - Ferramenta estatística para obtenção de um modelo representativo (aproximado) das relações existentes entre as variáveis de um sistema.
+\end{itemize}
+
+
+
+Na \autoref{fig:sepClasse}, há uma representação do resultado após aplicação de amostras contendo características de duas classes a serem separadas por uma rede neural. A rede neural age como um operador matemático realizando uma transformação, de forma a organizar os sinais de tal maneira que seja possível gerar um hiperplano que separe cada classe do problema em questão. Esse mesmo princípio é aplicado para problemas de complexidade elevada, com número de classes superior a dois. E o processo de ajuste do número de neurônios, bem como a arquitetura da rede utilizada são determinados de forma experimental, ajustando cada parâmetro até o atendimento das especificações mínimas do problema.
+
+\begin{figure}[H]
+	\begin{center}   
+		\caption{Rede neural, na separação de classes.}
+		\label{fig:sepClasse}
+		\includegraphics[scale=.5]{./Figuras/Classificacao.png}
+		%\legend{Fonte: o autor}
+	\end{center}
+\end{figure}
+
+Para a aplicação de uma RNA em qualquer tipo de problema, é necessário treiná-la. Ou seja,  deve-se fornecer exemplos com características relevantes das classes que a RNA deve identificar. E para essa tarefa existem dois métodos de treinamento: o supervisionado ou não-supervisionado. No supervisionado, são apresentadas à rede amostras com características relevantes do padrão/classe a ser identificado, bem como qual classificação amostra deve receber, ou seja, são fornecidos os padrões de entrada e saída \cite{book:simonhaykin2008, book:braga2007}. 
+
+No treinamento não-supervisionado, não é fornecida à RNA uma tabela de entradas e saídas. O treinamento envolve o processo iterativo de atualização dos pesos sinápticos, com base na informação apresentada à rede~\cite{book:simonhaykin2008, book:braga2007}.
+
+Na rede ilustrada na \autoref{fig:feedforward}, cada neurônio das camadas oculta e de saída possuem modelo matemático descrito pela \autoref{eq:CamOcul} e pela \autoref{eq:CamSaid}, respectivamente. Logo, para a camada oculta são necessárias $m\times n$ operações de soma e $m\times{n}$ operações produto, e de igual modo, na camada de saída $p\times m$ operações de soma e $p\times{m}$ operações de produtos.
+
+\begin{figure}[H]
+	\begin{center}
+		\caption{Rede \textit{feedforward} - totalmente conectada - pesos $w_n$ e $v_m$ representam vetores de pesos, para simplificar o diagrama.}
+		\label{fig:feedforward}
+		\includegraphics[scale=.8]{./Figuras/feedforward.png}%
+		%\legend{Fonte: o autor} 
+	\end{center}
+\end{figure}
+
+Nessa estrutura de rede, o número de operações de soma e operações de produto realizadas em cada uma de suas camadas pode ser determinado observando-se o número de neurônios de suas camadas. Os parâmetros livres (\textit{bias}) foram omitidos para simplificação do diagrama.
+
+
+A de se observar que, a cada neurônio adicionado à rede visando a elevação da taxa de acerto, são adicionadas $n$ operações de soma e $n$ operações de produto, realizadas na camada oculta. Na camada de saída, $m$ operações de soma e $m$ operações de produto. Essa elevação do número de neurônios implica em aumento da complexidade da RNA \cite{oliveira2000, reyes2012} que resulta em elevação do custo computacional. Outro fator relevante diz respeito à capacidade de generalização da rede, que pode ser comprometida com o aumento indiscriminado do número de neurônios, ocasionando resultados indesejáveis conhecidos como \textit{overfitting}.
+
+\begin{eqnarray}
+S_m  &=& \Phi\Big(\Big[\sum_{i=1}^n w_ix[i] = w_1x_1 + w_2x_2 + w_3x_3 + \ldots + w_nx_n \Big]+b_m\Big) \label{eq:CamOcul} \\
+S'_p &=& \Phi\Big(\Big[\sum_{j=1}^m v_jS[j] = v_1S_1 + v_2S_2 + v_3S_3 + \ldots + v_mS_m \Big]+b_p\Big) \label{eq:CamSaid}
+\end{eqnarray}
+
+%
+%A seguir (\autoref{fig:redEntSaida}), é exibido um exemplo de RNA do tipo MLP, contendo uma camada de entradas, uma camada oculta e uma camada de saídas. \textit{Perceptron} é um modelo de neurônio não-linear, ou seja, realiza uma combinação linear entre os sinais de entrada e seus respectivos pesos sinápticos, que é aplicada à uma função de ativação não-linear \cite{book:simonhaykin2008}.
+%
+%\begin{figure}[H]
+%   \begin{center}   
+%      \caption{Rede neural, com uma camada de entrada, uma oculta e uma de saída, com seus respectivos pesos sinápticos de entrada $w_i$ e de saída $v_i$.}
+%      \label{fig:redEntSaida}
+%      \includegraphics[scale=1]{./Figuras/RedeEntSaida.png}%%0.9
+%      %\legend{Fonte: o autor}
+%    \end{center}
+%\end{figure}
+
+%Na \autoref{fig:BackPropagation}, é apresentada uma RNA com duas camadas ocultas, e a indicação das duas etapas realizadas pelo algoritmo \textit{backpropagation} - Retropropagação.
+
+Para que uma RNA seja utilizada é necessário que essa esteja treinada, e atendendo a critérios pré-estabelecidos, relativos à cada situação onde uma RNA é utilizada. O critério de treinamento mais utilizado é o de critério de erro de saída. O sinal de saída de uma RNA é comparado com o resultado desejado, e caso a tolerância para o erro não seja atendida, o algoritmo ajusta os pesos sinápticos até que o critério de erro seja satisfeito. 
+
+Para uma RNA multicamadas o algoritmo de treinamento supervisionado mais utilizado é o \textit{Backpropagation}. Esse algoritmo é dividido em duas etapas, uma chamada propagação, e uma retropropagação. A etapa de propagação consiste em aplicar um padrão à entrada da RNA, até obter o sinal de saída respectivo. A etapa de retropropagação, consiste no ajuste dos pesos sinápticos começando da última camada da RNA, em direção à camada de entrada, conforme indicado na \autoref{fig:BackPropagation}. Após essas duas etapas estarem completas, o segundo padrão é apresentado à RNA e a partir desse instante o processo se repete até que o critério de erro seja atendido.
+
+\begin{figure}[H]
+	\begin{center}   
+		\caption{Rede neural, com duas camadas ocultas, representação do algoritmo \textit{backpropagation} - Retropropagação em representação simplificada sem pesos sinápticos.}
+		\label{fig:BackPropagation}
+		\includegraphics[scale=.65]{./Figuras/Backpropagation.png}
+		%\legend{Fonte: o autor}
+	\end{center}
+\end{figure}
+
+%\begin{figure}[!h!]
+%   \begin{center}   
+%      \caption{Rede neural, com uma camada de entrada, uma oculta e uma de saída, com seus respectivos pesos sinapticos de entrada $w_i$ e de saída $v_i$.}
+%      \label{fig:redEntSaida}
+%      \includegraphics[scale=.8]{./Figuras/degrau.png}
+%      \legend{Fonte: o autor}
+%    \end{center}
+%\end{figure}
+
+%% Exemplo para gerar uma figura com múltiplas imagens e suas respectivas legendas
+%As funções de ativação são responsáveis por gerar a saída $y$ de cada neurônio, a partir dos valores dos pesos $w = (w_1,w_2,w_3,...,w_n,)^T$ e as entradas $x = (x_1,x_2,x_3,...,x_n,)$ \cite{book:braga2007}. Para a função \autoref{fig:degrau}, $\theta$ representa o valor de limiar de ativação para a função \autoref{eq:degrau}.
+%
+%Na \autoref{fig:Fativacao}, exemplos de algumas funções de ativação utilizadas em neurônios artificiais.
+
+As funções de ativação são responsáveis por gerar a saída $y$ de cada neurônio, a partir dos valores dos pesos $w = (w_1,w_2,w_3,...,w_n,)^T$ e as entradas $x = (x_1,x_2,x_3,...,x_n,)$ \cite{book:braga2007}. Na \autoref{fig:Fativacao}, exemplos de algumas funções de ativação utilizadas em neurônios artificiais. As expressões analíticas correspondentes às funções de ativação são apresentadas nas Equações~\ref{eq:degrau} a \ref{eq:gaussiana}, respectivamente.
+
+
+
+\begin{eqnarray}
+f(u) &=& \left\{ 
+\begin{array}{l l}
+1 & \sum_{i=1}^n x_iw_i \ge \theta  \label{eq:degrau}\\
+0 & \sum_{i=1}^n x_iw_i < \theta{.}
+\end{array} \right. \\
+f(u) &=& \frac{1}{1+e^{-\beta{u}}}.  \label{eq:sigmoide}
+\end{eqnarray}
+\begin{eqnarray}
+f(u) &=& u.                          \label{eq:linear}\\
+f(u) &=& e^{\frac{-(u-\mu)^2}{\sigma^2}}. \label{eq:gaussiana}
+\end{eqnarray}
+
+\begin{figure}[H]
+	\caption{Exemplos de funções de ativação.}\label{fig:Fativacao}
+	\begin{subfigure}[b]{.5\linewidth}
+		\centering
+		\subcaption{Degrau}\label{fig:degrau}
+		\includegraphics[scale=.3]{./Figuras/Degrau.eps}
+	\end{subfigure}
+	\begin{subfigure}[b]{.5\linewidth}
+		\centering
+		\subcaption{Sigmoide}\label{fig:sigmoide}
+		\includegraphics[scale=.3]{./Figuras/Sigmoide.eps}
+	\end{subfigure}
+	\begin{subfigure}[b]{.5\linewidth}
+		\centering
+		\subcaption{Linear}\label{fig:linear}
+		\includegraphics[scale=.3]{./Figuras/Linear.eps}
+	\end{subfigure}
+	\begin{subfigure}[b]{.5\linewidth}
+		\centering
+		\subcaption{Gaussiana}\label{fig:gaussiana}       
+		\includegraphics[scale=.3]{./Figuras/Gaussiana.eps}
+	\end{subfigure}
+\end{figure}
+
+
+
+
+Na \autoref{eq:sigmoide}, $\beta$ representa a inclinação da curva. Na \autoref{eq:gaussiana}, $\mu$ é o centro, e $\sigma$, o desvio padrão.
+
+%% --------------------------
+\subsection{Exemplos de Aplicações}
+%% --------------------------
+
+%A seguir serão apresentadas algumas aplicações utilizando as redes MLP.
+
+Em \citeonline{dvorkin2010} foi aplicada, para reconhecimento de acordes, uma RNA perceptron de multicamadas, com uma camada oculta contendo 61 neurônios e uma de saída. Foi utilizado um teclado Yamaha\begin{footnotesize}$^{\textregistered}$\end{footnotesize} PSR-E4313, que foi configurado para reproduzir o som de um piano, um cravo, um órgão e um violão.
+Com esses timbres foi montado um banco de acordes com 144 amostras gravadas.
+
+Em \citeonline{SOARES2011} uma rede MLP foi utilizada para predição e estimação do diâmetros de árvores de eucalipto para a extração de madeira de qualidade no momento em que as árvores estão prontas para a colheita.
+
+Em \citeonline{tcc:werner2011} um classificador neural numa rede com estrutura MLP, com uma camada oculta, totalmente conectada, foi desenvolvido para a classificação de elétrons/jatos e utilizada no sistema de \textit{trigger} do detector ATLAS. O desempenho obtido pelo classificador proposto superou o algoritmo padrão utilizado pela colaboração ATLAS em três bases de dados utilizadas para o seu desenvolvimento.
+
+Em \citeonline{santos2014} uma rede neural do tipo MLP com uma camada oculta foi utilizada para classificação de acordes naturais de guitarra. Nesse sistema foi utilizado como pré-processamento a \textit{chroma feature} para obtenção de um vetor característico para cada acorde, o qual continha a contribuição de cada uma das doze componentes (notas) constituintes na escala cromática. Os melhores resultados obtidos foram utilizando 16 neurônios na camada oculta com desempenho global de 94,32\%.
+
+Em \citeonline{souza2014} foi proposto um discriminador neural para realizar a detecção de partículas eletromagnéticas (elétrons e fótons) no segundo nível de \textit{trigger} \textit{online} de eventos do detector ATLAS. Para tanto, foi utilizada uma combinação de técnicas de extração de características, tais como DWT (\textit{Discret Wavelet Transform} - Transformada Discreta de Wavelet), PCA (\textit{Principal Análysis Component} - Análise de Componentes Principais) e ICA (\textit{Independent Component Analysis} - Análise de Componentes Independentes) com classificadores neurais. Os resultados obtidos foram semelhantes ao classificador \textit{Neural Ringer} sem pré-processamento, possibilitando a redução do número de componentes utilizados em até 80\%.
+%As técnicas foram aplicadas no pré-processamento da informação com o intuito de reduzir o ruído de fundo e remoção de elementos redundantes no conjunto de dados simulados pela técnica de Monte Carlo, para uma rede RPROP de duas camadas, sendo a de saída com um neurônio com função de ativação utilizada a tangente hiperbólica. O número de neurônios da camada oculta foi definido com base no melhor índice SP\% obtido, sendo de 18 neurônios. Os resultados obtidos foram relevantes, em relação ao classificador \textit{Neural Ringer} sem pré-processamento, assim como redução a do número de componentes utilizados em 80\% para o conjunto de dados e10\footnote{corte em assinaturas com energia transversa ($E_T$) acima de 10 GeV} e 75\% para o conjunto e22\footnote{corte em assinaturas com energia transversa ($E_T$) acima de 22 GeV} com uso da PCA e ICA.
+
+Em \citeonline{desouza2014} foi proposta uma arquitetura de classificação via rede neural segmentada também para o problema de detecção \textit{online} de elétrons no ATLAS. A informação proveniente de cada camada do calorímetro é processada separadamente e utilizada para alimentar classificadores neurais (num total de sete, um para cada camada). As saídas de cada classificador segmentado são utilizadas para alimentar uma outra rede neural (formando um segundo estágio de classificação), que combina as características segmentadas para produzir a decisão final.
+
+%O LHC realiza a colisão de feixes de prótons, e neste caso, a geração de partículas conhecidas como jatos hadrônicos é muito intensa. Os jatos podem apresentar o perfil de deposição de energia semelhante ao de elétrons, dificultando a identificação destas partículas.
+
+%Na estrutura da rede neural, foram utilizados dez neurônios na camada oculta, em cada classificador especialista treinado. Na rede combinadora, foram realizados testes, verificando a eficiência por número de neurônios ocultos utilizados. A configuração ótima para o conjunto de dados e10 ocorreu na utilização de 10 neurônios, também na rede combinadora. Já no conjunto e22, os melhores resultados em eficiência foram encontrados utilizando nove neurônios na camada oculta da rede combinadora. 
+%
+%Os resultados obtidos nesse experimento foram, de redução de mais de 70\% na informação de uma camada tanto nos dados e10 quanto nos dados e22. Redução no falso alarme em ambos os testes e em quase 50\% nos dados e10, além do fato de essa estrutura de classificador elevar a probabilidade de detecção de elétrons em baixas energias, entre 10 GeV e 25 GeV, região na qual o perfil de elétron e jato se assemelha dificultando a detecção.
+
+
+Em \citeonline{fernandes2014}, uma RNA foi utilizada num trabalho cujo objetivo foi a extração de tempo musical utilizando transformada \textit{Wavelet} e rede neural artificial. Foi desenvolvido um método para detecção de tempo, batidas por minuto (bpm) de uma música, onde a transformada \textit{Wavelet} foi utilizada para a construção de funções de detecção de \textit{onsets}\footnote{Momento de início de uma nota, quando sua amplitude sai de zero a um valor de pico.}. E uma rede neural de uma camada oculta, do tipo \textit{feedforward}, foi utilizada para mapear os descritores multirresolucionais, no tempo musical correspondente.
+%
+%No estudo supracitado foi construído um banco de dados, respeitando três atributos principais para uma RNA, quantidade, qualidade e diversidade. 
+%
+%Ainda nesse trabalho, utilizando uma camada oculta não linear com número de neurônios variando de 1 a 20, produzindo 20 topologias diferentes; a camada de saída linear com 1 neurônio; avaliação utilizando o erro médio quadrado. Obtendo o melhor resultado para uma rede com 12 neurônios na camada oculta, porém os conjuntos de testes e validação não obtiveram resultados tão expressivos; a rede não adquiriu boa capacidade de generalizar.
+
+Em \citeonline{werner2016} é descrita uma arquitetura em redes neurais, do tipo MLP, utilizada para seleção dos eventos no canal eletromagnético do detector ATLAS, utilizando a informação anelada de calorimetria. Utilizando dados provenientes da simulação Monte Carlo~\footnote{Método estatístico de simulações baseadas no uso de sequências de números pseudo-aleatórios para resolução de problemas, em particular para estimar os parâmetros de uma distribuição desconhecida. Utilizado especialmente quando a complexidade do problema torna inviável oa obtenção de uma solução analítica ou com métodos numéricos tradicionais \cite[p. 27]{book:Braibant2012}.} e validação cruzada, as redes obtiveram desempenho semelhante no final da cadeia de detecção, porém, atingiram uma redução de $\sim$2 na taxa de Falso Alarme (FA).
+
+
+%Em \citeonline{faria2017} foi projetado um filtro FIR baseado em  rede neural desenvolvida em hardware dedicado (FPGA), utilizada para estimação da energia deposita no calorímetro de telhas do ATLAS, o TileCal, que é um sistema de fina segmentação, com cerca de $10^4$ canais de leitura. A rede projetada tinha uma estrutura, 10-4-1, nas camadas de entrada, oculta e de saída, respectivamente. Como resultado, pode-se observar que o estimador neural apresentou desempenho superior em comparação a um método linear, visto que foram utilizadas funções de ativação não-linear.
+
+%% ============================================================
+%% ============================================
+\section{Máquinas de Aprendizado Extremo - ELM} \label{sec:ELM}
+%% ============================================
+%% ===========================================================
+
+As máquinas de aprendizado extremo (\emph{Extreme Learning Machines} - ELM) foram propostas inicialmente em \citeonline{huang2004}. Utilizando uma estrutura semelhante à de uma rede neural MLP com uma única camada oculta\footnote{SLFN - \textit{Single Layer feedforward Networks}}, ver \autoref{fig:ELM}, o treinamento da ELM assume que é possível  gerar aleatoriamente os pesos da camada de entradas e determinar analiticamente os melhores pesos para a camada oculta. Deste modo, o tempo de treinamento de uma ELM é consideravelmente reduzido, pois não existe um procedimento iterativo de retro-propagação de erro para o ajuste dos pesos do modelo.
+
+Foi demonstrado que uma rede ELM, assim como uma rede MLP é um aproximador universal e possui capacidade de interpolação nos trabalhos de \citeonline{huang2006, huang2011, huang2015}, nos quais também são apresentadas variações nos modelos das redes ELM. Entretanto, em alguns casos, redes ELM comparadas com redes MLP requerem um número maior de neurônios na camada oculta para resolver, com desempenho equivalente, o mesmo problema \cite{wang2005}.
+
+\begin{figure}[ht]
+	\begin{center}
+		\caption{Diagrama de uma ELM.}
+		\includegraphics[scale=.8]{./Figuras/ELM_diag.png}
+		\label{fig:ELM}
+		%\legend{Fonte: \url{http://pages.iu.edu/~luehring/}}
+	\end{center}
+\end{figure}
+
+Para um conjunto de $M$ pares entrada-saída $(\vec{x_i}, \vec{y_i})$ com $\vec{x_i} \in \mathbb{R}^{d_1}$ e $\vec{y_i} \in \mathbb{R}^{d_2}$, a saída de uma SLFN com $N$ neurônios na camada oculta é modelada pela \autoref{eq:slfn}.
+
+\begin{eqnarray}
+\vec{y_j} = \sum_{i=1}^{N} \vec{\beta_i} \Phi \mathrm{(\vec{w_i}\vec{x_j} + \vec{b_i})}, \: j \in [1,M]\label{eq:slfn}
+\end{eqnarray}
+
+\noindent sendo $\Phi$ a função de ativação, $\mathrm{\vec{w_i}}$ e $\vec{b_i}$ os pesos e o \emph{bias} da camada de entrada, respectivamente, e $\boldsymbol{\upbeta}_i$ os pesos da camada de saída.
+
+A equação~\ref{eq:slfn} pode ser reescrita como $\mathbf{H}\boldsymbol{\upbeta} = \mathbf{Y}$, sendo,
+\begin{small}
+	\begin{eqnarray}
+	\mathbf{H} =
+	\left( \begin{array}{ccc}
+	\Phi(\mathrm{\vec{w_1}}\vec{x_1} + b_1) & \ldots & \Phi(\mathrm{\vec{w_N}}\vec{x_1} + b_N) \\
+	\vdots      & \ddots & \vdots \\
+	\Phi(\mathrm{\vec{w_1}}\vec{x_M} + b_1) & \ldots & \Phi(\mathrm{\vec{w_N}}\vec{x_M} + b_N)
+	\end{array} \right), \label{eq:slfn_mat}
+	\end{eqnarray}
+\end{small}
+e $\boldsymbol{\upbeta} = (\beta^T_1 \ldots \beta^T_N)^T$ e $\vec{Y} = (y^T_1 \ldots y^T_M)^T$.
+
+Como função de ativação, as redes ELM podem utilizar as mesmas funções aplicáveis às redes MLP, como por exemplo, linear, sigmoide, gaussiana, funções de base radial (do inglês: \textit{Radial Basis Functions}-RBF).
+
+A solução baseia-se em determinar a matriz inversa generalizada de Moore-Penrose de $\vec{H}$, definida como $\mathbf{H}^\dagger = (\mathbf{H}^T\mathbf{H})^{-1}\mathbf{H}^T$, que pode ser obtida por mínimos quadrados ordinários (do inglês: \textit{Ordinary Least Squares} - OLS) ou via decomposição em valores singulares (do inglês: \textit{Singular Value Decomposition} - SVD) \cite{tcc:souto2000, tcc:coliboro2008}.  
+
+Na SVD uma matriz $\mathbf{A}_{m\times n}$ é decomposta da seguinte forma \cite{tcc:souto2000}
+
+\begin{eqnarray}
+\mathbf{A} &=& \mathbf{U}\mathbf{\Sigma} \mathbf{V}^T
+\end{eqnarray}
+sendo $\mathbf{U}_{m\times m}$, $\mathbf{\Sigma}_{m\times n}$ e $\mathbf{V}_{n\times n}$. A matriz $\mathbf{\Sigma}$ é da forma
+\begin{eqnarray}
+\mathbf{\Sigma} &=& 
+\left( \begin{array}{ccc}
+\vec{D}     & \ldots & 0 \\
+\vdots & \ddots & \vdots \\
+0     & \ldots & 0 \\
+\end{array} \right), \label{eq:matzSigma}
+\end{eqnarray}
+com $\mathbf{D}_{p\times p}$ uma matriz diagonal formada pelos valores singulares da decomposição de $\mathbf{A}$, determinados por meio dos autovalores associados a matriz $\mathbf{A}^T\mathbf{A}$, tais que $\sigma_p = \sqrt{\lambda_p} \geq 0$, sendo $\sigma_p$ o valor singular e $\lambda_p$ o autovalor associado.
+
+\begin{eqnarray}
+\mathbf{\Sigma} &=& 
+\left( \begin{array}{cccccc}
+\sigma_1 & 0        &    0     & \ldots & 0   & 0   \\
+0     & \sigma_2 &    0     & \ldots & 0   & 0   \\
+0     &    0     & \sigma_3 & \ldots & 0   & 0   \\
+\vdots & \vdots   &  \vdots  & \ldots & \vdots   & 0 \\
+0      &    0     &    0     & \ldots & \sigma_p & 0\\
+\end{array} \right), \; p = min\{m,n\}.\label{eq:matzSigma2}
+\end{eqnarray}
+
+A inversa generalizada de Moore-Penrose, $\mathbf{A}^\dagger$, a partir de seus valores singulares é determinada da seguinte forma~\cite{macausland2014}:
+
+\begin{eqnarray}
+\mathbf{A}^\dagger &=& \mathbf{V}\mathbf{\Sigma}^+\mathbf{U}^T, \\
+\mathbf{\Sigma}^+ &=& 
+\left( \begin{array}{cccccc}
+\frac{1}{\sigma_1} &      0             &      0              & \ldots &        0       &     0 \\
+0              & \frac{1}{\sigma_2} &      0              & \ldots &        0       &     0 \\
+0              &      0             & \frac{1}{\sigma_2}  & \ldots &        0       &     0 \\
+\vdots          &   \vdots           &     \vdots          & \ldots &       \vdots   &     0 \\
+0              &      0             &      0              & \ldots & \frac{1}{\sigma_p} & 0 \\
+\end{array} \right)^T. \label{eq:matzSigma3}
+\end{eqnarray}
+
+A seguir, o resumo do processo de decomposição de valores singulares descrito em \citeonline{tcc:coliboro2008}:
+\begin{enumerate}
+	\item Calcular a matriz $\mathbf{A}^T\mathbf{A}$, seus autovalores e autovetores associados;
+	\item Montar a matriz $\mathbf{V}=[\vec{v}_1 \ \dots \ \vec{v}_m]$ a partir dos autovetores de $\mathbf{A}^T\mathbf{A}$;
+	\item Calcular os valores singulares $\sigma_p = \sqrt{\lambda_p}$ e montar a matriz $\mathbf{\Sigma}$;
+	\item Calcular os vetores $\vec{u}_i=\frac{A\vec{v}_i}{\sigma_i}$, com $i \in \{1,2, \ldots, n\}$, e montar a matriz $\mathbf{U}=[\vec{u}_1 \ \ldots \ \vec{u}_n]$.
+\end{enumerate}
+
+
+%% --------------------------
+\subsection{Exemplos de Aplicações}
+%% --------------------------
+
+Em \citeonline{wang2005} redes ELM foram comparadas a redes MLP como classificadores de sequência de proteínas, neste trabalho o desempenho das redes ELM foi semelhante às redes MLP, tendo um tempo de treinamento pelo menos 180 vezes menor, porém com um número de neurônios na camada oculta (160) superior ao utilizado pelas redes MLP (35).
+
+%No trabalho de \citeonline{Chen2014} a ELM foi comparadas com técnicas do estado da arte no que se refere a predição e convergência, o MPrank\footnote{\textit{Magnitude-preserving Rank}.}, o RankBoost, o SVR\footnote{\textit{Support Vector Regression}.} e RankSVM\footnote{\textit{Support Vector Machine}}. Duas bases de dados distintas foram utilizadas, uma contendo filmes/piadas/livros não assistidos a serem recomendadas e que deveriam ser organizados por ordem de preferência e uma base QSAR\footnote{Relação Quantitativa Estrutura-Atividade (do inglês \textit{Quantitative Structure-Activity Relationship}.}. Na primeira base foi comparada com MPrank e SVRank, obtendo o menor erro médio e desvio padrão. Na segunda base de dados, foi comparada com a RankSVM e SVR, em cinco critérios de desempenho, sendo superior em quatro dos critérios. Nos testes a ELM utilizou função sigmoide e 100 neurônios na camada oculta e pesos gerados com distribuição normal.
+
+Em \citeonline{Zhang2015} quatro modelos de redes ELM foram testadas quanto à robustez a \textit{outliers}\footnote{Amostras de valores discrepantes em relação ao conjunto de dados analisados.} no conjunto de dados. Uma rede em estrutura ELM clássica, e as outras três utilizando os multiplicadores de Lagrange para definição de um parâmetro de otimização: uma baseada no erro da rede (RELM\footnote{\textit{Regularized ELM.}}); outro baseado na relação erro e pesos da rede (WRELM\footnote{\textit{Weighted Regularized ELM.}}) e a última associando a saída de referência e o erro (ORELM\footnote{\textit{Outliers-robust ELM.}}). Os testes de regressão, mostraram que a rede ORELM obteve o menor erro médio quadrático nos testes com contaminação por \textit{outliers}. Nos problemas de classificação, a contaminação por \textit{outliers} avaliada, foi de 0\%, 10\%, 20\% e 40\%. Nos conjuntos sem contaminação a rede que obteve o melhor desempenho foi a RELM. Nos testes com contaminação por \textit{outliers} a ORLEM obteve o melhor desempenho em relação as demais.
+
+Em \citeonline{gaohuang2015} pode-se verificar as variações da ELM, assim como a fundamentação matemática e a demonstração de algumas propriedades relevantes, como a capacidade de aproximação universal da ELM.
+%Em \citeonline{gaohuang2015} pode-se verificar as variações da ELM, assim como a fundamentação matemática e a demonstração de algumas propriedades relevantes, como a capacidade de aproximação universal da ELM. Para redes SLFN é válida a capacidade de aproximação universal, porém, é feita a consideração de que a função de ativação deve ser contínua e diferenciável e os parâmetros da camada oculta devem ser ajustados durante o treino. Para a ELM os parâmetros são gerados aleatoriamente e a capacidade de aprendizado universal é mantida.
+
+A ELM vem sendo utilizada em diferentes aplicações como, por exemplo, em~\citeonline{termenon2016}, para desenvolver uma ferramenta de apoio à extração de características de imagens de ressonância magnética no diagnóstico de mal de Alzheimer. Em \citeonline{horata2013, barreto2016}, foi associada a Estimadores-M~\cite{Ruckstuhl2014} como classificador robusto com baixa sensibilidade a \textit{outliers}. 
+
+Em \citeonline{Qu2016} uma estrutura com duas camadas foi avaliada e comparada em problemas de regressão e classificação sendo observado que a estrutura torna-se interessante para problemas complexos na presença de recursos computacionais de armazenamento limitados.
+
+%Em \citeonline{santos2017} redes ELM foram treinadas como classificadores, para uma base de dados obtida via Monte Carlo identificada como MC14, do detector ATLAS. Nessa base os dados foram segmentados em 16 regiões internas em ($E_T$ , $\eta$), os resultados obtidos foram comparados com redes MLP, utilizando as configurações da Colaboração ATLAS, e indicaram que as redes ELM podem ser utilizadas como classificadores em alternativa às redes MLP, mantendo o desempenho de classificação, porém com significativa redução do tempo de treinamento para as redes, em pelo menos duas vezes.
+
+Outros trabalhos já foram desenvolvidos onde apresentam estudos para melhoria da ELM quanto a robustez a \textit{outliers} e problemas computacionais quando a matriz de saída da camada oculta não possui posto completo \cite{horata2013} baseados em estimadores M\footnote{\textit{Maximum likelihold estimator} - Estimador de Máxima Vorossimilhança}.
+
+
+%% ============================================================
+%% ============================================
+\section{Redes com Estado de Eco - ESN}\label{sec:ESN}
+%% ============================================
+%% ============================================================
+
+As redes com estados de eco (ESN) são redes neurais compostas por: uma camada de entradas; uma camada interna denominada reservatório de dinâmicas (RD), constituída de neurônios organizados numa estrutura recorrente totalmente conectados utilizando funções de ativação não-linear; e uma camada de saídas de característica linear a qual tem seu resultado obtido de maneira semelhante ao que ocorre com a ELM, por meio da inversa generalizada de Moore Penrose, ou método de regressão linear dos mínimos quadrados, por exemplo, \cite{jaeger2001}.
+
+Na \autoref{fig:ESNgenerica} é exibido um diagrama genérico de uma rede ESN, indicando todas as possíveis conexões entre as camadas da rede, a saber:
+
+\begin{itemize}
+	\item $\vec{W}^{in}$ - matriz de pesos da camada de entrada para o RDs;
+	\item $\vec{W}^{inout}$ - matriz de pesos da camada de entrada para a camada de saída;
+	\item $\vec{W}$ - matriz de pesos do RD;
+	\item $\vec{W}^{out}$ - matriz de pesos da camada de entrada para o RD;
+	\item $\vec{W}^{back}$ - matriz de pesos (realimentação) da camada de saída para o RD;
+	\item $\vec{W}^{outout}$ - matriz de pesos da camada de saída para a camada de saída.
+\end{itemize}
+
+
+\begin{figure}[ht]
+	\begin{center}
+		\caption{Diagrama genérico de uma rede ESN, indicando os possíveis laços de realimentação .}
+		\includegraphics[scale=.9]{./Figuras/Estrut_ESN_generica.png}
+		\label{fig:ESNgenerica}
+		%\legend{Fonte: \url{http://pages.iu.edu/~luehring/}}
+	\end{center}
+\end{figure}
+
+Para a rede genérica da \autoref{fig:ESNgenerica}, na qual o RD é uma camada totalmente conectada formada de elementos de função de ativação não-linear, a atualização dos estados é definida segundo as Equações \ref{eq:ESNgenericaIn} e \ref{eq:ESNgenericaOut}.
+
+Os sinais de entrada da rede, $\vec{u(n)} = [u_1(n), u_2(n), \ldots, u_K(n)]^T$, são combinados linearmente gerando o vetor de entradas do reservatório de dinâmicas, $\vec{x(n)} = [x_1(n), x_2(n), \ldots, x_N(n)]^T$, $f(\cdot)$ é a função de ativação, as matrizes de pesos $\vec{W}^{in} \in \mathcal{R}^{N\times K}$ e $\vec{W} \in \mathcal{R}^{N\times N}$ são geradas aleatoriamente, e o vetor de saídas $\vec{y(n)} = [y_1(n), y_2(n), \ldots, y_L(n)]^T$ que representa o conjunto de estados da rede em cada instante \textit{n}, pode ser determinado por um método de regressão linear. Na ESN apenas as conexões entre o RD e a camada de saída são treinada \cite{thesis:simeon2015}.
+
+\begin{eqnarray}
+\vec{x}(n+1) &=&  \vec{f}(\vec{W}^{in}\vec{u}(n+1)+\vec{W}\vec{x}(n)+\vec{W}^{back}\vec{y}(n)+\vec{W}^{bias})\label{eq:ESNgenericaIn} \\
+\vec{y}(n+1) &=& \vec{f}^{out}(\vec{W}^{inout}\vec{u}(n+1)+\vec{W}^{out}\vec{x}(n+1)+\vec{W}^{outout}\vec{y}(n+1) + \vec{W}^{biasout}) \label{eq:ESNgenericaOut}
+\end{eqnarray}
+
+Já na \autoref{fig:ESN}, é exibida uma rede ESN que possui estados de eco. E seus estados são atualizados conforme as Equações \ref{eq:ESNin} e \ref{eq:ESNout}.
+\begin{eqnarray}
+\vec{x}(n+1) &=&  \vec{f}(\vec{W}^{in}\vec{u}(n+1)+\vec{W}\vec{x}(n)).  \label{eq:ESNin}  \\
+\vec{y}(n+1) &=& \vec{W}^{out}\vec{x}(n+1).                             \label{eq:ESNout}
+\end{eqnarray}
+
+\begin{figure}[H]
+	\begin{center}
+		\caption{Diagrama de uma rede ESN que possui estados de eco.}
+		\includegraphics[scale=.9]{./Figuras/Estrut_ESN.png}
+		\label{fig:ESN}
+		%\legend{Fonte: \url{http://pages.iu.edu/~luehring/}}
+	\end{center}
+\end{figure}
+
+Com base nos padrões disponíveis para o treinamento e resposta esperada, $\vec{Y}$, é possível determinar os coeficientes da matriz $\vec{W}$, \autoref{eq:ESNWout} por meio da inversa generalizada expressa na \autoref{eq:ESNX}.
+\begin{eqnarray}
+\vec{W}^{out} &=& \mathbf{X}^\dagger\vec{Y}.                      \label{eq:ESNWout}\\
+\mathbf{X}^\dagger &=& (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T. \label{eq:ESNX}
+\end{eqnarray}
+
+Adicionalmente pode ser acrescido o parâmetro $\alpha$ (\textit{leak rate}) na \autoref{eq:ESNgenericaIn} o que resulta na \autoref{eq:ESNin2}, e a escolha adequada do valor parâmetro permite a melhora no ajuste da dinâmica do reservatório da ESN \cite{thesis:simeon2015}. O valor ótimo para o parâmetro $\alpha$ pode ser definido empiricamente, ou por busca num conjunto de valores por uma função de otimização. No trabalho  de \citeonline{Antonelo2008} um pequeno robô é treinado no contexto de computação de reservatórios, utilizando redes ESN e aborda métodos de busca do valor adequado para o parâmetro $\alpha$.
+
+\begin{equation}
+\vec{x}(n+1) =  \vec{f}((1-\alpha)\vec{x}(n) + \alpha(\vec{W}^{in}\vec{u}(n+1)+\vec{W}\vec{x}(n)))\label{eq:ESNin2}
+\end{equation}
+
+
+%% --------------------------
+\subsection{Propriedades dos Estados de Eco}
+%% --------------------------
+
+\citeonline{jaeger2010}, numa revisão de um trabalho anterior \cite{jaeger2001}, apresenta os requisitos necessários à existência dos estados de eco em uma rede neural de estrutura recorrente. A seguir tais requisitos são apresentados:
+
+\begin{itemize}
+	\item  $|\sigma_{max}(\vec{W})|<1$, no qual $\sigma$ é o valor singular de $\vec{W}$. 
+	\item $|\lambda_{max}(\vec{W})| < 1$, sendo $\lambda$ o autovalor de $\vec{W}$ é chamado como raio espectral da ESN \cite{jaeger2010}.
+\end{itemize} 
+
+%\begin{itemize}
+%	\item  $|\sigma_{max}(\vec{W})|<1$, no qual $\sigma$ é o valor singular de $\vec{W}$.  Tal condição é demonstrada quando não há realimentação da saída para o RD com uma rede utilizando função de ativação a tangente hiperbólica \cite{boccato2013}.
+%	\item $|\lambda_{max}(\vec{W})| < 1$, sendo $\lambda$ o autovalor de $\vec{W}$ é chamado como raio espectral da ESN \cite{jaeger2010}.
+%\end{itemize} 
+
+Levando em consideração os critérios demonstrados em \citeonline{jaeger2010}, basta criar uma matriz $\vec{W}$ que atenda a esses critérios, definir uma matriz $\vec{W}^{in}$ de maneira arbitrária, que o treinamento da camada de saída de uma rede ESN é realizado por meio da solução de um problema de regressão linear.
+
+%% --------------------------
+\subsection{Inicialização dos Pesos e Treinamento}
+%% --------------------------
+
+%Primeiro é necessário atender às propriedades dos estados eco. Satisfeitas essas propriedades, a partir do tamanho da rede e o raio espectral escolhido, pois o tamanho da rede influencia no grau de dificuldade de treinamento, enquanto que o raio espectral define o tamanho da memória da ESN \cite{simeon2015}.
+%
+%Para a ESN é necessário que o RD possua um conjunto de dinâmicas grande e o mais diversificado possível, pois tais pesos não possuem influência dos sinais de entrada, uma vez que são gerados de maneira arbitrária \cite{boccato2013}. 
+
+Uma vez que as propriedades de estados de eco foram atendidas, o treinamento pode ser realizado seguindo as etapas \cite{jaeger2001,thesis:simeon2015,thesis:boccato2013}:
+
+\begin{itemize}
+	\item Gerar uma matriz de pesos aleatórios (com média zero e variância 1) $\vec{W}$ com certo grau de esparsividade, em torno de 20\%;
+	\item Normalizar $\vec{W}$ com base no raio espectral;
+	\item Definir uma matriz de pesos de entrada $\vec{W}^{in}$ arbitrária;
+	\item Calcular a matriz de pesos de saída $\vec{W}^{out}$ por meio de um algoritmo de  regressão linear. Neste trabalho será utilizada a inversa generalizada de Moore-Penrose.
+\end{itemize}
+
+%% --------------------------
+\subsection{Exemplos de Aplicações}
+%% --------------------------
+
+%A seguir serão apresentadas algumas aplicações utilizando as redes ESN.
+
+Em \citeonline{Antonelo2008} um pequeno robô é treinado no contexto de computação de reservatórios, utilizando redes ESN e aborda métodos de busca do valor adequado para o parâmetro $\alpha$.
+
+\citeonline{thesis:boccato2013} apresenta novas abordagens para as partes fundamentais de uma rede ESN, o RD, a camada de saída, e uma unificação entre a ESN e a ELM, essa última aplicada como camada de saída rede. Neste trabalho é proposta uma arquitetura que utiliza um filtro de Voltera em alternativa ao combinador linear de saída, que permite explorar as características estatísticas produzidas no RD, porém, sem afetar a simplicidade do processo de treinamento.
+
+Em \citeonline{thesis:siqueira2013} a ESN é avaliada como alternativa e aperfeiçoamento à previsão de vazões médias mensais de usinas hidroelétricas brasileiras. O trabalho foi desenvolvido com dados das séries históricas das usinas de Furnas, Emborcação e de Sobradinho. Foram avaliadas três estrutura de redes neurais, MLP, ELM e ESN em alternativa ao método PAR (Periódicos auto-regressivos)~\cite{thesis:reis2013}, e em todas os resultados superaram o PAR. Das técnicas avaliadas duas estruturas com ESN foram as que apresentaram os melhores resultados na predição, sendo a primeira com combinador linear proposta por \citeonline{jaeger2001} e a mesma rede, porém utilizando um  filtro de Voltera.
+
+Em \citeonline{Ganjefar2014}, uma ESN foi utilizada no sistema de controle de turbinas eólicas de baixa potência (1 -- 100 kW). O objetivo do trabalho era manter o sistema ``rastreando'' o ponto de operação de máxima geração de potência, algoritmo conhecido como MPPT\footnote{\textit{Maximum Power Point Tracking}.}.  No algoritmo é necessário conhecer as características da turbina utilizada bem como monitorar as condições de vento, o que se torna um problema de complexidade elevada, devido às características de dinâmica não-lineares do sistema de geração eólica. Três métodos foram propostos: No 1º, o controlador foi projetado conhecendo-se a velocidade do vento. No 2º, o controlador baseado na ESN (com 100 neurônios), não tinha a informação da velocidade do vento. E 3º, foi adicionado um estimador da velocidade do vento utilizando a ESN. Os resultados, simulados, foram comparados com o resultados de um controlador PID e ABPC\footnote{\textit{Adaptive Passivity-Based Control}.}. Os métodos 2 e 3 foram comparados com o método 1 e a eficiência para a potência média alcançada foi de 99,9986\% e 99,8843\% respectivamente. 
+
+No trabalho de  \citeonline{Wen2015}, um conjunto de redes ESN (\textit{Ensemble Convolutional Echo State Network} - EC-ESN) foi utilizado para o reconhecimento de padrões de expressões faciais. Utilizando imagens de duas bases de dados sem nenhuma técnica de extração de características, as imagens foram apresentadas as redes SVM, SRC\footnote{\textit{Sparse representation classifier}}, Softmax, ESN e EC-ESN. Os resultados indicaram a que a ESN tem capacidade de separação de classes em problemas de reconhecimento de expressões faciais.
+
+\citeonline{thesis:simeon2015} propõe uma abordagem utilizando a ESN para o prognóstico de vida útil remanescente de equipamentos baseada em dados históricos utilizando o algoritmo de colônia de abelhas (ESN-ABC). A aplicação do método ABC\footnote{\textit{Artificial Bee Colony}} junto com a ESN possibilitou o ajuste dos parâmetros da rede, tendo o RD de tamanho fixo, resultando no menor erro quadrático médio quando comparada com o método clássico e o método de treinamento com filtro de Kalman~\cite[Cap 4]{thesis:aiube2005}.
+
+Já em \citeonline{Trentin2015}, uma variação da ESN, $\pi-$ESN (\textit{Probabilistic ESN}) foi aplicada num problema de reconhecimento de cinco expressões de fala de mulheres. Os sinais utilizados tinham duração entre 0,7 s e 1,7s, e os resultados foram comparados com outros quatro classificadores, 1-NN, SVM, MLP, e AdaBoost, e os resultados foram muito significativos tendo a $\pi-$ESN como a maior percentual médio de classificação.
+
+No trabalho de \citeonline{Schaetti2016} as redes ESN foram aplicadas no reconhecimento de dígitos manuscritos, e seus resultados comparados a estruturas de redes neurais convolucionais\footnote{CNN - \textit{Convolutional Neural Networks}.} que são o estado da arte na classificação de imagens. Foi utilizada a base de dados MNIST\footnote{\textit{Modified National Institute of Standards and Technology}.}, a qual contém 60.000 amostras para treino e 10.000 amostras para teste. Os resultados obtidos para a ESN apresentaram variação de 0,93\% a 1,68\% para a taxa de erro de classificação, enquanto que o SVM obteve 1,1\% e redes convolucionais chegaram a um erro máximo de 0,35\%.
+
+%No trabalho de \citeonline{Schaetti2016} as redes ESN foram aplicadas no reconhecimento de dígitos manuscritos, e seus resultados comparados a estruturas de redes neurais convolucionais\footnote{CNN - \textit{Convolutional Neural Networks}.} que são o estado da arte na classificação de imagens. Foi utilizada a base de dados MNIST\footnote{\textit{Modified National Institute of Standards and Technology}.}, a qual contém 60.000 amostras para treino e 10.000 amostras para teste. Para a identificação dos dígitos as imagens passaram por dois processos de transformação: 1º as imagens passaram tiveram suas bordas, região em branco, removidas e tiveram seu tamanho redefinido de 22$\times$22 para 15$\times$15; 2º, obtenção de imagens a partir de rotações em $30º$ mantendo-se o tamanho da imagem. Esses dois processos permitiram obter uma maior variabilidade nos padrões apresentados às redes. Os resultados obtidos para as configurações variaram de 0,93\% a 1,68\% para a taxa de erro de classificação, enquanto que o SVM obteve 1,1\% e redes convolucionais chegaram a um erro máximo de 0,35\%.
+
+%A ESN tem sido aplicada em problemas de regressão \cite{simeon2015} para prognóstico de falhas.
+%Em \citeonline{Tanisaro2016} uma ESN modificada teve seu desempenho comparado com \textit{Dynamic Time Warping} (DTW) e a \textit{One Nearst Neighbor} (1-NN) com \textit{Euclidian Distance} (ED) na classificação em problemas com séries temporais foram utilizadas bases de dados do arquivo UCR \textit{library}. Os resultados indicaram que a ESN pode ser utilizada como classificador, pois os erros de classificação obtidos com a ESN estiveram próximo da DTW e 1-NN.
+
+Redes ESN em conjunto\footnote{EC-ESN -- \textit{Ensemble Echo State Network}.}, foi utilizadas numa estrutura convolucional no trabalho de \citeonline{Wang2016}. Neste trabalho é proposta uma nova abordagem para tratamento em problemas com séries temporais multivariadas\footnote{MTS -- \textit{Multivariate Time Series}.} no reconhecimento de expressões faciais\footnote{FER -- \textit{Facil Expressions Recognition}.}. %Utilizando as bases de dados JFFE\footnote{\textit{textJapanese Female Facial Expression}.} e CK\footnote{\textit{textCohn-Kanade}.}
+
+Em \citeonline{prater2017} uma estrutura baseada em ESN, a ESMVE (\textit{Echo State Mean-Variance Estimation}) foi desenvolvida e comparada comparada com K-ELM (\textit{Kernel Extreme Learning Machine}) e SVM (\textit{Support Vector Machine}), os resultados obtidos com a estrutura ESMVE mostraram-se mais eficientes.% do que somente o MVE (\textit{Mean Variance Estimation}).
+
+%Em \citeonline{araujo2017} a ESN foi utilizada como estimador de vazões médias mensais no reservatório da Usina Hidrelétrica de Furnas (UHE Furnas). Duas versões foram aplicadas, a ESN clássica e a ESN com \textit{leajy rate}. A base de dados utilizada era composta de informações das séries de vazões naturais mensais de janeiro de 1931 a dezembro de 2015 da UHE Furnas. Para teste foram utilizados 03 períodos de 5 anos, num total de 60 amostras cada. Período de seca, intervalo nos anos de 1952 -- 1956, período de cheias, anos de 1979 -- 1983 e período de vazões medianas, anos de 2006 -- 2010. O período restante foi utilizado para treinamento. Os resultados indicaram que as redes ESN com \textit{leaky rate} produziram o menor erro no processo de estimação das vazões para a UHE Furnas.
+
+Em \citeonline{araujo2017} a ESN foi utilizada como estimador de vazões médias mensais no reservatório da Usina Hidrelétrica de Furnas (UHE Furnas). Duas versões foram aplicadas, a ESN clássica e a ESN com \textit{leaky rate}. A base de dados utilizada era composta de informações das séries de vazões naturais mensais de janeiro de 1931 a dezembro de 2015 da UHE Furnas. Para teste foram utilizados 03 períodos de 5 anos, num total de 60 amostras cada. Período de seca, intervalo nos anos de 1952 -- 1956, período de cheias, anos de 1979 -- 1983 e período de vazões medianas, anos de 2006 -- 2010. O período restante foi utilizado para treinamento. Os resultados indicaram que as redes ESN com \textit{leaky rate} geraram o menor erro no processo de estimação das vazões para a UHE Furnas. Também indicaram que os modelos produziram resultados consistentes com as observações, o que permite prever as vazões com eficiência, sendo uma alternativa eficaz.

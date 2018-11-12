@@ -1,0 +1,889 @@
+% ----------------------------------------------------------
+% Resultados - CAPITULO 
+% ----------------------------------------------------------
+
+\section*{Introdução}
+
+Neste capítulo serão apresentados os resultados dos treinamentos realizados nas bases de dados Experimentais, simulados por meio da técnica de Monte Carlo, utilizando três classificadores neurais, um baseado em \textit{Perceptron Multilayer} (MLP), o segundo em Máquinas de Aprendizado Extremo (ELM) e o terceiro em Redes com Estados de Eco (ESN). 
+
+\section{Bases de dados}
+
+A seguir são apresentados os principais ajustes para as redes MLP, ELM e ESN nas três bases de dados utilizadas. O número de neurônios utilizado em cada base, assim como variações de parâmetros, serão apresentados em suas respectivas seções. 
+
+
+\begin{itemize}
+	\item MLP
+	
+	As redes MLP foram a referência para comparação das técnicas propostas, dessa forma, os parâmetros utilizados foram os mesmos já utilizados pela Colaboração ATLAS. Com isso, é possível validar a metodologia e os resultados obtidos com as técnicas alternativas, e sugerir testes no ambiente do detector ATLAS.
+	\begin{itemize}
+		\item Número de Épocas: 300;
+%		\item Técnica de reamostragem:
+%		\begin{itemize}
+%			\item \textit{K-fold}: 50 sorteios, 100 inicializações;
+%			\begin{itemize}
+%				\item Amostras para treino: 60\%;
+%				\item Amostras para teste: 40\%;
+%			\end{itemize}
+%			\item \textit{Jackknife}: 10 sorteios, 100 inicializações;
+%			\begin{itemize}
+%				\item Amostras para treino: 90\%;
+%				\item Amostras para teste: 10\%;
+%			\end{itemize}
+%		\end{itemize}
+		\item Função de ativação: tangente hiperbólica;
+		\item mínimo gradiente: 0;
+		\item Algoritmo de treino: \textit{Resilient Backpropagation};
+		\item Máx. número de falhas: 150\footnote{Número máximo de épocas as quais o erro alcançado no grupo de dados de teste cresce. Atingido esse número o treinamento é interrompido.};
+	
+%		\item Neurônios na camada oculta: 23.
+	\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+	\item ELM
+	
+	Para a ELM, a escolha dos ajustes que foram aplicados durante o processo de treinamento das redes, foi orientada pela pesquisa apresentada no \autoref{chap:pesquisa}, \autoref{sec:ELM}, e testes de sensibilidade\footnote{O resultado do teste de sensibilidade da ELM ao método de geração dos números pseudo-aleatórios é apresentado no \autoref{chap:apendice2}.}.
+	\begin{itemize}
+%		\item Técnica de reamostragem:
+%		\begin{itemize}
+%			\item \textit{K-fold}: 50 sorteios, 100 inicializações;
+%			\begin{itemize}
+%				\item Amostras para treino: 60\%;
+%				\item Amostras para teste: 40\%;
+%			\end{itemize}
+%			\item \textit{Jackknife}: 10 sorteios, 100 inicializações;
+%			\begin{itemize}
+%				\item Amostras para treino: 90\%;
+%				\item Amostras para teste: 10\%;
+%			\end{itemize}
+%		\end{itemize}
+		\item Pesos na camada oculta: pseudo-aleatórios com distribuição normal;
+		\item Função na camada oculta: tangente hiperbólica;
+		\item Determinação da matriz de saída: Inversa generalizada de Moore-Penrose;
+		\item Função na camada de saída: tangente hiperbólica.
+	\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+	\item ESN
+	
+	O procedimento adotado para a escolha dos ajustes para a ESN, foi o mesmo utilizado para a ELM. A escolha dos ajustes que foram aplicados durante o processo de treinamento das redes, foi orientada pela pesquisa apresentada no \autoref{chap:pesquisa}, \autoref{sec:ESN}.
+	\begin{itemize}
+%		\item Tamanho do reservatório: 15 neurônios;
+%		\item Técnica de reamostragem:
+%		\begin{itemize}
+%			\item \textit{K-fold}: 50 sorteios, 100 inicializações;
+%			\begin{itemize}
+%				\item Amostras para treino: 60\%;
+%				\item Amostras para teste: 40\%;
+%			\end{itemize}
+%			\item \textit{Jackknife}: 10 sorteios, 100 inicializações;
+%			\begin{itemize}
+%				\item Amostras para treino: 90\%;
+%				\item Amostras para teste: 10\%;
+%			\end{itemize}
+%		\end{itemize}
+		\item Pesos na camada oculta: pseudo-aleatórios com distribuição normal;
+		\item Grau de esparsividade: 30\%;
+		\item Função na camada oculta: tangente hiperbólica;
+		\item Determinação da matriz de saída: Inversa generalizada de Moore-Penrose;
+		\item Função na camada de saída: tangente hiperbólica.
+	\end{itemize}
+\end{itemize}
+
+Para as três técnicas foram utilizados duas técnicas de reamostragem para obtenção dos resultados. Esse procedimento é necessário para validação da metodologia junto à Colaboração ATLAS.
+
+\begin{itemize}
+	\item Técnica de reamostragem:
+	\begin{itemize}
+		\item \textit{K-fold}: 50 sorteios, 100 inicializações;
+		\begin{itemize}
+			\item Amostras para treino: 60\%;
+			\item Amostras para teste e validação: 40\%;
+		\end{itemize}
+		\item \textit{Jackknife}: 10 sorteios, 100 inicializações;
+		\begin{itemize}
+			\item Amostras para treino: 90\%;
+			\item Amostras para teste e validação: 10\%;
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+
+%\subsection{Experimentais - 2011}
+%A seguir os resultados na base experimental (NN\_{ele190236}\_{jets191920}) com dados obtidos nas colisões de 2011. O número de assinaturas de elétrons é de 337.658, e o número de assinaturas de jatos é de 78.353, tendo no total 416.011. O número de neurônios utilizado em cada uma das três técnicas para os melhores desempenho de classificação é exibido na~\autoref{tab:nNeu_NN}.
+
+%Os dados disponíveis nessa base foram obtidos de dois eventos de colisões, os quais estavam gravadas no ambiente \textit{offline} do \textit{neural ringer}. O primeiro, de número 190236 para elétrons com aproximadamente 338.000 assinaturas, onde grande parte das assinaturas foi registrada como de características eletromagnética pelo \textit{offline}. Para o conjunto de jatos com aproximadamente 78.400 assinaturas, com colisão referenciada por 191920. Ambas ocorridas em 2011 com as mesmas condições de operação do detector. As condições simuladas estão representadas na \autoref{fig:DistrNN}, com as distribuições para a energia transversa e para a pseudo-rapidez.
+
+\subsection{Dados Experimentais}
+
+\subsubsection{Informações}
+A seguir os resultados na base experimental cujo número de assinaturas de elétrons é de 337.658, e o número de assinaturas de jatos é de 78.353, tendo no total 416.011. O número de neurônios utilizado em cada uma das três técnicas para os melhores desempenho de classificação é exibido na~\autoref{tab:nNeu_NN}, de acordo com a metodologia descrita na \autoref{met:nNeu}. 
+
+
+\begin{table}[ht]%[H]
+	\centering
+	\caption{Número de neurônios utilizados na camada oculta do MLP, ELM e do reservatório de dinâmicas da ESN, na base experimental.}
+	\label{tab:nNeu_NN}
+	\begin{small}
+	%		\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+	\setlength{\extrarowheight}{3pt}       %%Aumentar a altura das linhas
+	% multiplas colunas *{<num>}{<col spec>}
+	\begin{tabular}{c*{3}c} \toprule
+		& \multicolumn{3}{c}{Número de neurônios} \\ \cmidrule(lr){2-4}
+		& {ELM} & {MLP} & {ESN} \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+		&  100  &  23   &  15   \\ \bottomrule
+	\end{tabular}%
+	\end{small}
+\end{table}%
+
+
+
+\subsubsection{Índice SP}
+
+Na \autoref{fig:ELMxESNxBP_NN_k} são exibidas as \textit{boxplot} de cada um dos classificadores, MLP, ELM e ESN nessa ordem, para o melhor das 100 inicializações realizados em cada uma das técnicas, utilizando a técnica de reamostragem \textit{K-fold}. Já na \autoref{fig:ELMxESNxBP_NN_j} são exibidas as \textit{boxplot} de cada um dos classificadores, MLP, ELM e ESN nessa ordem, utilizando a técnica de reamostragem \textit{Jackknife}. Cada \textit{boxplot} apresenta o melhor resultado dentre as 100 inicializações realizadas em cada subconjunto disjunto da base de dados. 
+
+É possível observar que os resultados alcançados com a técnica de reamostragem \textit{Jackknife}, na \autoref{fig:ELMxESNxBP_NN_j}, foram superiores aos resultados alcançados com o \textit{k-fold}, \autoref{fig:ELMxESNxBP_NN_k}. Nota-se que para o MLP houve uma pequena melhora para o máximo valor atingido, apesar de uma pequena elevação na dispersão entre os índices SPs, mínimo e máximo. Para a ELM houve melhora na dispersão dos valores do mínimo e máximo SPs alcançados, e elevação do valor médio, que saiu de 88\% com a técnica \textit{K-fold} para próximo de 92\% com a técnica \textit{Jackknife}. Já na ESN, nota-se que o diferença entre o maior e o menor valor do índice SP da \textit{boxplot} se manteve aproximadamente constante, entretanto, houve melhora no valor médio, que subiu de próximo de 90\% para próximo de 92\%, e a \textit{boxplot} sofreu um deslocamento, no qual seu início sai de 84\% para 88\%, no menor SP, e de 95\% para acima de 98\%, para o máximo SP.
+
+Os resultados utilizando a técnica de reamostragem \textit{Jackknife}, sugerem que o método foi capaz de obter grupos de treino, teste e validação que contivessem características relevantes da base de dados. Desta forma, os classificadores produziram uma separação de classes elétron jato com melhor eficiência.
+
+Em preto é exibido o resultado para o MLP. Os resultados apresentam pequena dispersão para o melhor subconjunto. Sendo o mínimo valor para o índice SP de 91,972\% e o máximo de  93,441\%. Em vermelho, são os resultados obtidos com a ELM. Em relação ao MLP a ELM apresentou um resultado com dispersão similar, entre 91,174\% e 92,845\%. Por fim, em azul, são os resultados obtidos com a ESN. Nestes a dispersão é superior tanto ao MLP quanto à ELM, com resultados para o índice SP entre 86,017\% e 98,564\%.
+
+%Na cor azul são os resultados obtidos para as redes ESN, e é possível visualizar que o classificador apesar de alcançar valores semelhantes ao do MLP, no que se refere ao máximo índice SP obtido, apresenta uma grande dispersão entre o melhor e o pior índice obtido, em algumas regiões a dispersão é superior a 50\%, como nas regiões (2,0), (2,3) e (3,2). Em três regiões o desempenho alcançado pela ESN foi equivalente e com pequeno espalhamento em relação ao MLP, (2,0), (3,0) e (3,3).
+
+%Em vermelho, são os resultados obtidos com a ELM. Em relação ao MLP a ELM apresentou um resultado com dispersão similar, entre 91,174\% e 92,845\%. Por fim, em azul, são os resultados obtidos com a ESN. Nestes a dispersão é superior tanto ao MLP quanto à ELM, com resultados para o índice SP entre 86,017\% e 98,564\%.
+
+
+
+%\begin{figure}[!ht]
+%	\begin{center}
+%		\caption{Boxplot ELM $\times$ ESN $\times$ MLP na base Experimental de 2011.}
+%		\includegraphics[scale=.5]{./Figuras/NN_MLP_ELM_ESN_MaxSp.eps}
+%		\label{fig:ELMxESNxBP_NN}
+%		%\legend{Fonte: o autor}
+%	\end{center}
+%\end{figure}
+
+
+
+%\begin{figure}[H]
+%	\caption{\textit{Boxplot} e curvas ROC das melhores redes ELM, ESN e MLP na base experimental.}
+%	\begin{subfigure}[t]{.5\linewidth}
+%		\centering
+%		\subcaption{\textit{Boxplot} ELM $\times$ ESN $\times$ MLP.}\label{fig:ELMxESNxBP_NN}
+%		\centerline{\includegraphics[scale=.45]{./Figuras/NN_MLP_ELM_ESN_MaxSp.eps}}
+%	\end{subfigure}
+%	\begin{subfigure}[t]{.5\linewidth}
+%		\centering
+%		\subcaption{ROCs ELM $\times$ ESN $\times$ MLP.}\label{fig:ROCs_NN}
+%		\centerline{\includegraphics[scale=.45]{./Figuras/NN_MLP_ELM_ESN_ROC.eps}}
+%	\end{subfigure}
+%	%	\legend{Fonte: Adaptado de \citeonline{ibm2017}}
+%\end{figure}
+
+
+\begin{figure}[H]
+		\caption{\textit{Boxplot} das melhores redes para ELM, ESN e MLP na base experimental.}
+		\label{fig:ELMxESNxBP_NN}
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{\textit{K-fold}}
+		\centerline{\includegraphics[scale=.44]{./Figuras/NN_MLP_ELM_ESN_k_fold.eps}}
+		\label{fig:ELMxESNxBP_NN_k}
+	\end{subfigure}
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{\textit{Jackknife}.}
+		\centerline{\includegraphics[scale=.44,trim={0 1.2mm 0 0},clip]{./Figuras/NN_MLP_ELM_ESN_jack.eps}}
+		\label{fig:ELMxESNxBP_NN_j}
+	\end{subfigure}
+\end{figure}
+
+Nas Figuras~\ref{fig:ROCs_NN_kfold} e \ref{fig:ROCs_NN_jackk}, são exibidas as curvas ROC para cada uma das técnicas em seus melhores resultados para o índice SP, utilizando \textit{K-fold} e \textit{Jackknife}. Observa-se o que a curva ROC, \autoref{fig:ROCs_NN_jackk}, para a rede ELM sugere uma similaridade de desempenho em relação à rede MLP, pois as curvas estão quase sobrepostas. Já em relação à ESN, o MLP, apresenta seu melhor resultado para uma taxa de falso alarme de 8,359\%, enquanto que a ESN tem seu melhor resultado com taxa de falso alarme de 1,519\% aproximadamente. Observa-se que a ESN obteve uma melhor separação para as classes elétron e jato em relação à ELM e ao MLP.%, os quais obtiverem desempenho semelhante, com as curvas quase sobrepostas.
+
+%Na~\autoref{fig:ROCs_NN} são exibidas as curvas ROC para cada uma das técnicas em seus melhores treinos. Observa-se que a ESN obteve uma melhor separação para as classes eletron e jato em relação à ELM e ao MLP, os quais obtiverem desempenho semelhante, com as curvas quase sobrepostas.
+
+%\begin{figure}[H]
+%	%% cut figure:  trim={<left> <lower> <right> <upper>}
+%	\caption{ROCs para os melhores índices SP em cada técnica.}
+%	\centerline{\includegraphics[scale=.72,trim={8mm 0 0 0},clip]{./Figuras/NN_ROCs_jackk.eps}}
+%	\label{fig:ROCs_NN}
+%\end{figure}
+
+\begin{figure}[H]
+	\caption{ROCs  das melhores redes para ELM, ESN e MLP, utilizando as técnicas de reamostragem \textit{K-fold }(a) e \textit{Jackknife} (b).}
+	\label{fig:ROCs_NN}
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{\textit{K-fold}.}
+		\centerline{\includegraphics[scale=.44,trim={8mm 1.2mm 0 0},clip]{./Figuras/NN_ROCs_kfold.eps}}
+		\label{fig:ROCs_NN_kfold}
+	\end{subfigure}%
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{\textit{Jackknife}.}
+		\centerline{\includegraphics[scale=.44,trim={8mm 1.2mm 0 0},clip]{./Figuras/NN_ROCs_jackk.eps}}
+		\label{fig:ROCs_NN_jackk}
+	\end{subfigure}
+\end{figure}
+
+
+%% k-fold
+%92,421 0,285 93,350 0,419 8,503 0,463 - ELM
+%93,255	0,236 95,355 0,425 8,822 0,414 - MLP
+%98,223	3,278 98,408 2,550 1,962 4,148 - ESN
+
+%% Jackknife
+% 9,482 $\pm$ 0,759 &  92,554 $\pm$ 0,431 &   94,613 $\pm$ 0.891 - ELM
+% 1,161 $\pm$ 4,457 &  98,483 $\pm$ 3,702 &   98,128 $\pm$ 2,953 - ESN
+% 7,989 $\pm$ 0.524 &  93,531 $\pm$ 0,306 &   95,063 $\pm$ 0,391 - MLP
+
+Na \autoref{tab:ROC_ELMxESNxMLP_exp} é possível observar os dados para o máximo índice SP alcançado em cada uma das técnicas utilizando \textit{Jackknife}. Observa-se que as redes ELM, tiveram um desempenho equivalente ao das redes MLP, pois o seu índice SP ficou 0,59\% abaixo, e as incertezas também próximas as alcançadas pelo MLP.
+
+Ao observar os valores para as redes ESN, nota-se a superioridade nos três parâmetros, SP, PD e FR. Para o PD 3,39 \% maior, para o SP 5,12\% maior e para o FR 6,84 \% menor. Porém, é na ESN, que encontram-se os maiores níveis de incerteza para os valores, pelo menos 8 vezes maior que o MLP. Esse fato advém da grande variabilidade para os índices SP alcançados, de 86,017\% a 98,564\% o que produz um $\Delta_{SP_{ESN}}=12,547\%$. Em comparação com o MLP, a faixa de valores foi de: 91,972\% a 93.441\% resultando num $\Delta_{SP_{MLP}}=1,469\%$, aproximadamente 10 vezes menor.
+
+\begin{table}[H]
+	\centering
+	\caption{Dados para os melhores índices SP nas técnicas, MLP, ELM e ESN para a base Experimental.}
+	\label{tab:ROC_ELMxESNxMLP_exp}
+		\begin{small}
+	%		\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+	\setlength{\extrarowheight}{3pt}       %%Aumentar a altura das linhas
+	\begin{tabular}{*{4}{c}} \toprule
+		&	     FR (\%)	 &	      SP (\%)     &       PD  (\%)     \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+		ELM	& 7,848 $\pm$ 0.9383 &  92,845 $\pm$ 0,460 &   93,541 $\pm$ 0,7954 \\ \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+		MLP	& 8,359 $\pm$ \textbf{0,540} &  93,441 $\pm$ \textbf{0,399} &   95,258 $\pm$ \textbf{0,446}  \\ \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+		ESN	& 1,519 $\pm$ 4,674 &  98,564 $\pm$ 3,924 &   98,646 $\pm$ 3,219  \\ \bottomrule
+	\end{tabular}%}%
+		\end{small}
+\end{table}% 
+
+%\begin{table}[H]
+%	\centering
+%	\caption{Dados ROC para os melhores resultados, MLP, ELM e ESN para a base Experimental.}
+%	\label{tab:ROC_ELMxESNxMLP_exp}
+%%	\begin{scriptsize}
+%%		\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+%		\setlength{\extrarowheight}{3pt}       %%Aumentar a altura das linhas
+%		\begin{tabular}{c*{3}c} \toprule
+%		         	&	     SP (\%)	 &	      PD (\%)     &       FR  (\%)     \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+%			 ELM	& 92,421 $\pm$ 0,285 & 93,350 $\pm$ 0,419 & 8,503 $\pm$ 0,463  \\ \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+%			 MLP	& 93,255 $\pm$ \textbf{0,236} & 95,355 $\pm$ \textbf{0,425} & 8,822 $\pm$ \textbf{0,414}  \\ \cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+%			 ESN	& 98,223 $\pm$ 3,278 & 98,408 $\pm$ 2,550 & 1,962 $\pm$ 4,148  \\ \bottomrule
+%		\end{tabular}%}%
+%%	\end{scriptsize}
+%\end{table}% 
+
+
+
+\subsubsection{Tempo de Treinamento}
+
+A \autoref{tab:t_ELMxESNxMLP_exp} mostra os tempos de treino para as redes com o maior índice SP, que foram apresentados na \autoref{tab:ROC_ELMxESNxMLP_exp}. Nota-se uma redução no tempo de treinamento significativa tanto com a ELM quanto com a ESN. Ambas foram mais rápidas que o MLP. A ELM foi 12,65 vezes, e a ESN 11,18 vezes, o que representa redução de 92,09\% e 91,06\% do tempo do MLP, respectivamente. Esses resultados indicam que com as redes ELM e ESN seria possível realizar um número maior de reconfigurações e treinos das redes no mesmo tempo utilizado para o treino de redes MLP.
+\begin{table}[H]
+	\centering
+	\caption{Tempo de treinamento em segundos, para os melhores resultados, ELM $\times$  ESN $\times$ MLP, na base experimental.}
+	\label{tab:t_ELMxESNxMLP_exp}
+	\begin{small}
+		%		\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+		\setlength{\extrarowheight}{3pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{c*{3}c} \toprule
+			    & \multicolumn{3}{c}{Técnicas} \\ \cmidrule(lr){2-4}
+			 	&	     {ELM}		  &	       {MLP}         &     {ESN}              \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+	tempo (s)	& 22,770  $\pm$ 4,182 &  288,130 $\pm$ 42,064 &  25,760  $\pm$  5,932  \\ \bottomrule
+		\end{tabular}
+	\end{small}
+\end{table}% 
+
+\subsection{Análise Estatística}
+
+A seguir os resultados obtidos com o teste de Student para os melhores resultados obtidos com a base de dados experimentais, utilizando as expressões das Equações~\ref{eq:tstudentDif}, \ref{eq:Disttudent} e \ref{eq:Eqstudent}. Os dados de entrada das equações foram os índices SP das melhores inicializações para cada uma das técnicas. Três análises serão apresentadas: ELM $\times$ MLP, ESN $\times$ MLP e ELM $\times$ ESN. Em cada uma será avaliada a seguinte hipótese nula, H$_0$: os classificadores possuem o mesmo desempenho de classificação. Caso $t_{calc}>t_{tab}$, a hipótese deve ser descartada, do contrário, a hipótese não pode ser descartada, pois os classificadores possuem desempenho semelhante.
+
+O valor de referência tabelado para uma distribuição de Student com nove graus ($k-1=9$) de liberdade é $t_{tab} = 2,262$\footnote{Valor para uma probabilidade bicaudal.} para um nível de significância de 95\%. Os dados utilizados são os dados que produziram as melhores \textit{boxplot} da \autoref{fig:ELMxESNxBP_NN_j}.  
+
+\begin{itemize}
+	\item ELM $\times$ MLP: O resultado do teste na comparação entre os classificadores foi de $t=5,191$, que é maior que o $t_{tab} = 2,262$, logo, a hipótese nula pode ser descartada, pois os classificadores possuem diferenças significativas.
+
+	\item ESN $\times$ MLP: Na comparação entre esses classificadores o resultado do teste foi de $t=1,146$, menor do que o  $t_{tab} = 2,262$, o que indica desempenho de classificação semelhante, pois as diferenças não são significativas
+	\item ELM $\times$ ESN: Nessa comparação o resultado foi de $t=	0,500$, significativamente inferior ao valor tabulado $t_{tab} = 2,262$. Dessa forma conclui-se que os classificadores não possuem diferenças significativas, ou seja, possuem desempenho de classificação similar.
+\end{itemize}
+
+Os testes realizados considerando as combinações possíveis entre os classificadores indicam que os classificadores, ELM e MLP possuem diferenças significativas, ou seja, os classificadores projetados não possuem resultados similares. A comparação entre ESN e MLP, indicou que os resultados são similares, pois os classificadores possuem mesmo desempenho de classificação. Na comparação entre ESN e ELM, o teste indicou que os classificadores são semelhantes em desempenho, visto o valor obtido ser significativamente inferior ao tabelado.
+  
+
+%% ==========================================
+\subsection{Dados Simulados}
+%%----------------------------------------
+\subsubsection{Informações}
+Nesta base com dados simulados foram utilizadas duas técnica de reamostragem, a  \textit{K-fold} e \textit{Jackknife}, e serão apresentados os resultados para a técnica, \textit{Jackknife}, que produziu os melhores resultados. Três técnicas de classificadores neurais foram utilizadas: MLP, ELM e ESN. E o número de neurônios utilizado em cada região, obtido pela metodologia descrita na \autoref{met:nNeu}, é exibido na \autoref{tab:nNeu_MC2015}.
+
+\begin{table}[H]
+	\centering
+	\caption{Número de neurônios utilizado em cada uma das técnicas organizados por região.}
+	\label{tab:nNeu_MC2015}
+	\begin{small}
+		%\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+		\setlength{\extrarowheight}{2pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{c*{10}c} \toprule
+			\multicolumn{11}{c}{Número de neurônios por Região na base simulada}  \\ \midrule
+			& (0,0) &  (0,1)  &  (0,2)  &  (1,3) &  (1,0)  &  (1,1)  &  (1,2)  &  (1,3)  & (2,0) & (2,1) \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
+		ELM	& 100 & 100 & 100 &  90 & 100 & 100 &  90 & 100 & 70 & 90 \\
+		MLP	&   5 &  10 &   5 &   7 &   5 &   7 &  12 &   5 &  5 & 12 \\
+     	ESN	&  30 &  15 &  45 &  15 &  15 &  15 &  15 &  15 & 15 & 15 \\ \midrule
+			&  (2,2)  &  (2,3)  &  (3,0)  &  (3,1) &  (3,2)  &  (3,3)  &  (4,0)  &  (4,1)  & (4,2) & (4,3) \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}\cmidrule(lr){11-11}
+		ELM	& 100 &  70 &  80 &  80 &  80 &  90 & 100 & 100 & 80 & 90 \\
+		MLP	&   5 &   5 &  12 &   6 &   6 &  16 &   7 &   7 &  5 &  8 \\
+		ESN	&  15 &  15 &  15 &  30 &  45 &  15 &  15 &  15 & 60 & 15 \\ \bottomrule
+		\end{tabular}%}%
+	\end{small}
+\end{table}%
+
+\subsubsection{Índice SP}
+
+Nas Figuras \ref{fig:ELMxESNxBP_MC15_jack_00_43} e \ref{fig:ELMxESNxBP_MC15_kfold_00_43} são apresentados os resultados para as melhores redes em cada uma das três técnicas. Na \autoref{fig:ELMxESNxBP_MC15_jack_00_43} são as \textit{boxplot} para os treinos utilizando reamostragem \textit{Jackknife} e na \autoref{fig:ELMxESNxBP_MC15_kfold_00_43} são as \textit{boxplots} para os treinos reamostrados via \textit{K-fold}. Cada \textit{boxplot} para a técnica de reamostragem \textit{Jackknife} é composta de 10 sorteios, os quais contem todas as possibilidades de combinação entre os subconjuntos possíveis. Enquanto que as \textit{boxplots} com a técnica \textit{K-fold} contém 50 sorteios das 210 combinações possíveis para treino ($C_{10,6}$) entre os subconjuntos de teste e treino.
+
+Em preto, são os resultados para o MLP e apresentam a menor dispersão  entre as técnicas, menos de 10 pontos entre o menor e o maior índice SP atingido. Na cor vermelha são os resultados para as redes ELM, nestes, os resultados obtidos se aproximaram dos índices alcançados pelo MLP, sugerindo equivalência nos resultados obtidos. Já em azul, os resultados para as redes ESN, nestes, apesar de alcançarem picos de índice SP superiores às duas anteriores,  em todas as regiões da base, possuem maior dispersão entre os resultados alcançados.
+
+%Estes resultados sugerem, a princípio, que as técnicas propostas podem alcançar resultados equivalente aos das redes MLP, porém, é necessário avaliar em detalhes a qualidade dos resultados obtidos com as redes ELM e ESN, o que será abordado em seguida.
+
+
+
+%\begin{figure}[H]
+%	\begin{center}
+%		\caption{\textit{Boxplot} ELM $\times$ ESN $\times$ MLP para cada região. Nesta, os resultados foram obtidos utilizando a técnica de reamostragem \textit{Jackknife}.}
+%		\includegraphics[scale=.8]{./Figuras/MC15_MLP_ELM_ESN_MaxSp_Jackknife.eps}
+%		\label{fig:ELMxESNxBP_MC15_jack}
+%		%\legend{Fonte: o autor}
+%	\end{center}
+%\end{figure}
+
+\begin{figure}[H]
+		\caption{\textit{Boxplot} ELM $\times$ ESN $\times$ MLP para cada região. Nesta, os resultados foram obtidos utilizando a técnica de reamostragem \textit{Jackknife}. Sobre a indicação de cada região está a \textit{boxplot} para a ELM, à esquerda a \textit{boxplot} do MLP e à direita a \textit{boxplot} da ESN.}	\label{fig:ELMxESNxBP_MC15_jack_00_43}
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{Regiões (0,0) $\ldots$ (2,1).}
+		\centerline{\includegraphics[scale=.45]{./Figuras/MC15_MLP_ELM_ESN_MaxSp_Jackknife_00_21.eps}}
+		\label{fig:ELMxESNxBP_MC15_jack_00}
+	\end{subfigure}%
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{Regiões (2,2) $\ldots$ (4,3).}
+		\centerline{\includegraphics[scale=.45]{./Figuras/MC15_MLP_ELM_ESN_MaxSp_Jackknife_22_43.eps}}
+		\label{fig:ELMxESNxBP_MC15_jack_22}
+	\end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+	\caption{\textit{Boxplot} ELM $\times$ ESN $\times$ MLP para cada região. Nesta, os resultados foram obtidos utilizando a técnica de reamostragem \textit{K-fold}. Sobre a indicação de cada região está a \textit{boxplot} para a ELM, à esquerda a \textit{boxplot} do MLP e à direita a \textit{boxplot} da ESN.}	\label{fig:ELMxESNxBP_MC15_kfold_00_43}
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{Regiões (0,0) $\ldots$ (2,1).}
+		\centerline{\includegraphics[scale=.45]{./Figuras/MC15_MLP_ELM_ESN_MaxSp_K_fold_00_21.eps}}
+		\label{fig:ELMxESNxBP_MC15_kfold_00}
+	\end{subfigure}%
+	\begin{subfigure}[t]{.5\linewidth}
+		\caption{Regiões (2,2) $\ldots$ (4,3).}
+		\centerline{\includegraphics[scale=.45]{./Figuras/MC15_MLP_ELM_ESN_MaxSp_K_fold_22_43.eps}}
+		\label{fig:ELMxESNxBP_MC15_kfold_22}
+	\end{subfigure}
+\end{figure}
+
+A seguir, serão apresentadas as curvas ROC para as melhores \textit{boxplot} dos classificadores nas técnicas: MLP, ELM e ESN. Os resultados referem-se aos treinamentos que utilizaram a técnica de reamostragem por \textit{Jackknife}, uma vez que os resultados obtidos possuem baixa dispersão em comparação com os resultados obtidos com a técnica \textit{K-fold}. Para auxiliar na análise, as curvas ROC foram organizadas em conjuntos de 5, referentes aos níveis de energia transversa ($\Delta_{E_T}$) simulados para a base em cada uma das regiões de $\eta$. %conforme a região no interior do detector ($\eta$) enquanto 
+
+Na~\autoref{fig:MC15_ROCs_00_40} é exibido o conjunto das curvas ROC para as regiões: (0,0), (1,0), (2,0), (3,0) e (4,0). Nestas cinco regiões ($0\leq\Delta_{|\eta|}\leq0,8$) da base simulada, observa-se que o desempenho dos classificadores com redes ESN é superior em todas as regiões às redes ELM e MLP. Sobre o desempenho das redes ELM, percebe-se uma similaridade de desempenho na comparação com as redes MLP, nas regiões (1,0), (2,0), (3,0) e (4,0) nas quais as curvas quase se sobrepõem.
+
+%Nesse conjunto de regiões observa-se que a elevação da energia envolvida nas assinaturas possibilita uma melhor separação entre classes. Para região (0,0), com a menor energia, E$_T$ no intervalo [15, 20] GeV os classificadores produziram resultados com curvas semelhantes. À medida que a energia aumenta os classificadores melhoram as curvas, com elevação em PD e redução em FR.
+
+\begin{figure}[H]
+	\caption{ROCs para os melhores índices SP, regiões (0,0), (1,0), (2,0), (3,0) e (4,0).}
+%	\centerline{\includegraphics[scale=.52]{./Figuras/MC15_00_03_Jackknife.eps}}MC15_03_43_Jackknife
+	\centerline{\includegraphics[scale=.59]{./Figuras/MC15_00_40_Jackknife.eps}}
+	\label{fig:MC15_ROCs_00_40}
+\end{figure}
+
+Na~\autoref{fig:MC15_ROCs_01_41} é exibido o conjunto das curvas ROC para as regiões: (0,1), (1,1), (2,1), (3,1) e (4,1). Nestas cinco regiões ($0,8\leq\Delta_{|\eta|}\leq1,37$) da base simulada, nota-se que o desempenho dos classificadores com redes ESN é superior em todas as regiões às redes ELM e MLP. Observando o desempenho das redes ELM, nota-se similaridade quando comparado ao desempenho das redes MLP. Em especial, as regiões (2,1), (3,1) e (4,1) observa-se uma superposição das curvas.
+
+\begin{figure}[H]
+	\caption{ROCs para os melhores índices SP, regiões (0,1), (1,1), (2,1), (3,1) e (4,1).}
+	\centerline{\includegraphics[scale=.59]{./Figuras/MC15_01_41_Jackknife.eps}}
+	\label{fig:MC15_ROCs_01_41}
+\end{figure}
+
+Na~\autoref{fig:MC15_ROCs_02_42} é exibido o conjunto das curvas ROC para as regiões: (0,2), (1,2), (2,2), (3,2) e (4,2). Nestas cinco regiões ($1,37\leq\Delta_{|\eta|}\leq1,54$) da base simulada, observa-se que o desempenho dos classificadores com redes ESN é superior às redes ELM e MLP em quatro das regiões, perdendo para as redes MLP e com desempenho equivalente à ELM quando $15\leq E_T\leq20$ GeV (0,2). Quanto ao desempenho das redes ELM, nota-se similaridade de desempenho quando comparado ao desempenho das redes MLP, somente nas regiões (0,2), (2,2) e (4,2).
+
+\begin{figure}[H]
+	\caption{ROCs para os melhores índices SP, regiões (0,2), (1,2), (2,2), (3,2) e (4,2).}
+	\centerline{\includegraphics[scale=.59]{./Figuras/MC15_02_42_Jackknife.eps}}
+	\label{fig:MC15_ROCs_02_42}
+\end{figure}
+
+Na~\autoref{fig:MC15_ROCs_03_43} é exibido o conjunto das curvas ROC para as regiões: (0,3), (1,3), (2,3), (3,3) e (4,3). Nestas cinco primeiras regiões ($1,54\leq\Delta_{|\eta|}\leq2,5$) da base simulada, observa-se que o desempenho dos classificadores com redes ESN é superior em todas as regiões às redes ELM e MLP. Quanto às redes ELM, nota-se similaridade de desempenho quando comparado às redes MLP nas regiões (2,3), (3,3) e (4,3), nas quais, as curvas, quase se sobrepõem, como ocorrido na~\autoref{fig:MC15_ROCs_00_40}.  
+
+\begin{figure}[H]
+	\caption{ROCs para os melhores índices SP, regiões (0,3), (1,3), (2,3), (3,3) e (4,3).}
+	\centerline{\includegraphics[scale=.59]{./Figuras/MC15_03_43_Jackknife.eps}}
+	\label{fig:MC15_ROCs_03_43}
+\end{figure}
+
+
+A seguir na~\autoref{tab:sp_2015}, os máximos valores de índice SP alcançados para as melhores redes de cada técnica. Na tabela, é possível confirmar o desempenho observado nas curvas ROC, porém, análise será feita quanto à qualidade do resultado. Ou seja, avaliar o nível de incerteza associada ao máximo valor para o índice SP alcançado.
+
+Para se ter uma referência, os valores de incerteza alcançados pelas redes MLP estão destacados (em negrito) afim de auxiliar na identificação. Iniciando pelas redes ELM, em três regiões, (3,2), (3,3) e (4,1) a incerteza foi menor do que a incerteza para as redes MLP. Nas demais regiões, a incerteza no valor do máximo índice SP alcançado foi maior. Entretanto, os valores não foram elevados. No melhor caso, a incerteza para mais, foi de  0,024\% sendo registrada na região (4,3), e o caso onde se registrou a maior incerteza foi na região região (1,3), com diferença de 0,725\%.
+
+No que se refere à incerteza para os resultados alcançados pelas redes ESN, quatro regiões obtiveram valores de incerteza próximo aos alcançados pelas redes MLP: (0,0), (0,3), (2,2) e (4,3). Sendo a região (0,3) a de menor valor, 0,885\% que é 1,32 vezes. Já a maior incerteza foi registrada na região (2,3), 4,137\% que é superior ao valor alcançado pela rede MLP 19,88 vezes.
+
+A avaliação do nível de incerteza das técnicas é importante, pois mesmo que uma técnica alcance melhores índices SP, a incerteza pode descredibilizar o resultado, uma vez que abrirá uma margem larga para o valor verdadeiro, além do fato de ultrapassar o limite inferior da técnica de referência (MLP).
+
+
+\begin{table}[H]
+	\centering
+	\caption{Índice SP para os melhores resultados da ELM e ESN comparados com os valores obtidos com o MLP, em cada região. Cada coluna representa uma posição no interior do detector e em cada linha pode-se observar a melhora nos índices com a elevação da energia ($\Delta_{E_T}$, $\Delta_{|\eta|}$).}
+	\label{tab:sp_2015}
+	\begin{footnotesize}
+		%		\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+		\setlength{\extrarowheight}{0pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{c*{4}c} \toprule
+%			\multicolumn{5}{c}{Resultado para o índice SP (\%) por Região na base}  \\ \midrule
+		    	&        (0,0)       &       (0,1)        &       (0,2)         &  (0,3)         \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}
+			ELM & 88,288 $\pm$ 0,993 & 86,509 $\pm$ 0,837 & 93,720 $\pm$  2,828 & 88,471 $\pm$ 1,299 \\
+			MLP & 89,270 $\pm$ \textbf{0,441} & 88,035 $\pm$ \textbf{0,586} & 94,673 $\pm$  \textbf{2,483} & 89,600 $\pm$ \textbf{0,667} \\
+			ESN & \cellcolor{blue!15}92,146 $\pm$ 0,885 & 89,106 $\pm$ 8,641 & 91,378 $\pm$ 15,417 & \cellcolor{blue!15}92,146 $\pm$ 0,885 \\ \midrule \midrule
+                &        (1,0)       &       (1,1)        &        (1,2)        & (1,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}			
+			ELM & 93,596 $\pm$ 0,642 & 92,145 $\pm$ 0,740 & 95,993 $\pm$  1,340 & 92,215 $\pm$ 0,883 \\
+			MLP & 94,302 $\pm$ \textbf{0,247} & 93,340 $\pm$ \textbf{0,241} & 96,711 $\pm$  \textbf{0,841} & 93,094 $\pm$ \textbf{0,158} \\
+			ESN & 99,006 $\pm$ 3,280 & 96,310 $\pm$ 1,990 & 99,421 $\pm$  7,847 & 98,563 $\pm$ 2,958 \\ \midrule \midrule
+		      &          (2,0)       &        (2,1)       &        (2,2)        &       (2,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}			
+			ELM & 96,545 $\pm$ 0,361 & 95,611 $\pm$ 0,510 & 97,890 $\pm$  0,498 & 95,347 $\pm$ 0,260 \\
+			MLP & 96,909 $\pm$ \textbf{0,239} & 95,921 $\pm$ \textbf{0,265} & 98,268 $\pm$  \textbf{0,249} & 95,543 $\pm$ \textbf{0,208} \\
+			ESN & 99,566 $\pm$ 2,840 & 99,905 $\pm$ 1,843 & \cellcolor{blue!15}99,554 $\pm$  0,618 & 99,339 $\pm$ 4,137 \\ \midrule \midrule
+	            &        (3,0)       &        (3,1)       &        (3,2)        &       (3,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}			
+			ELM & 97,567 $\pm$ 0,486 & 96,889 $\pm$ 0,448 & \cellcolor{red!15}99,427 $\pm$  0,559 & \cellcolor{red!15}96,485 $\pm$ 0,318 \\
+			MLP & 97,515 $\pm$ \textbf{0,250} & 97,056 $\pm$ \textbf{0,292} & 99,427 $\pm$  \textbf{0,563} & 96,712 $\pm$ \textbf{0,347} \\
+			ESN & 99,644 $\pm$ 1,151 & 99,905 $\pm$ 1,843 & 99,714 $\pm$  3,995 & 99,847 $\pm$ 3,594 \\ \midrule \midrule
+		        &        (4,0)       &        (4,1)       &        (4,2)        &  (4,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}			
+			ELM & 98,228 $\pm$ 0,295 & \cellcolor{red!15}97,604 $\pm$ 0,316 & 99,530 $\pm$  0,777 & 97,036 $\pm$ 0,325 \\
+			MLP & 98,238 $\pm$ \textbf{0,239} & 97,732 $\pm$ \textbf{0,369} & 99,624 $\pm$  \textbf{0,614} & 97,221 $\pm$ \textbf{0,301} \\
+			ESN & 99,896 $\pm$ 2,532 & 99,775 $\pm$ 2,780 & \cellcolor{blue!15}99,813 $\pm$  1,206 & 99,686 $\pm$ 2,078 \\ \bottomrule
+		\end{tabular}%}%
+	\end{footnotesize}
+\end{table}%
+
+A seguir na \autoref{tab:pd_2015}, os valores de probabilidade de detecção (PD) associados aos índices SP (\autoref{tab:sp_2015}) da melhor \textit{boxplot} para cada uma das técnicas, MLP, ELM e ESN. A análise feita tomando esse parâmetro como referência é importante, pois refere-se ao nível de acerto na detecção de elétrons. Indica a qualidade de classificação, correta de elétrons e jatos. Dessa forma, elevados índices PD são desejados pois reduz-se a chance de perda ou descarte de um evento que contenha um elétron que possa estar relacionado com a física de interesse.
+
+Como ocorreu com os índices SP, os valores de PD para a ELM são bem próximas, tanto nos valores alcançados, quanto na incerteza registrada. Na região (0,2), foi onde a ELM obteve o melhor índice PD, sendo superior à probabilidade de detecção atingida tanto pelo MLP quanto pela ESN.
+
+Em relação à ESN, os valores de PD registrados são melhores que o MLP e a ELM em 18 das vinte regiões, com exceção das regiões (0,2), na qual a ELM foi superior, e na região (4,2), que possui o menor número de assinaturas, região onde houve desempenho equivalente para as três técnicas. Porém, a incerteza é elevada em relação MLP.
+
+\begin{table}[H]
+	\centering
+	\caption{Probabilidade de detecção (PD) para os melhores resultados, ELM e ESN comparados com os valores obtidos com o MLP, em cada região. Cada coluna representa uma posição no interior do detector e em cada linha pode-se observar a melhora nos índices com a elevação da energia ($\Delta_{E_T}$, $\Delta_{|\eta|}$).}
+	\label{tab:pd_2015}
+	\begin{footnotesize}
+		%  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+		\setlength{\extrarowheight}{1pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{c*{4}c} \toprule
+%			\multicolumn{5}{c}{Resultado para a taxa de probabilidade de detecção (PD) (\%) por Região na base}  \\ \midrule
+			    &        (0,0)       &       (0,1)        &       (0,2)         &      (0,3)         \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}
+			ELM & 86,412 $\pm$ 0,967 & 82,929 $\pm$ 1,748 & \cellcolor{red!15}95,082 $\pm$  5,446 & 87,004 $\pm$ 1,299 \\
+			MLP & 87,622 $\pm$\textbf{ 1,311} & 85,125 $\pm$ \textbf{1,459} & 93,443 $\pm$  \textbf{4,179} & 87,555 $\pm$ \textbf{1,055} \\
+			ESN & 90,042 $\pm$ 1,633 & 86,084 $\pm$ 6,391 & 93,548 $\pm$ 16,041 & 90,042 $\pm$ 1,633 \\\midrule \midrule
+		    	&        (1,0)       &       (1,1)        &        (1,2)        &       (1,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}             
+			ELM & 93,088 $\pm$ 0,463 & 92,707 $\pm$ 0,781 &  97,193 $\pm$ 2,118 & 93,923 $\pm$ 1,208  \\
+			MLP & 94,295 $\pm$ \textbf{0,412} & 93,089 $\pm$ \textbf{0,427} &  96,154 $\pm$ \textbf{1,224} & 94,195 $\pm$ \textbf{0,589}  \\
+			ESN & 98,744 $\pm$ 2,160 & 95,250 $\pm$ 1,303 &  99,301 $\pm$ 6,385 & 98,706 $\pm$ 2,336  \\\midrule \midrule
+			    &          (2,0)     &        (2,1)       &         (2,2)       &       (2,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                 
+			ELM & 97,470 $\pm$ 0,581 & 96,764 $\pm$ 0,865 &  98,773 $\pm$ 1,024 & 97,484 $\pm$ 0,428  \\
+			MLP & 97,473 $\pm$ \textbf{0,270} & 97,261 $\pm$ \textbf{0,453} &  98,466 $\pm$ \textbf{0,510} & 97,328 $\pm$ \textbf{0,396}  \\
+			ESN & 99,550 $\pm$ 1,767 & 99,946 $\pm$ 1,108 &  99,233 $\pm$ 0,593 & 99,362 $\pm$ 3,068  \\\midrule \midrule
+			    &        (3,0)       &        (3,1)       &         (3,2)       &       (3,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                 
+			ELM & 98,529 $\pm$ 0,398 & 97,493 $\pm$ 0,485 &  99,567 $\pm$ 0,596 & 98,610 $\pm$ 0,537  \\
+			MLP & 98,710 $\pm$ \textbf{0,358} & 98,377 $\pm$ \textbf{0,448} &  99,567 $\pm$ \textbf{0,385} & 98,432 $\pm$ \textbf{0,385}  \\
+			ESN & 99,477 $\pm$ 0,701 & 99,946 $\pm$ 1,108 &  99,784 $\pm$ 4,158 & 99,782 $\pm$ 2,734  \\\midrule \midrule
+		  	    &        (4,0)       &        (4,1)       & \cellcolor{gray!15}(4,2)        &       (4,3)        \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                 
+			ELM & 98,278 $\pm$ 0,284 & 98,254 $\pm$ 0,525 & 100,000 $\pm$ 1,290 & 97,958 $\pm$ 0,513 \\
+			MLP & 98,887 $\pm$ \textbf{0,373} & 98,123 $\pm$ \textbf{0,444} & 100,000 $\pm$ \textbf{1,043} & 98,296 $\pm$ \textbf{0,301} \\
+			ESN & 99,895 $\pm$ 1,456 & 99,695 $\pm$ 1,931 & 100,000 $\pm$ 1,155 & 99,676 $\pm$ 1,468 \\\bottomrule
+		\end{tabular}%}%
+	\end{footnotesize}
+\end{table}%
+
+
+A seguir na \autoref{tab:fr_2015}, os valores de falso alarme (FR) associados ao índices SP da melhor \textit{boxplot} para cada uma das técnicas, MLP, ELM e ESN apresentados na \autoref{tab:sp_2015}. Esse parâmetro está associado aos jatos identificados erroneamente como elétrons. Idealmente, deseja-se que a taxa de falso alarme seja zero. Entretanto, elevados índices, acarretam em processamento futuro de eventos classificados de maneira errada, demando tempo de processamento e armazenamento desnecessários. Não há perda de eventos raros, como ocorre na situação de baixos índices de PD, os quais sugerem que informação relevante, de rara ocorrência, pode ser descartada.
+
+Nos resultados, somente na região (0,2) que o MLP produziu o menor índice de FR, nas demais, obteve valores acima da ELM e/ou ESN. A ELM produziu o seu menor índice na região (4,0). Já a ESN, obteve o menor resultado nas 18 demais. Também há de notar que a elevada incerteza já percebida com o índice SP esteve presente tanto no índice PD (\autoref{tab:pd_2015}) como nos valores do índice FR da \autoref{tab:fr_2015}.
+
+\begin{table}[H]
+	\centering
+	\caption{Taxa de falso alarme (FR) para os melhores resultados, ELM e ESN comparados com os valores obtidos com o MLP, em cada região. Cada coluna representa uma posição no interior do detector e em cada linha pode-se observar a melhora nos índices com a elevação da energia ($\Delta_{E_T}$, $\Delta_{|\eta|}$).}
+	\label{tab:fr_2015}
+	\begin{footnotesize}
+		%  \resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+		\setlength{\extrarowheight}{1pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{c*{4}c} \toprule
+%			\multicolumn{5}{c}{Resultado para a taxa de falso alarme (FR) (\%) por Região na base}  \\ \midrule
+			    &        (0,0)      &       (0,1)        &       (0,2)         &      (0,3)         \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}
+			ELM & 9,817 $\pm$ 1,497 & 9,835 $\pm$  1,134 &  7,632 $\pm$  2,168 & 10,050 $\pm$ 2,026 \\
+			MLP & 9,067 $\pm$ \textbf{0,891} & 9,007 $\pm$ \textbf{ 1,318} & \cellcolor{gray!15}4,088 $\pm$  \textbf{2,379} &  8,332 $\pm$ \textbf{0,901} \\
+			ESN & 5,725 $\pm$ 1,325 & 7,820 $\pm$ 12,683 & 10,767 $\pm$ 18,364 &  5,725 $\pm$ 1,325 \\\midrule \midrule
+		 	    &        (1,0)      &       (1,1)        &        (1,2)        &       (1,3)        \\\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                             
+			ELM & 5,894 $\pm$ 1,087 & 8,416 $\pm$ 1,147 & 5,200 $\pm$  1,847 & 9,477 $\pm$ 1,087 \\
+			MLP & 5,691 $\pm$ \textbf{0,413} & 6,409 $\pm$ \textbf{0,351} & 2,731 $\pm$  \textbf{1,168} & 8,000 $\pm$ \textbf{0,556} \\
+			ESN & 0,731 $\pm$ 4,743 & 2,625 $\pm$ 2,873 & 0,458 $\pm$ 10,188 & 1,580 $\pm$ 3,751 \\\midrule \midrule
+			    &          (2,0)    &        (2,1)      &        (2,2)       &       (2,3)      \\\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                                 
+			ELM & 4,376 $\pm$ 0,421 & 5,535 $\pm$ 0,789 & 2,989 $\pm$ 0,697 & 6,767 $\pm$ 0,348 \\
+			MLP & 3,654 $\pm$ \textbf{0,562} & 5,409 $\pm$ \textbf{0,443} & 1,930 $\pm$ \textbf{0,410} & 6,225 $\pm$ \textbf{0,527} \\
+			ESN & 0,417 $\pm$ 4,006 & 0,136 $\pm$ 2,702 & 0,125 $\pm$ 0,901 & 0,685 $\pm$ 5,260 \\\midrule \midrule
+			    &        (3,0)      &        (3,1)      &        (3,2)      &       (3,3)       \\\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                                 
+			ELM & 3,390 $\pm$ 0,761 & 3,712 $\pm$ 0,646 & 0,713 $\pm$ 0,867 & 5,617 $\pm$ 0,616 \\
+			MLP & 3,672 $\pm$ \textbf{0,454} & 4,255 $\pm$ \textbf{0,502} & 0,713 $\pm$ \textbf{0,931} & 4,993 $\pm$ \textbf{0,584} \\
+			ESN & 0,188 $\pm$ 1,608 & 0,136 $\pm$ 2,702 & 0,357 $\pm$ 4,510 & 0,089 $\pm$ 5,273 \\\midrule \midrule
+			    &        (4,0)      &        (4,1)      &        (4,2)      &       (4,3)       \\\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}                               
+			ELM & \cellcolor{red!15}1,823 $\pm$ 0,454 & 3,045 $\pm$ 0,721 & 0,938 $\pm$ 0,772 & 3,883 $\pm$ 0,547 \\
+			MLP & 2,408 $\pm$ \textbf{0,342} & 2,658 $\pm$ \textbf{0,544} & 0,751 $\pm$ \textbf{0,488} & 3,848 $\pm$ \textbf{0,591} \\
+			ESN & 0,103 $\pm$ 3,676 & 0,145 $\pm$ 3,668 & 0,375 $\pm$ 1,490 & 0,304 $\pm$ 3,025 \\\bottomrule
+		\end{tabular}%}%
+	\end{footnotesize}
+\end{table}%
+
+\subsubsection{Tempos de Treinamento}
+
+A seguir, na~\autoref{tab:t_ELMxESNxBP_2015}, os tempos de treinamento utilizados para cada uma das três técnicas. Dentre as três técnicas, as redes MLP foram as que mais precisaram de tempo para o seu treinamento. No melhor caso, 2,48~s para a região (4,2), contra 0,15~s para a ELM e 0,33~s para a ESN. Para o pior caso, 284,92~s para a região (0,3), contra 31,14~s para ELM e 58,69~s para a ESN.
+
+As redes ELM foram as que necessitaram de menos tempo para o seu treino, em todas as regiões. Em comparação com a técnica de referência (MLP) a diferença mínima foi da ordem de 5,58 vezes, na região (0,2), a qual possui o sexto menor número de assinaturas, 98.232, já a maior diferença foi registrada na região (4,3) com tempo de treino 16,53 vezes menor, a qual possui o sétimo menor número de assinaturas, 100.640.
+
+\begin{table}[H]
+	\centering
+	\caption{Tempo de treinamento em segundos, para os melhores resultados, ELM $\times$  ESN $\times$ MLP, em cada região.}
+	\label{tab:t_ELMxESNxBP_2015}
+	\begin{small}
+		%\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+		\setlength{\extrarowheight}{0pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{*{5}{c}} \toprule
+			\multicolumn{5}{c}{Tempos, em segundos, por Região na base}  \\ \midrule
+		      &          (0,0)       &        (0,1)         &        (0,2)        &      (0,3)          \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}
+	$t_{ELM}$ &  21,400 $\pm$  2,885 &  21,590 $\pm$  3,152 &  5,420 $\pm$ 1,029 &  31,140 $\pm$  4,161 \\
+	$t_{MLP}$ & 242,080 $\pm$ 33,410 & 166,430 $\pm$ 23,709 & 30,250 $\pm$ 5,217 & \cellcolor{gray!15}284,920 $\pm$ 47,683 \\
+	$t_{ESN}$ &  58,690 $\pm$ 11,812 &  13,720 $\pm$  6,155 &  7,280 $\pm$ 1,626 &  58,690 $\pm$ 11,812 \\ \midrule \midrule
+		      &          (1,0)       &        (1,1)         &        (1,2)        &      (1,3)          \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}	
+	$t_{ELM}$ &  23,420 $\pm$  2,842 &  12,380 $\pm$  1,695 &  3,340 $\pm$ 0,673 &  25,610 $\pm$  3,446 \\
+	$t_{MLP}$ & 216,030 $\pm$ 31,058 & 109,000 $\pm$ 23,037 & 32,900 $\pm$ 4,827 & 252,900 $\pm$ 35,670 \\
+	$t_{ESN}$ &  35,180 $\pm$  7,550 &  13,170 $\pm$  5,478 &  4,950 $\pm$ 1,097 &  35,910 $\pm$  7,831 \\ \midrule \midrule
+		      &          (2,0)       &        (2,1)         &        (2,2)        &      (2,3)          \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}	
+	$t_{ELM}$ &  16,530 $\pm$  2,548 &  10,340 $\pm$  1,448 &  0,760 $\pm$ 0,137 &  16,030 $\pm$  1,204 \\
+	$t_{MLP}$ & 158,580 $\pm$ 22,600 &  96,540 $\pm$ 14,778 & 10,480 $\pm$ 1,601 & 100,680 $\pm$ 21,517 \\
+	$t_{ESN}$ &  27,650 $\pm$  6,120 &  13,720 $\pm$  2,741 &  2,200 $\pm$ 0,458 &  19,210 $\pm$  4,252 \\ \midrule \midrule
+		      &          (3,0)       &        (3,1)         &        (3,2)        &      (3,3)          \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}	
+	$t_{ELM}$ &  19,660 $\pm$  2,674 &  12,050 $\pm$  1,408 &  0,390 $\pm$ 0,071 &  12,420 $\pm$  1,782 \\
+	$t_{MLP}$ & 138,990 $\pm$ 18,764 & 109,530 $\pm$ 17,318 &  3,670 $\pm$ 0,924 & 125,180 $\pm$ 18,856 \\
+	$t_{ESN}$ &  30,920 $\pm$  6,250 &  13,720 $\pm$  2,741 &  0,730 $\pm$ 0,151 &   8,340 $\pm$  3,392 \\ \midrule \midrule
+		      &          (4,0)       &        (4,1)         &        (4,2)        &      (4,3)          \\ \cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}\cmidrule(lr){5-5}	
+	$t_{ELM}$ &   7,840 $\pm$  1,167 &   1,980 $\pm$  0,578 &  0,150 $\pm$ 0,049 &  5,770 $\pm$  0,975 \\
+	$t_{MLP}$ &  55,820 $\pm$  7,997 &  24,830 $\pm$  5,666 &  \cellcolor{gray!15}2,480 $\pm$ 0,569 & 40,980 $\pm$  6,117 \\
+	$t_{ESN}$ &   9,770 $\pm$  2,237 &   6,570 $\pm$  1,518 &  0,330 $\pm$ 0,113 &  7,400 $\pm$  1,693 \\ \bottomrule
+		\end{tabular}%}%
+	\end{small}
+\end{table}%
+
+Para as redes ESN o tempo de treinamento necessário para 18 das 20 regiões, estiveram entre o tempo utilizado pelas redes ELM e o tempo necessário para as redes MLP, exceto nas regiões (0,1) e (3,3). Nas regiões (0,0) e (0,3) (dois  maiores números de assinaturas) foram registrados os maiores tempos de treinamento para as redes ESN. No entanto, as redes foram treinadas 4,12 e 4,85 vezes mais rápido do que o treino nas redes MLP. E, na região (4,1) (quinto menor número de assinaturas, 89.425), foi registrado o menor tempo de treinamento, sendo 7,55 vezes mais rápido do que o tempo gasto pelas redes MLP.
+
+Cabe salientar, que as redes ESN possuem em sua estrutura uma etapa recorrente, mas, que, apesar dessa estrutura, ainda pôde ser treinada 4,85 vezes mais rápido do que as redes MLP na região (0,3), a qual possui o maior número de assinaturas da base, 618.352.
+
+%58,690 $\pm$ 11,812 & 13,720 $\pm$ 6,155 &  7,280 $\pm$ 1,626 & 58,690 $\pm$ 11,812
+%
+%35,180 $\pm$ 7,5497 & 13,170 $\pm$ 5,478 &  4,950 $\pm$ 1,097 & 35,910 $\pm$  7,831 
+%
+%27,650 $\pm$  6,120 & 13,720 $\pm$ 2,749 & 2,200 $\pm$  0,458 & 19,210 $\pm$  4,252
+%
+%30,920 $\pm$ 6,249  & 13,720 $\pm$ 2,741 &  0,730 $\pm$ 0,151 & 8,340 $\pm$   3,392
+%
+% 9,770 $\pm$ 2,237 &  6,570 $\pm$ 1,517 &  0,330 $\pm$  0,113 &  7,400 $\pm$ 1,693
+
+Ao se comparar os tempos de treinamento para as redes ELM em relação às redes ESN, observa-se que na região (4,1) (quinto menor número de assinaturas, 84.425), foi registrado um tempo 3,31 vezes menor que o tempo para treino das redes ESN, e, na região (0,1) (quarto maior número de assinaturas, 384.619), foi registrado que o tempo de treinamento foi 0,635 vezes menor.
+
+\subsection{Análise Estatística}
+
+%A seguir os resultados obtidos com o teste de Student para os melhores resultados obtidos com a base de dados experimentais, utilizando as expressões das Equações~\ref{eq:tstudentDif}, \ref{eq:Disttudent} e \ref{eq:Eqstudent}. Os dados de entrada das equações foram os índices SP das melhores inicializações para cada uma das técnicas. Três análises serão apresentadas: ELM $\times$ MLP, ESN $\times$ MLP e ELM $\times$ ESN. Nos testes a hipótese nula, H$_0$, é de que os classificadores possuem o mesmo desempenho de classificação. Caso $t_{calc}>t_{tab}$, a hipótese deve ser descartada, do contrário, a hipótese não pode ser descartada, pois os classificadores possuem desempenho semelhante.
+
+
+A seguir os resultados obtidos com o teste de Student para os melhores resultados obtidos com a base de dados simulados, utilizando as expressões das Equações~\ref{eq:tstudentDif}, \ref{eq:Disttudent} e \ref{eq:Eqstudent}. Os dados de entrada das equações foram os índices SP das melhores inicializações para cada uma das técnicas. Da mesma maneira que foi feita na base de dados experimentais, três análises serão apresentadas: ELM $\times$ MLP, ESN $\times$ MLP e ELM $\times$ ESN. A hipótese nula, H$_0$, é de que os classificadores possuem o mesmo desempenho de separação. 
+
+O valor de referência tabelado para uma distribuição de Student com nove graus ($k-1=9$, \autoref{eq:tstudentDif}) de liberdade é $t_{tab} = 2,262$ para um nível de significância de 95\%. Os dados utilizados são os dados que produziram as melhores \textit{boxplot} da \autoref{fig:ELMxESNxBP_MC15_jack_00_43}
+
+\begin{itemize}
+	\item ELM $\times$ MLP: Na~\autoref{tab:test_ELMxMLP} são apresentados os resultados do teste de comparação entre os classificadores. Observa-se que os resultados para as regiões de E$_T = 0$ e E$_T = 1$ (O que corresponde a faixa de energia [15;30] GeV), os classificadores não possuem mesmo desempenho de classificação, destacados em negrito. Nas demais o teste indicou semelhança, ou seja, $t_{calc}< t_{tab}$, sendo $t_{tab}= 2,262$.
+	\begin{table}[H]
+		\centering
+		\caption{Resultados do teste de Student, ELM $\times$ MLP, para cada uma das regiões (E$_T$, $|\eta|$) da base.}
+		\begin{small}
+		\label{tab:test_ELMxMLP}
+		\setlength{\extrarowheight}{1pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{*{6}{c}}\toprule
+				& \multicolumn{5}{c}{$|\eta|$}\\\cmidrule(lr){3-6}
+						&   &     0   &     1   &    2    &   3 \\ \cmidrule(lr){3-6}
+\multirow{5}{*}{E$_T$}	& 0	& \textbf{3,797} & \textbf{3,575} & \textbf{2,937} & \textbf{4,331}  \\\cmidrule(lr){2-2}
+						& 1	& \textbf{2,872} & \textbf{3,526} & \textbf{3,153} & \textbf{3,302} \\\cmidrule(lr){2-2}
+						& 2	& 0,767 & 1,241 & 1,109 & 0,510   \\\cmidrule(lr){2-2}
+						& 3	& 0,513 & 0,651 & 0,182 & 0,253  \\\cmidrule(lr){2-2}
+						& 4	& 0,224 & 0,117 & 0,005 & 0,387  \\\bottomrule
+		\end{tabular}
+		\end{small}
+	\end{table}
+
+
+	\item ESN $\times$ MLP: Na~\autoref{tab:test_ESNxMLP} são apresentados os resultados do teste de comparação entre os classificadores. Observa-se que somente em três regiões (em negrito), (0,1), (0,2) e (1,2), o valor de $t_{calc}> t_{tab}$, sendo $ t_{tab}= 2,262$, nas demais os classificadores possuem mesmo desempenho de classificação.
+	
+	\begin{table}[H]
+	\centering
+	\caption{Resultados do teste de Student, ESN $\times$ MLP, para cada uma das regiões (E$_T$, $|\eta|$) da base.}
+		\begin{small}
+		\label{tab:test_ESNxMLP}
+		\setlength{\extrarowheight}{1pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{*{6}{c}}\toprule
+		& \multicolumn{5}{c}{$|\eta|$}\\\cmidrule(lr){3-6}
+						&   &     0   &     1   &    2    &   3 \\ \cmidrule(lr){3-6}
+\multirow{5}{*}{E$_T$}	& 0	& 0,726 & \textbf{4,836} & \textbf{11,344} & 0,647  \\\cmidrule(lr){2-2}
+						& 1	& 0,352 & 0,056 &  \textbf{3,557} & 0,166 \\\cmidrule(lr){2-2}
+						& 2	& 0,141 & 0,612 &  0,329 & 0,752 \\\cmidrule(lr){2-2}
+						& 3	& 0,760 & 0,187 &  1,006 & 0,563 \\\cmidrule(lr){2-2}
+						& 4	& 0,070 & 0,298 &  0,036 & 0,163 \\\bottomrule
+			\end{tabular}
+			\end{small}
+	\end{table}
+	
+	
+	\item ELM $\times$ ESN: Na \autoref{tab:test_ELMxESN} é apresentado o resultado da avaliação entre os classificadores. Neste teste os resultados indicam que nas regiões (0,1), (0,2) e (1,2), os classificadores não apresentam mesmo desempenho, pois o $t_{calc}>t_{tab}$, sendo $ t_{tab}= 2,262$.
+	
+	\begin{table}[H]
+	\centering
+	\caption{Resultados do teste de Student, ELM  $\times$ ESN,  para cada uma das regiões (E$_T$, $|\eta|$) da base.}
+		\begin{small}
+		\label{tab:test_ELMxESN}
+		\setlength{\extrarowheight}{1pt}       %%Aumentar a altura das linhas
+		\begin{tabular}{*{6}{c}}\toprule
+		& \multicolumn{5}{c}{$|\eta|$}\\\cmidrule(lr){3-6}
+						&   &     0   &     1   &    2    &   3 \\ \cmidrule(lr){3-6}
+\multirow{5}{*}{E$_T$}	& 0	& 1,647 & \textbf{4,064} & \textbf{10,836} & 1,695  \\\cmidrule(lr){2-2}
+						& 1 & 0,329 & 0,787 &  \textbf{2,864} & 0,621 \\\cmidrule(lr){2-2}
+						& 2	& 0,040 & 0,920 &  0,600 & 0,643 \\\cmidrule(lr){2-2}
+						& 3	& 0,896 & 0,346 &  0,980 & 0,512 \\\cmidrule(lr){2-2}
+						& 4	& 0,018 & 0,331 &  0,038 & 0,258 \\\bottomrule
+		\end{tabular}
+		\end{small}
+	\end{table}
+						
+\end{itemize}
+
+\section{Análise dos Resultados}
+
+Nas duas bases utilizadas para avaliação das técnicas propostas, o desempenho obtido foi quantitativamente semelhante e satisfatório. Para as redes ELM, o desempenho alcançado para o índice SP foi muito próximo do desempenho alcançado pelo algoritmo de referência em utilização no \textit{Neural Ringer}. A diferença entre o índice alcançado com a ELM esteve abaixo de 2\%, sugerindo semelhança entre as técnicas, tanto para a base experimental quanto para a base de dados simulados.
+
+Como critério qualitativo, as curvas ROC também indicaram que a ELM pode ser utilizada como alternativa ao MLP, pois as curvas estiveram próximas de uma superposição, para a base experimental. Na base de dados simulados, o comportamento de similaridade também foi observado, e em 10 das 20 regiões estiveram próximas de se sobreporem, sugerindo equivalência de desempenho. Nas demais regiões, não ficaram próximas de uma sobreposição, porém a diferença não foi significativa, o que pode ser verificado com o auxílio da~\autoref{tab:sp_2015} que registra a proximidade dos índices alcançados.
+
+Em relação às redes ESN, seu desempenho quantitativo é expressivo e superior as demais técnicas, na base experimental e em quase todas as regiões da base de dados simulados, exceto em uma região (0,2), quando o seu desempenho foi inferior ao desempenho das redes MLP e foi muito semelhante ao desempenho das redes ELM, com as curvas quase sobrepostas. A análise qualitativa é feita observando o grau de incerteza alcançado para os melhores treinos, os quais foram elevados quando comparados com o MLP, sendo de até 12,93\%.
+
+Outro ponto importante a se comentar é que o desempenho dos classificadores é elevado ao passo que a energia aumenta. Esse fato pôde ser observado em todas as quatro regiões de $\eta=[0,1,2,3]$, (E$_T$, $\eta$), nas Figuras~\ref{fig:MC15_ROCs_00_40}, \ref{fig:MC15_ROCs_01_41}, \ref{fig:MC15_ROCs_02_42} e \ref{fig:MC15_ROCs_03_43}.
+
+Quanto ao tempo total de treinamento necessário, as duas técnicas propostas (ELM e ESN) são mais rápidas que o MLP. E isso considerando todos os resultados obtidos, tanto com a base experimental quanto a base simulada. No pior caso, a diferença foi de pelo menos 3,78 vezes mais rápido que o MLP, o que representa uma redução de 73,54\%. E no melhor, a diferença foi de 16,53 vezes, representando uma redução de 93,95\%. Nesse quesito, as técnicas propostas demonstram que seu tempo de treinamento podem permitir um número maior de ensaios de configurações, objetivando a rede classificadora de máxima eficiência dentro do mesmo tempo gasto para treino de uma rede de máxima eficiência do tipo MLP.
+
+%
+%Por fim, a análise estatística tem o intuito de fornecer informações sobre a qualidade e avaliar a semelhança dos resultados obtidos com os classificadores propostos (ELM e ESN) como alternativa ao MLP, utilizado no \textit{Neural Ringer}. Para a base de dados experimentais, o resultado demonstrou que há diferenças significativas entre o resultado obtido com a ELM$\times$MLP, e significativa, 5,191 quando o valor tabulado é de 2,262. Na comparação ESN$\times$MLP, o resultado  indicou que os classificadores não possuem diferenças significativas. Já na comparação ESN$\times$ELM demonstrou que as técnicas são similares.
+
+%
+%Por fim, a análise estatística tem o intuito de fornecer informações sobre a qualidade, e avaliar a semelhança dos resultados obtidos com os classificadores propostos (ELM e ESN) como alternativa ao MLP, utilizado no NR. Para a base de dados experimentais, o resultado demonstrou que há diferenças significativas entre os classificadores ELM$\times$MLP. O resultado do teste foi de $t=5,191$, enquanto que o valor tabulado é de $t=2,262$, neste caso $t_{calc}> t_{tab}$, logo, a hipótese nula é descartada. Pois os classificadores possuem diferenças significativas.
+
+
+Por fim, foi realizada a análise estatística da qualidade dos resultados obtidos com os três classificadores. Três comparações foram realizadas: ELM$\times$MLP, ESN$\times$MLP e ESN$\times$ELM. Para a base de dados experimentais, o resultado demonstrou que há diferenças significativas entre os classificadores ELM$\times$MLP. O resultado do teste foi de $t_{calc}=5,191$, enquanto que o valor tabulado é de $t_{calc}=2,262$, neste caso $t_{calc}> t_{tab}$, logo, a hipótese nula é descartada. Pois os classificadores possuem diferenças significativas.
+
+Na comparação ESN$\times$MLP, o resultado  indicou que os classificadores não possuem diferenças significativas. Pois o resultado foi de $t_{calc}=1,146$, inferior ao valor tabulado. Dessa forma os classificadores possuem resultados similares. E na última comparação, ESN$\times$ELM, o resultado também indicou similaridade entre os classificadores, pois $t_{calc}=0,500$.
+
+Na base de dados segmentada, com dados simulados, a comparação entre ELM e MLP resultou na separação da base em dois grupos. O primeiro, são as regiões onde E$_T$ está na faixa de até 30 GeV, (0,0) até (1,0), oito regiões. Nestas regiões, o teste indicou que há semelhanças significativas entre os classificadores, com o mínimo valor calculado foi de 2,872 na região (1,0), e o máximo de 3,797, região (0,0). Os valores de $t_{calc}$ foram superiores ao de $t_{tab}=2,262$. No segundo grupo, E$_T$ está na faixe acima de até 30 GeV, (2,0) até (4,3), 12 regiões. Nestas, o indicou indicou que os classificadores são semelhantes.
+
+No trabalho de \citeonline[p 52-53]{simas2010}, uma análise indicou, que o nível de energia envolvida no evento registrado, possui influência na separação entre elétrons e jatos. A~\autoref{fig:Perfil_60_20GeV} exibiu tal fato. Observou-se, que a separação entre jatos e elétrons fica mais saliente para níveis de energia acima de 20 GeV. Tal fato, pode auxiliar na compreensão dos resultados indicarem semelhança significativa. Pois, nessa faixa de energia, o classificador baseado em ELM apresentou mais dificuldade em separar os elétrons dos jatos,
+
+Na comparação entre ESN e MLP, houve um maior número de semelhanças entre os classificadores. Somente as regiões (0,1), (0,2) e (1,2), que o teste indicou diferenças significativas entre os classificadores. Os valores para o $t_{calc}$ foram de 4,836, 11,344 e 3,557, respectivamente. Nas demais 17, todos valores ficaram abaixo do $t_{tab}=2,262$, indicando que os classificadores ESN e MLP para esses regiões são semelhantes.
+
+A última comparação realizada, ESN e ELM, produziu resultado semelhante à comparação entre ESN e MLP. Somente as regiões (0,1), (0,2) e (1,2), que o teste indicou diferenças significativas entre os classificadores.  Os valores para o $t_{calc}$ foram de 4,064, 10,836 e 2,864, respectivamente. As demais 17 regiões, os valores calculados ficaram abaixo do $t_{tab}=2,262$, indicando semelhança entre os classificadores ESN e ELM.
+
+Na base experimental, o teste estatístico rejeitou a hipótese de semelhança entre os classificadores ELM e MLP. Enquanto que na comparação ESN $\times$ MLP e ELM $\times$ ESN, indicou semelhança entre os classificadores. É possível que ajustes na forma de gerar os pesos da camada oculta, e o ajuste do número de neurônios utilizados na camada oculta, produzam melhores resultados, aproximando o desempenho da ELM do MLP.
+
+Um detalhe a ser observado, é o fato de as bases de dados possuírem características significativamente distintas. Visto que, uma não possui segmentação (base experimental), ou seja, todas as variações, em níveis de energia, registradas nas colisões foram fornecidas à rede para que efetuasse a classificação, sem nenhum tipo de tratamento. Enquanto que na base segmentada, os classificadores foram projetados por faixa de energia e região onde o evento foi registrado. Também, há de se observar que a base não segmentada (experimental) possui um total 416.011 assinaturas, para jatos e elétrons, enquanto a base segmentada, possui regiões com número assinaturas superior a toda base experimental.
+
+\subsection{Resumo}
+%A seguir na \autoref{tab:resumo} é exibido o resumo dos resultados obtidos com as técnicas propostas (ELM e ESN) em comparação com a técnica MLP, utilizada no detector ATLAS como classificador elétron/jato.
+
+A seguir na \autoref{tab:resumo} é exibido o resumo dos resultados obtidos nessa esta pesquisa de mestrado com as técnicas propostas MLP, ELM e ESN.
+
+
+%\begin{center}
+%\begin{longtable}[H]{p{4cm}p{11cm}}\toprule
+%%\centering
+%\caption{Resumo dos resultados obtidos para as duas bases utilizadas.}\label{tab:resumo}
+%%	\begin{small}
+%%	\label{tab:resumo}
+%%	\setlength{\extrarowheight}{5pt}       %%Aumentar a altura das linhas
+%%	\begin{tabular}{p{4cm}p{11cm}}\toprule
+%%		\multicolumn{2}{c}{Base Experimental}\\%\cmidrule(lr){1-2}
+%Tempo de Treinamento: & A ELM e ESN foram treinadas num tempo significativamente menor, comparado com o MLP. Redução de 92\% e 91\%, respctivamente. \\ %\cmidrule(lr){2-2}
+%
+%Índice SP:            & A ELM obteve desempenho semelhante ao MLP, 92,875\% $\pm$ 0,460\%, enquanto o MLP 93,411\% $\pm$ 0,399\%. Já a ESN alcançou o melhor índice 98,564\% $\pm$ 3,924\%. \\ \cmidrule(lr){2-2}
+%
+%Teste Estatístico:    & Utilizando os dados da melhor inicialização para cada uma das técnicas, o resultado indicado, foi de similaridade na comparação ESN$\times$MLP e ESN$\times$ELM. Porém, na comparação ELM$\times$MLP o teste indicou que os classificadores projetados possuem desempenho de classificação com diferenças significativas.\\ %\midrule \midrule
+%\multicolumn{2}{c}{Base Simulada}\\%\cmidrule(lr){1-2} \\
+%Tempo de Treinamento: & As técnicas propostas, ELM  e ESN, foram treinadas num tempo de pelo menos 4,12 vezes mais rápido do que o MLP. A ELM obteve o menor tempo na região (4,3), sendo 16,53 vezes menor que o MLP, no pior caso, regi]ao (0,2) a diferença foi de 5,58 vezes.
+%
+%						A ESN teve o treino mais rápido na região (4,2), com tempo 7,55 vezes menor que o MLP, no pior caso, região (0,0) (segundo maior número de assinaturas), o tempo foi 4,12 vezes menor. \\ %\cmidrule(lr){2-2}
+%
+%Índice SP:            & A ELM obteve desempenho semelhante ao MLP, 92,875\% $\pm$ 0,460\%, enquanto o MLP 93,411\% $\pm$ 0,399\%. Já a ESN alcançou o melhor índice 98,564\% $\pm$ 3,924\%. \\ \cmidrule(lr){2-2}
+%
+%Teste Estatístico:    & Utilizando os dados da melhor inicialização para cada uma das técnicas, o resultado indicado, foi de similaridade na comparação ESN$\times$MLP e ESN$\times$ELM. Porém, na comparação ELM$\times$MLP o teste indicou que os classificadores projetados possuem desempenho de classificação com diferenças significativas.\\ \bottomrule
+%%	\end{tabular}
+%%	\end{small}
+%\end{longtable}
+%\end{center}
+
+\begin{center}
+	\begin{small}
+	\setlength{\extrarowheight}{5pt}       %%Aumentar a altura das linhas
+	\begin{longtable}[H]{p{3.8cm}p{11cm}}
+		\caption{Resumo dos melhores resultados obtidos com os classificadores, MLP, ELM e ESN, para as duas bases utilizadas, tendo como técnica de reamostragem o \textit{Jackknife}.} \label{tab:resumo} \\
+		
+		\toprule \multicolumn{2}{c}{\textbf{Base Experimental}} \\ \cmidrule(lr){1-2} %& \multicolumn{1}{c|}{\textbf{Third column}} \\ \hline 
+		\endfirsthead
+				
+		\multicolumn{2}{c}%
+		{{ \footnotesize{\tablename\ \thetable{} -- Continuação da página anterior}}} \\
+		\toprule \multicolumn{2}{c}{\textbf{Base Simulada}} \\ \cmidrule(lr){1-2} %& \multicolumn{1}{c|}{\textbf{Third column}} \\ \hline 
+		\endhead
+		
+		\multicolumn{2}{r}{\footnotesize{Continua na próxima página}} \\ 
+		\endfoot		
+		
+		\endlastfoot
+		
+Tempo de Treinamento: & A ELM e ESN foram treinadas num tempo significativamente menor, comparado com o MLP, 12,65 e 11,18 vezes mais rápido, uma redução de 92,09\% e 91,06\%, respctivamente. \\ \cmidrule(lr){2-2}
+
+Índice SP:            & A ELM obteve desempenho de 92,875\% $\pm$ 0,460\%, enquanto o MLP 93,411\% $\pm$ 0,399\%. Já a ESN alcançou o melhor índice 98,564\% $\pm$ 3,924\%. \\ \cmidrule(lr){2-2}
+
+Teste Estatístico:    & Utilizando os dados da melhor inicialização para cada uma das técnicas, o resultado indicado, foi de similaridade na comparação ESN$\times$MLP e ESN$\times$ELM. Porém, na comparação ELM$\times$MLP o teste indicou que os classificadores projetados possuem desempenho de classificação com diferenças significativas.\\ \midrule \midrule
+
+		\multicolumn{2}{c}{\textbf{Base Simulada}}\\ \cmidrule(lr){1-2}
+		
+Tempo de Treinamento: & As técnicas propostas, ELM  e ESN, foram treinadas num tempo de pelo menos 4,12 vezes mais rápido do que o MLP. A ELM obteve o menor tempo na região (4,3), sendo 16,53 vezes menor que o MLP, no pior caso, região (0,2) a diferença foi de 5,58 vezes.
+
+						A ESN teve o treino mais rápido na região (4,2), com tempo 7,55 vezes menor que o MLP, no pior caso, região (0,0) (segundo maior número de assinaturas), o tempo foi 4,12 vezes menor. O tempo de treinamento da ESN ficou entre o tempo para o MLP e a ELM em 18 regiões, exceto para as regiões (0,1) e (3,3), nas quais foi a mais rápida.\\ \cmidrule(lr){2-2}
+
+Índice SP:            & A ELM obteve desempenho semelhante ao MLP, 92,875\% $\pm$ 0,460\%, enquanto o MLP 93,411\% $\pm$ 0,399\%. Já a ESN alcançou o melhor índice 98,564\% $\pm$ 3,924\%. \\ \cmidrule(lr){2-2}
+
+Teste Estatístico:    & No teste ELM$\times$MLP, as regiões (0,0) $\ldots$ (1,3), com E$_T$ na faixa [15, 30] GeV, os classificadores projetados com ELM não são semelhantes, pois o $t_{calc}>2,262$ para uma distribuição de probabilidade bicaudal. Nas demais regiões, com E$_T$ acima de 30 GeV, os classificadores projetados possuem semelhança.
+						Nos testes, ESN$\times$MLP e ELM$\times$ESN, três regiões tiveram $t_{calc}>2,262$: (0,1), (0,2) e (1,2). Ou seja, os classificadores projetados com ELM e ESN para essas regiões não são similares. Nas demais regiões os testes, ESN$\times$MLP e ELM$\times$ESN, indicaram que os classificadores possuem desempenho semelhante.
+\\ \bottomrule
+
+	\end{longtable}
+	\end{small}
+\end{center}
+
+
+
+
+%Há que se notar que em 20 regiões, existe um número maior de testes da qualidade dos resultados alcançados pelos classificadores. Esse fato, fornece mais informação sobre a semelhança entre as técnicas, quando comparados com os resultados para a base experimental. Na base de dados simulados, somente em duas regiões, uma na comparação ELM $\times$ MLP e outra na comparação ESN $\times$ MLP, os classificadores foram considerados diferentes. 
+%
+%Os, únicos, dois resultados contra as técnicas propostas não são suficientes para descartar as técnicas. Uma vez que existe a possibilidade de melhoria nos resultados alcançados por meio dos parâmetros de ajustes presentes em cada uma das técnicas. Pois, os classificadores foram treinados com os mesmos parâmetros em todas as rodadas. E, possivelmente, o refino no ajuste dos parâmetros para cada um dos classificadores especialistas,  permita que os níveis de índice SP alcançado sejam melhorados, especialmente no que se refere ao nível de incerteza. Os quais foram superiores aos alcançados pleo MLP tanto na base de dados simulados, quanto na base de dados simulados, em sua maioria.
+%
+%
+%\begin{center}
+%	\begin{longtable}{|l|l|l|}
+%		\caption{A sample long table.} \label{tab:long} \\
+%		
+%		\hline \multicolumn{1}{|c|}{\textbf{First column}} & \multicolumn{1}{c|}{\textbf{Second column}} & \multicolumn{1}{c|}{\textbf{Third column}} \\ \hline 
+%		\endfirsthead
+%		
+%		\multicolumn{3}{c}%
+%		{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+%		\hline \multicolumn{1}{|c|}{\textbf{First column}} & \multicolumn{1}{c|}{\textbf{Second column}} & \multicolumn{1}{c|}{\textbf{Third column}} \\ \hline 
+%		\endhead
+%		
+%		\hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+%		\endfoot
+%		
+%		\hline \hline
+%		\endlastfoot
+%		
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%		One & abcdef ghjijklmn & 123.456778 \\
+%	\end{longtable}
+%\end{center}
+
+
+
